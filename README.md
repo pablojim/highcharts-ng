@@ -5,6 +5,8 @@ AngularJS directive for Highcharts
 
 A simple Angularjs directive for Highcharts.
 
+`<highchart id="chart1" series="chart.series" title="chart.title" options="chart.options"></highchart>`
+
 See an example here: [http://jsfiddle.net/pablojim/Cp73s/](http://jsfiddle.net/pablojim/Cp73s/)
 
 Features:
