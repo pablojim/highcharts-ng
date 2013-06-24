@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('mydashApp')
-    .directive('hchart', function () {
+angular.module('highcharts-ng')
+    .directive('highchart', function () {
         var seriesId = 0;
         var ensureIds = function (series) {
             series.forEach(function (s) {
