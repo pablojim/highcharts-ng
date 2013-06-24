@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('highcharts-ng')
+angular.module('highcharts-ng', [])
     .directive('highchart', function () {
         var seriesId = 0;
         var ensureIds = function (series) {
