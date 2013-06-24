@@ -50,17 +50,18 @@ angular.module('highcharts-ng', [])
                         ids.push(s.id)
                         var chartSeries = chart.get(s.id);
                         if (chartSeries) {
-                            chartSeries.update(angular.copy(s), true);
+                            chartSeries.update(angular.copy(s), false);
                         } else {
-                            chart.addSeries(angular.copy(s))
+                            chart.addSeries(angular.copy(s), false)
                         }
                     });
                     //Now remove any missing series
                     chart.series.forEach(function (s) {
                         if (ids.indexOf(s.options.id) < 0) {
-                            s.remove();
+                            s.remove(false);
                         }
                     });
+                    chart.redraw();
 
                 }, true);
                 scope.$watch("title", function (newTitle) {
@@ -75,8 +76,9 @@ angular.module('highcharts-ng', [])
                     chart.setTitle(scope.title, true);
                     ensureIds(scope.series);
                     scope.series.forEach(function (s) {
-                        chart.addSeries(angular.copy(s))
+                        chart.addSeries(angular.copy(s), false)
                     });
+                    chart.redraw()
 
                 }, true);
             }
