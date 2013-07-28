@@ -11,7 +11,7 @@ angular.module('highcharts-ng', [])
             });
         }
 
-        var getMergedOptions = function (element, options) {
+        var getMergedOptions = function (element, options, series) {
             var defaultOptions = {
                 chart: {
                     renderTo: element[0]
@@ -24,6 +24,9 @@ angular.module('highcharts-ng', [])
                 mergedOptions = $.extend(true, {}, defaultOptions, options);
             } else {
                 mergedOptions = defaultOptions;
+            }
+            if(series) {
+              mergedOptions.series = series
             }
             return mergedOptions
         }
@@ -38,30 +41,35 @@ angular.module('highcharts-ng', [])
             },
             link: function (scope, element, attrs) {
 
-                var mergedOptions = getMergedOptions(element, scope.options);
+                var mergedOptions = getMergedOptions(element, scope.options, scope.series);
                 var chart = new Highcharts.Chart(mergedOptions);
 
                 scope.$watch("series", function (newSeries, oldSeries) {
-                    ensureIds(newSeries);
-                    var ids = []
+                    //do nothing when called on registration
+                    if (newSeries === oldSeries) return;
+                    if (newSeries) {
+                        ensureIds(newSeries);
+                        var ids = []
 
-                    //Find series to add or update
-                    newSeries.forEach(function (s) {
-                        ids.push(s.id)
-                        var chartSeries = chart.get(s.id);
-                        if (chartSeries) {
+                        //Find series to add or update
+                        newSeries.forEach(function (s) {
+                          ids.push(s.id)
+                          var chartSeries = chart.get(s.id);
+                          if (chartSeries) {
                             chartSeries.update(angular.copy(s), false);
-                        } else {
+                          } else {
                             chart.addSeries(angular.copy(s), false)
-                        }
-                    });
-                    //Now remove any missing series
-                    chart.series.forEach(function (s) {
-                        if (ids.indexOf(s.options.id) < 0) {
+                          }
+                        });
+                        //Now remove any missing series
+                        chart.series.forEach(function (s) {
+                          if (ids.indexOf(s.options.id) < 0) {
                             s.remove(false);
-                        }
-                    });
-                    chart.redraw();
+                          }
+                        });
+                        chart.redraw();
+                    }
+
 
                 }, true);
                 scope.$watch("title", function (newTitle) {
