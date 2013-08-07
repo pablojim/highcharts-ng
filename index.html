@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <link href='https://fonts.googleapis.com/css?family=Chivo:900' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <title>Highcharts-ng by pablojim</title>
+  </head>
+
+  <body>
+    <div id="container">
+      <div class="inner">
+
+        <header>
+          <h1>Highcharts-ng</h1>
+          <h2>AngularJS directive for Highcharts</h2>
+        </header>
+
+        <section id="downloads" class="clearfix">
+          <a href="https://github.com/pablojim/highcharts-ng/zipball/master" id="download-zip" class="button"><span>Download .zip</span></a>
+          <a href="https://github.com/pablojim/highcharts-ng/tarball/master" id="download-tar-gz" class="button"><span>Download .tar.gz</span></a>
+          <a href="https://github.com/pablojim/highcharts-ng" id="view-on-github" class="button"><span>View on GitHub</span></a>
+        </section>
+
+        <hr>
+
+        <section id="main_content">
+          <h1>
+<a name="highcharts-ng" class="anchor" href="#highcharts-ng"><span class="octicon octicon-link"></span></a>highcharts-ng</h1>
+
+<p>AngularJS directive for Highcharts</p>
+
+<p>A simple Angularjs directive for Highcharts.</p>
+
+<h2>
+<a name="current-version" class="anchor" href="#current-version"><span class="octicon octicon-link"></span></a>Current Version</h2>
+
+<p><code>&lt;highchart id="chart1" config="chartConfig"&gt;&lt;/highchart&gt;</code></p>
+
+<p>The chart config resembles an exploded highcharts options object:</p>
+
+<div class="highlight"><pre><span class="nx">chartConfig</span> <span class="o">=</span> <span class="p">{</span>
+             <span class="c1">//Main highcharts options.</span>
+             <span class="nx">options</span><span class="o">:</span> <span class="p">{</span>
+                 <span class="nx">chart</span><span class="o">:</span> <span class="p">{</span>
+                     <span class="nx">type</span><span class="o">:</span> <span class="s1">'bar'</span>
+                 <span class="p">}</span>
+             <span class="p">},</span>
+             <span class="c1">//Series object - a list of series using normal highcharts series options.</span>
+             <span class="nx">series</span><span class="o">:</span> <span class="p">[{</span>
+                 <span class="nx">data</span><span class="o">:</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">7</span><span class="p">]</span>
+             <span class="p">}],</span>
+             <span class="c1">//Title configuration</span>
+             <span class="nx">title</span><span class="o">:</span> <span class="p">{</span>
+                 <span class="nx">text</span><span class="o">:</span> <span class="s1">'Hello'</span>
+             <span class="p">},</span>
+             <span class="c1">//Boolean to control showng loading status on chart</span>
+             <span class="nx">loading</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span>
+             <span class="c1">//Configuration for the xAxis. Currently only one x axis can be dynamically controlled.</span>
+             <span class="c1">//properties currentMin and currentMax provied 2-way binding to the chart's maximimum and minimum</span>
+             <span class="nx">xAxis</span><span class="o">:</span> <span class="p">{</span>
+              <span class="nx">currentMin</span><span class="o">:</span> <span class="mi">0</span><span class="p">,</span>
+              <span class="nx">currentMax</span><span class="o">:</span> <span class="mi">20</span><span class="p">,</span>
+              <span class="nx">title</span><span class="o">:</span> <span class="p">{</span><span class="nx">text</span><span class="o">:</span> <span class="s1">'values'</span><span class="p">}</span>
+             <span class="p">}</span>
+         <span class="p">}</span>
+</pre></div>
+
+<p>All properties on the chart configuration are optional. Each property is watched for changes by angularjs.</p>
+
+<h2>
+<a name="features" class="anchor" href="#features"><span class="octicon octicon-link"></span></a>Features:</h2>
+
+<ul>
+<li>Adding and removing series</li>
+<li>Setting/Updating Chart options</li>
+<li>Updating the chart title</li>
+<li>2 way binding to chart xAxis</li>
+<li>Control of Loading status</li>
+<li>Resizes with screen size changes.</li>
+</ul><h2>
+<a name="caveats" class="anchor" href="#caveats"><span class="octicon octicon-link"></span></a>Caveats:</h2>
+
+<ul>
+<li>Due to many equality checks the directive maybe slow with large datasets (this is solvable though...)</li>
+<li>Whole Chart/Series is often redrawn where a simple update of data would suffice</li>
+<li>If you don't assign ids to your series - incremental ids will be added</li>
+<li>The 2 way binding to xAxis properties should be treated as experimental</li>
+<li>When using with a highstocks navigator errors can occur</li>
+<li>Needs tests!</li>
+</ul><h2>
+<a name="older-versions" class="anchor" href="#older-versions"><span class="octicon octicon-link"></span></a>Older Versions</h2>
+
+<h2>
+<a name="version-001-not-compatible-with-currrent-version" class="anchor" href="#version-001-not-compatible-with-currrent-version"><span class="octicon octicon-link"></span></a>Version 0.0.1 (not compatible with currrent version)</h2>
+
+<p><code>&lt;highchart id="chart1" series="chart.series" title="chart.title" options="chart.options"&gt;&lt;/highchart&gt;</code></p>
+
+<p>See an example here: <a href="http://jsfiddle.net/pablojim/46rhz/">http://jsfiddle.net/pablojim/46rhz/</a></p>
+
+<h2>
+<a name="features-1" class="anchor" href="#features-1"><span class="octicon octicon-link"></span></a>Features:</h2>
+
+<ul>
+<li>Adding and removing series</li>
+<li>Setting/Updating Chart options</li>
+<li>Updating the chart title</li>
+</ul><h2>
+<a name="caveats-1" class="anchor" href="#caveats-1"><span class="octicon octicon-link"></span></a>Caveats:</h2>
+
+<ul>
+<li>Due to many equality checks the directive maybe slow with large datasets (this is solvable though...)</li>
+<li>Whole Chart/Series is often redrawn where a simple update of data would suffice</li>
+<li>If you don't assign ids to your series - incremental ids will be added</li>
+<li>Needs tests!</li>
+</ul>
+        </section>
+
+        <footer>
+          Highcharts-ng is maintained by <a href="https://github.com/pablojim">pablojim</a><br>
+          This page was generated by <a href="http://pages.github.com">GitHub Pages</a>. Tactile theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.
+        </footer>
+
+        
+      </div>
+    </div>
+  </body>
+</html>
