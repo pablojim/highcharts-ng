@@ -12,7 +12,8 @@ Current Version
 
 The chart config resembles an exploded highcharts options object:
 
-`chartConfig = {
+```javascript
+chartConfig = {
              //Main highcharts options.
              options: {
                  chart: {
@@ -36,7 +37,8 @@ The chart config resembles an exploded highcharts options object:
               currentMax: 20,
               title: {text: 'values'}
              }
-         }`
+         }
+```
 
 All properties on the chart configuration are optional. Each property is watched for changes by angularjs.
 
