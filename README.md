@@ -97,4 +97,3 @@ Caveats:
 - If you don't assign ids to your series - incremental ids will be added
 - Needs tests!
 
-See an example here: [http://jsfiddle.net/pablojim/Cp73s/](http://jsfiddle.net/pablojim/Cp73s/)
