@@ -18,7 +18,8 @@ The chart config resembles an exploded highcharts options object:
 
 ```javascript
 chartConfig = {
-             //Main highcharts options.
+             //Main Highcharts options. Any Highchart options are valid here.
+             //will be ovverriden by values specified below.
              options: {
                  chart: {
                      type: 'bar'
