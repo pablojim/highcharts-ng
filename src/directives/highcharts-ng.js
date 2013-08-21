@@ -22,7 +22,7 @@ angular.module('highcharts-ng', [])
         if (source[property] && source[property].constructor &&
             source[property].constructor === Object) {
           destination[property] = destination[property] || {};
-          arguments.callee(destination[property], source[property]);
+          deepExtend(destination[property], source[property]);
         } else {
           destination[property] = source[property];
         }
