@@ -38,7 +38,7 @@ angular.module('highcharts-ng', [])
     var getMergedOptions = function (scope, element, config) {
       var mergedOptions = {}
       if (config.options) {
-        mergedOptions = $.extend(true, {}, defaultOptions, angular.copy(config.options));
+        mergedOptions = angular.copy({}, defaultOptions, config.options);
       } else {
         mergedOptions = defaultOptions;
       }
