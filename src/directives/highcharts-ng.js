@@ -17,6 +17,19 @@ angular.module('highcharts-ng', [])
       };
     }
 
+    function deepExtend(destination, source) {
+      for (var property in source) {
+        if (source[property] && source[property].constructor &&
+            source[property].constructor === Object) {
+          destination[property] = destination[property] || {};
+          arguments.callee(destination[property], source[property]);
+        } else {
+          destination[property] = source[property];
+        }
+      }
+      return destination;
+    }
+
     var seriesId = 0;
     var ensureIds = function (series) {
       series.forEach(function (s) {
@@ -38,7 +51,7 @@ angular.module('highcharts-ng', [])
     var getMergedOptions = function (scope, element, config) {
       var mergedOptions = {}
       if (config.options) {
-        mergedOptions = angular.copy({}, defaultOptions, config.options);
+        mergedOptions = deepExtend(defaultOptions, config.options);
       } else {
         mergedOptions = defaultOptions;
       }
