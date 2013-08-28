@@ -20,6 +20,7 @@
             <button ng-click="removeRandomSeries()">Remove Random Series</button>
             <button ng-click="swapChartType()">Line/Bar</button>
             <button ng-click="toggleLoading()">Loading?</button>
+            <button ng-click="toggleHighCharts()">HighChart/HighStock</button>
         </div>
         <div class="row">
             <highchart id="chart1" config="chartConfig" class="span10" ></highchart>
@@ -69,6 +70,10 @@
 
         $scope.toggleLoading = function () {
             this.chartConfig.loading = !this.chartConfig.loading
+        }
+
+        $scope.toggleHighCharts = function () {
+            this.chartConfig.useHighStocks = !this.chartConfig.useHighStocks
         }
 
         $scope.chartConfig = {

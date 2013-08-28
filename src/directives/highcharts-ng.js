@@ -119,20 +119,25 @@ angular.module('highcharts-ng', [])
       }
 
       //Now remove any missing series
-      chart.series.forEach(function (s) {
+      for(var i = chart.series.length - 1; i >= 0; i--) {
+        var s = chart.series[i];
         if (ids.indexOf(s.options.id) < 0) {
           s.remove(false);
         }
-      });
+      };
+
     }
 
     var initialiseChart = function(scope, element, config) {
       var mergedOptions = getMergedOptions(scope, element, config);
-      var chart = new Highcharts.Chart(mergedOptions);
+      var chart = config.useHighStocks ? new Highcharts.StockChart(mergedOptions) : new Highcharts.Chart(mergedOptions);
       if(config.xAxis) {
         processExtremes(chart, config.xAxis);
       }
       processSeries(chart, config.series);
+      if(config.loading) {
+        chart.showLoading()
+      }
       chart.redraw();
       return chart;
     }
@@ -161,12 +166,17 @@ angular.module('highcharts-ng', [])
         }, true);
 
         scope.$watch("config.loading", function (loading) {
-          if(loading === false) {
-            chart.hideLoading()
-          } else {
+          if(loading) {
             chart.showLoading()
+          } else {
+            chart.hideLoading()
           }
-        }, true);
+        });
+
+        scope.$watch("config.useHighStocks", function (useHighStocks) {
+          chart.destroy();
+          chart = initialiseChart(scope, element, scope.config);
+        });
 
         scope.$watch("config.xAxis", function (newAxes, oldAxes) {
           if (newAxes === oldAxes) return;

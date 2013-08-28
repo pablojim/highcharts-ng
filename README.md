@@ -41,8 +41,10 @@ chartConfig = {
               currentMin: 0,
               currentMax: 20,
               title: {text: 'values'}
+             },
+             //Whether to use HighStocks instead of HighCharts. Defaults to false.
+             useHighStocks: false
              }
-         }
 ```
 
 All properties on the chart configuration are optional. Each property is watched for changes by angularjs.
@@ -67,8 +69,6 @@ Caveats:
 - The 2 way binding to xAxis properties should be treated as experimental
 - When using with a highstocks navigator errors can occur
 - Needs tests!
-
-
 
 
 
