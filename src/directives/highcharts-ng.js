@@ -79,13 +79,16 @@ angular.module('highcharts-ng', [])
         });
       }
 
-      if(config.xAxis) {
-        mergedOptions.xAxis = angular.copy(config.xAxis)
+      if ( config.xAxis ) {
+        mergedOptions.xAxis = angular.copy(config.xAxis);
       }
-      if(config.title) {
-        mergedOptions.title = config.title
+      if ( config.title ) {
+        mergedOptions.title = config.title;
       }
-      return mergedOptions
+      if ( config.credits ) {
+          mergedOptions.credits = config.credits;
+      }
+      return mergedOptions;
     }
 
     var updateZoom = function (axis, modelAxis) {
