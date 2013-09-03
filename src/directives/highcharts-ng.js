@@ -56,7 +56,7 @@ angular.module('highcharts-ng', [])
         mergedOptions = defaultOptions;
       }
       mergedOptions.chart.renderTo = element[0];
-      if(scope.config.xAxis) {
+      if(config.xAxis) {
         prependMethod(mergedOptions.chart.events, 'selection', function(e){
           var thisChart = this;
           if(e.xAxis) {
@@ -129,6 +129,7 @@ angular.module('highcharts-ng', [])
     }
 
     var initialiseChart = function(scope, element, config) {
+      config || (config = {});
       var mergedOptions = getMergedOptions(scope, element, config);
       var chart = config.useHighStocks ? new Highcharts.StockChart(mergedOptions) : new Highcharts.Chart(mergedOptions);
       if(config.xAxis) {
@@ -144,7 +145,7 @@ angular.module('highcharts-ng', [])
 
 
     return {
-      restrict: 'EC',
+      restrict: 'EAC',
       replace: true,
       template: '<div></div>',
       scope: {
