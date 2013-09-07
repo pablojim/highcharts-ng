@@ -71,15 +71,16 @@ Caveats:
 - Needs tests!
 
 
-
-
-Older Versions
+Versions
 --------------
 
+Version 0.0.2
+----------------
+- Removed JQuery dependency
+- Allowed for null config option
 
 
-
-Version 0.0.1 (not compatible with currrent version)
+Version 0.0.1 (not compatible with current version)
 ----------------
 
 `<highchart id="chart1" series="chart.series" title="chart.title" options="chart.options"></highchart>`

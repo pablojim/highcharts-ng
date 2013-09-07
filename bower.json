@@ -1,9 +1,8 @@
 {
   "name": "highcharts-ng",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "dependencies": {
-    "jquery": ">=1.6.x",
-    "angular": "~1.0.4"
+    "angular": ">=1.0.4"
   },
   "devDependencies": {}
 }
