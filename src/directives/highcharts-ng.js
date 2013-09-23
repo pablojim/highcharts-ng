@@ -107,7 +107,7 @@ angular.module('highcharts-ng', [])
         mergedOptions.xAxis = angular.copy(config.xAxis)
       }
       if(config.yAxis) {
-        mergedOptions.xAxis = angular.copy(config.xAxis)
+        mergedOptions.yAxis = angular.copy(config.yAxis)
       }
       if(config.title) {
         mergedOptions.title = config.title
@@ -166,10 +166,10 @@ angular.module('highcharts-ng', [])
       var mergedOptions = getMergedOptions(scope, element, config);
       var chart = config.useHighStocks ? new Highcharts.StockChart(mergedOptions) : new Highcharts.Chart(mergedOptions);
       if(config.xAxis) {
-        processExtremes(chart, config.xAxis);
+        processExtremesX(chart, config.xAxis);
       }
       if(config.yAxis) {
-        processExtremes(chart, config.yAxis);
+        processExtremesY(chart, config.yAxis);
       }
       processSeries(chart, config.series);
       if(config.loading) {
