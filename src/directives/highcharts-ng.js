@@ -39,17 +39,18 @@ angular.module('highcharts-ng', [])
       });
     }
 
-    var defaultOptions = {
-      chart: {
-        events: {}
-      },
-      title: {},
-      series: [],
-      navigator: {enabled: false}
-    }
-
     var getMergedOptions = function (scope, element, config) {
       var mergedOptions = {}
+
+      var defaultOptions = {
+        chart: {
+          events: {}
+        },
+        title: {},
+        series: [],
+        navigator: {enabled: false}
+      }
+
       if (config.options) {
         mergedOptions = deepExtend(defaultOptions, config.options);
       } else {
