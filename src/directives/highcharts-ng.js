@@ -80,7 +80,33 @@ angular.module('highcharts-ng', [])
         });
       }
 
+      if(config.yAxis) {
+        prependMethod(mergedOptions.chart.events, 'selection', function(e){
+          var thisChart = this;
+          if(e.yAxis) {
+            scope.$apply(function () {
+              scope.config.yAxis.currentMin = e.yAxis[0].min;
+              scope.config.yAxis.currentMax = e.yAxis[0].max;
+            });
+          } else {
+            //handle reset button - zoom out to all
+            scope.$apply(function () {
+              scope.config.yAxis.currentMin = thisChart.yAxis[0].dataMin;
+              scope.config.yAxis.currentMax = thisChart.yAxis[0].dataMax;
+            });
+          }
+        });
+
+        prependMethod(mergedOptions.chart.events, 'addSeries', function(e){
+            scope.config.yAxis.currentMin = this.yAxis[0].min || scope.config.yAxis.currentMin;
+            scope.config.yAxis.currentMax = this.yAxis[0].max || scope.config.yAxis.currentMax;
+        });
+      }
+
       if(config.xAxis) {
+        mergedOptions.xAxis = angular.copy(config.xAxis)
+      }
+      if(config.yAxis) {
         mergedOptions.xAxis = angular.copy(config.xAxis)
       }
       if(config.title) {
@@ -96,9 +122,15 @@ angular.module('highcharts-ng', [])
       }
     }
 
-    var processExtremes = function(chart, axis) {
+    var processExtremesX = function(chart, axis) {
       if(axis.currentMin || axis.currentMax) {
         chart.xAxis[0].setExtremes(axis.currentMin, axis.currentMax, true);
+      }
+    }
+
+    var processExtremesY = function(chart, axis) {
+      if(axis.currentMin || axis.currentMax) {
+        chart.yAxis[0].setExtremes(axis.currentMin, axis.currentMax, true);
       }
     }
 
@@ -135,6 +167,9 @@ angular.module('highcharts-ng', [])
       var chart = config.useHighStocks ? new Highcharts.StockChart(mergedOptions) : new Highcharts.Chart(mergedOptions);
       if(config.xAxis) {
         processExtremes(chart, config.xAxis);
+      }
+      if(config.yAxis) {
+        processExtremes(chart, config.yAxis);
       }
       processSeries(chart, config.series);
       if(config.loading) {
@@ -188,6 +223,17 @@ angular.module('highcharts-ng', [])
             chart.redraw();
           }
         }, true);
+
+
+        scope.$watch("config.yAxis", function (newAxes, oldAxes) {
+          if (newAxes === oldAxes) return;
+          if(newAxes) {
+            chart.yAxis[0].update(newAxes);
+            updateZoom(chart.yAxis[0], angular.copy(newAxes));
+            chart.redraw();
+          }
+        }, true);
+
         scope.$watch("config.options", function (newOptions, oldOptions, scope) {
           //do nothing when called on registration
           if (newOptions === oldOptions) return;
