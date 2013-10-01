@@ -15,6 +15,12 @@ myapp.controller('myctrl', function ($scope) {
         {"id": "scatter", "title": "Scatter"}
     ];
 
+    $scope.chartSeries = [
+        {"name": "Some data", "data": [1, 2, 4, 7, 3]},
+        {"name": "Some data 2", "data": [5, 2, 2, 3, 5]},
+        {"name": "Some data 3", "data": [3, 1, null, 5, 2], connectNulls: true}
+    ];
+
     $scope.addPoints = function () {
         var seriesArray = $scope.chartConfig.series;
         var rndIdx = Math.floor(Math.random() * seriesArray.length);
@@ -44,12 +50,10 @@ myapp.controller('myctrl', function ($scope) {
     $scope.chartConfig = {
         options: {
             chart: {
-                type: 'line'
+                type: 'areaspline'
             }
         },
-        series: [{
-            data: [10, 15, 12, 8, 7]
-        }],
+        series: $scope.chartSeries,
         title: {
             text: 'Hello'
         },
