@@ -37,10 +37,6 @@ myapp.controller('myctrl', function ($scope) {
         seriesArray.splice(rndIdx, 1)
     }
 
-    $scope.toggleLoading = function () {
-        this.chartConfig.loading = !this.chartConfig.loading
-    }
-
     $scope.toggleHighCharts = function () {
         this.chartConfig.useHighStocks = !this.chartConfig.useHighStocks
     }
