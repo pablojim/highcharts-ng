@@ -36,7 +36,7 @@ myapp.controller('myctrl', function ($scope) {
     ];
 
     $scope.chartStack = [
-        {"id": null, "title": "No"},
+        {"id": '', "title": "No"},
         {"id": "normal", "title": "Normal"},
         {"id": "percent", "title": "Percent"}
     ];
@@ -76,11 +76,11 @@ myapp.controller('myctrl', function ($scope) {
         options: {
             chart: {
                 type: 'areaspline'
-            }
-        },
-        plotOptions: {
-            series: {
-                stacking: $scope.chartStack[0].id
+            },
+            plotOptions: {
+                series: {
+                    stacking: ''
+                }
             }
         },
         series: $scope.chartSeries,

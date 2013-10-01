@@ -209,6 +209,7 @@ angular.module('highcharts-ng', [])
                         chart.redraw();
                     }
                 }, true);
+
                 scope.$watch("config.options", function (newOptions, oldOptions, scope) {
                     //do nothing when called on registration
                     if (newOptions === oldOptions) return;
