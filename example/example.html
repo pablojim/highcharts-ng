@@ -19,7 +19,7 @@
             <button ng-click="addSeries()">Add Series</button>
             <button ng-click="addPoints()">Add Points to Random Series</button>
             <button ng-click="removeRandomSeries()">Remove Random Series</button>
-            <select ng-model="selectedChartType" ng-change="swapChartType()" ng-options="t for t in chartTypes"></select>
+            <select ng-model="selectedChartType" ng-change="swapChartType()" ng-options="t.id as t.title for t in chartTypes"></select>
             <button ng-click="toggleLoading()">Loading?</button>
             <button ng-click="toggleHighCharts()">HighChart/HighStock</button>
         </div>

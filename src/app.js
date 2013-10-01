@@ -4,7 +4,16 @@ var myapp = angular.module('myapp', ["highcharts-ng"]);
 
 myapp.controller('myctrl', function ($scope) {
 
-    $scope.chartTypes = ['line', 'spline', 'area', 'areaspline', 'column', 'bar', 'pie', 'scatter'];
+    $scope.chartTypes = [
+        {"id": "line", "title": "Line"},
+        {"id": "spline", "title": "Smooth line"},
+        {"id": "area", "title": "Area"},
+        {"id": "areaspline", "title": "Smooth area"},
+        {"id": "column", "title": "Column"},
+        {"id": "bar", "title": "Bar"},
+        {"id": "pie", "title": "Pie"},
+        {"id": "scatter", "title": "Scatter"}
+    ];
     $scope.selectedChartType = 'line';
 
     $scope.addPoints = function () {
