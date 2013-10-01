@@ -76,7 +76,9 @@ myapp.controller('myctrl', function ($scope) {
         title: {
             text: 'Hello'
         },
-
+        credits: {
+            enabled: true
+        },
         loading: false
     }
 

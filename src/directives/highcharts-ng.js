@@ -50,6 +50,7 @@ angular.module('highcharts-ng', [])
                 title: {},
                 subtitle: {},
                 series: [],
+                credits: {},
                 navigator: {enabled: false}
             }
 
@@ -90,6 +91,9 @@ angular.module('highcharts-ng', [])
             }
             if (config.subtitle) {
                 mergedOptions.subtitle = config.subtitle
+            }
+            if (config.credits) {
+                mergedOptions.credits = config.credits
             }
             return mergedOptions
         }
@@ -183,6 +187,16 @@ angular.module('highcharts-ng', [])
                     } else {
                         chart.hideLoading()
                     }
+                });
+
+                scope.$watch("config.credits.enabled", function (credits) {
+                    if (credits) {
+                        chart.credits.show();
+                    } else {
+                        chart.credits.hide();
+                    }
+
+                    chart.redraw();
                 });
 
                 scope.$watch("config.useHighStocks", function (useHighStocks) {
