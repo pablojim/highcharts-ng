@@ -19,16 +19,18 @@
                     <highchart id="chart1" config="chartConfig" class="span9" ></highchart>
                 </div>
             </div>
-            <div class="span3">
+            <div class="span4">
                 <div class="row-fluid">Title <input ng-model="chartConfig.title.text"></div>
                 <div class="row-fluid">Subtitle <input ng-model="chartConfig.subtitle.text"></div>
-                <div class="row-fluid">Type <select ng-model="chartConfig.options.chart.type" ng-options="t.id as t.title for t in chartTypes"></select></div>
+                <div class="row-fluid">Default Type <select ng-model="chartConfig.options.chart.type" ng-options="t.id as t.title for t in chartTypes"></select></div>
                 <div class="row-fluid"><label for="checkLoading"><input id="checkLoading" type="checkbox" ng-model="chartConfig.loading"> is loading</label></div>
                 <div class="row-fluid" ng-repeat="ser in chartSeries">
                     <hr />
                     <div class="row-fluid">Title <input ng-model="ser.name"></div>
                     <div class="row-fluid">Type <select ng-model="ser.type" ng-options="t.id as t.title for t in chartTypes"></select></div>
                     <div class="row-fluid">Color <input ng-model="ser.color"></div>
+                    <div class="row-fluid">Width <input ng-model="ser.lineWidth"></div>
+                    <div class="row-fluid">Dash Style <select ng-model="ser.dashStyle" ng-options="ds.id as ds.title for ds in dashStyles"></select></div>
                     <div class="row-fluid"><label><input type="checkbox" ng-model="ser.connectNulls"> interpolate</label></div>
                     <div class="row-fluid"><button ng-click="removeSeries($index)">Delete</button></div>
                 </div>

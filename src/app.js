@@ -15,6 +15,20 @@ myapp.controller('myctrl', function ($scope) {
         {"id": "scatter", "title": "Scatter"}
     ];
 
+    $scope.dashStyles = [
+        {"id": "Solid", "title": "Solid"},
+        {"id": "ShortDash", "title": "ShortDash"},
+        {"id": "ShortDot", "title": "ShortDot"},
+        {"id": "ShortDashDot", "title": "ShortDashDot"},
+        {"id": "ShortDashDotDot", "title": "ShortDashDotDot"},
+        {"id": "Dot", "title": "Dot"},
+        {"id": "Dash", "title": "Dash"},
+        {"id": "LongDash", "title": "LongDash"},
+        {"id": "DashDot", "title": "DashDot"},
+        {"id": "LongDashDot", "title": "LongDashDot"},
+        {"id": "LongDashDotDot", "title": "LongDashDotDot"}
+    ];
+
     $scope.chartSeries = [
         {"name": "Some data", "data": [1, 2, 4, 7, 3]},
         {"name": "Some data 2", "data": [5, 2, 2, 3, 5], type: "column"},
