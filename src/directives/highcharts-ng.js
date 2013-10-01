@@ -88,6 +88,9 @@ angular.module('highcharts-ng', [])
             if (config.title) {
                 mergedOptions.title = config.title
             }
+            if (config.subtitle) {
+                mergedOptions.subtitle = config.subtitle
+            }
             return mergedOptions
         }
 
@@ -168,6 +171,10 @@ angular.module('highcharts-ng', [])
 
                 scope.$watch("config.title", function (newTitle) {
                     chart.setTitle(newTitle, true);
+                }, true);
+
+                scope.$watch("config.subtitle", function (newSubitle) {
+                    chart.setTitle(true, newSubitle);
                 }, true);
 
                 scope.$watch("config.loading", function (loading) {

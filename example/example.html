@@ -20,7 +20,8 @@
                 </div>
             </div>
             <div class="span3">
-                <div class="row-fluid">Title <input id="chartTitle" ng-model="chartConfig.title.text"></div>
+                <div class="row-fluid">Title <input ng-model="chartConfig.title.text"></div>
+                <div class="row-fluid">Subtitle <input ng-model="chartConfig.subtitle.text"></div>
                 <div class="row-fluid">Type <select ng-model="selectedChartType" ng-change="swapChartType()" ng-options="t.id as t.title for t in chartTypes"></select></div>
                 <button ng-click="addSeries()">Add Series</button>
                 <button ng-click="addPoints()">Add Points to Random Series</button>
