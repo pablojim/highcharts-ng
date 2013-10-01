@@ -38,9 +38,14 @@ myapp.controller('myctrl', function ($scope) {
     }
 
     $scope.removeRandomSeries = function () {
-        var seriesArray = $scope.chartConfig.series
+        var seriesArray = $scope.chartConfig.series;
         var rndIdx = Math.floor(Math.random() * seriesArray.length);
         seriesArray.splice(rndIdx, 1)
+    }
+
+    $scope.removeSeries = function(id) {
+        var seriesArray = $scope.chartConfig.series;
+        seriesArray.splice(id, 1)
     }
 
     $scope.toggleHighCharts = function () {
