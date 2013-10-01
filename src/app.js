@@ -35,6 +35,12 @@ myapp.controller('myctrl', function ($scope) {
         {"name": "Some data 3", "data": [3, 1, null, 5, 2], connectNulls: true}
     ];
 
+    $scope.chartStack = [
+        {"id": null, "title": "No"},
+        {"id": "normal", "title": "Normal"},
+        {"id": "percent", "title": "Percent"}
+    ];
+
     $scope.addPoints = function () {
         var seriesArray = $scope.chartConfig.series;
         var rndIdx = Math.floor(Math.random() * seriesArray.length);
@@ -70,6 +76,17 @@ myapp.controller('myctrl', function ($scope) {
         options: {
             chart: {
                 type: 'areaspline'
+            }
+        },
+        plotOptions: {
+            column: {
+                stacking: $scope.chartStack[0]
+            },
+            bar: {
+                stacking: $scope.chartStack[0]
+            },
+            series: {
+                stacking: $scope.chartStack[0]
             }
         },
         series: $scope.chartSeries,

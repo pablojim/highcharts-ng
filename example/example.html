@@ -34,6 +34,7 @@
                 <div class="row-fluid">Title <input ng-model="chartConfig.title.text"></div>
                 <div class="row-fluid">Subtitle <input ng-model="chartConfig.subtitle.text"></div>
                 <div class="row-fluid">Default Type <select ng-model="chartConfig.options.chart.type" ng-options="t.id as t.title for t in chartTypes"></select></div>
+                <div class="row-fluid">Stack <select ng-model="chartConfig.options.plotOptions.series.stacking" ng-options="t.id as t.title for t in chartStack"></select></div>
                 <div class="row-fluid"><label><input type="checkbox" ng-model="chartConfig.loading"> is loading</label></div>
                 <div class="row-fluid"><label><input type="checkbox" ng-model="chartConfig.credits.enabled"> credits</label></div>
                 <div class="row-fluid" ng-repeat="ser in chartSeries">

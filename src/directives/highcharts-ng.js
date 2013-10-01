@@ -41,7 +41,7 @@ angular.module('highcharts-ng', [])
         }
 
         var getMergedOptions = function (scope, element, config) {
-            var mergedOptions = {}
+            var mergedOptions = {};
 
             var defaultOptions = {
                 chart: {
@@ -51,6 +51,7 @@ angular.module('highcharts-ng', [])
                 subtitle: {},
                 series: [],
                 credits: {},
+                plotOptions: {},
                 navigator: {enabled: false}
             }
 
@@ -112,13 +113,13 @@ angular.module('highcharts-ng', [])
         }
 
         var processSeries = function (chart, series) {
-            var ids = []
+            var ids = [];
             if (series) {
                 ensureIds(series);
 
                 //Find series to add or update
                 series.forEach(function (s) {
-                    ids.push(s.id)
+                    ids.push(s.id);
                     var chartSeries = chart.get(s.id);
                     if (chartSeries) {
                         chartSeries.update(angular.copy(s), false);
@@ -135,9 +136,7 @@ angular.module('highcharts-ng', [])
                     s.remove(false);
                 }
             }
-            ;
-
-        }
+        };
 
         var initialiseChart = function (scope, element, config) {
             config || (config = {});
@@ -189,14 +188,25 @@ angular.module('highcharts-ng', [])
                     }
                 });
 
+//                scope.$watch("config.stack", function (newStack, oldStack, scope) {
+//                    if (newStack === oldStack) return;
+//                    scope.config.plotOptions.series.stacking = newStack;
+////                    scope.config.plotOptions.bar.stacking = newStack;
+////                    config.plotOptions.area.stacking = newStack;
+////                    config.plotOptions.areaspline.stacking = newStack;
+////                    config.plotOptions.line.stacking = newStack;
+////                    config.plotOptions.spline.stacking = newStack;
+//
+////                    chart.destroy();
+////                    chart = initialiseChart(scope, element, scope.config);
+//                }, true);
+
                 scope.$watch("config.credits.enabled", function (credits) {
                     if (credits) {
                         chart.credits.show();
                     } else {
                         chart.credits.hide();
                     }
-
-                    chart.redraw();
                 });
 
                 scope.$watch("config.useHighStocks", function (useHighStocks) {
