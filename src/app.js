@@ -14,7 +14,6 @@ myapp.controller('myctrl', function ($scope) {
         {"id": "pie", "title": "Pie"},
         {"id": "scatter", "title": "Scatter"}
     ];
-    $scope.selectedChartType = 'line';
 
     $scope.addPoints = function () {
         var seriesArray = $scope.chartConfig.series;
@@ -38,10 +37,6 @@ myapp.controller('myctrl', function ($scope) {
         seriesArray.splice(rndIdx, 1)
     }
 
-    $scope.swapChartType = function () {
-        this.chartConfig.options.chart.type = $scope.selectedChartType;
-    }
-
     $scope.toggleLoading = function () {
         this.chartConfig.loading = !this.chartConfig.loading
     }
@@ -53,7 +48,7 @@ myapp.controller('myctrl', function ($scope) {
     $scope.chartConfig = {
         options: {
             chart: {
-                type: $scope.selectedChartType
+                type: 'line'
             }
         },
         series: [{
