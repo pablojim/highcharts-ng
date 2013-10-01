@@ -6,6 +6,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
     <script src="http://code.highcharts.com/stock/highstock.src.js"></script>
     <script src="../src/directives/highcharts-ng.js"></script>
+    <script src="../src/app.js"></script>
 </head>
 <body>
 <h2>Highcharts-ng example</h2>
@@ -18,7 +19,7 @@
             <button ng-click="addSeries()">Add Series</button>
             <button ng-click="addPoints()">Add Points to Random Series</button>
             <button ng-click="removeRandomSeries()">Remove Random Series</button>
-            <button ng-click="swapChartType()">Line/Bar</button>
+            <select ng-model="selectedChartType" ng-change="swapChartType()" ng-options="t for t in chartTypes"></select>
             <button ng-click="toggleLoading()">Loading?</button>
             <button ng-click="toggleHighCharts()">HighChart/HighStock</button>
         </div>
@@ -31,69 +32,6 @@
         </div>
     </div>
 </div>
-
-<script>
-    var myapp = angular.module('myapp', ["highcharts-ng"]);
-
-    myapp.controller('myctrl', function ($scope) {
-
-        $scope.addPoints = function () {
-            var seriesArray = $scope.chartConfig.series
-            var rndIdx = Math.floor(Math.random() * seriesArray.length);
-            seriesArray[rndIdx].data = seriesArray[rndIdx].data.concat([1, 10, 20])
-        };
-
-        $scope.addSeries = function () {
-            var rnd = []
-            for (var i = 0; i < 10; i++) {
-                rnd.push(Math.floor(Math.random() * 20) + 1)
-            }
-            $scope.chartConfig.series.push({
-                data: rnd
-            })
-        }
-
-        $scope.removeRandomSeries = function () {
-            var seriesArray = $scope.chartConfig.series
-            var rndIdx = Math.floor(Math.random() * seriesArray.length);
-            seriesArray.splice(rndIdx, 1)
-        }
-
-        $scope.swapChartType = function () {
-            if (this.chartConfig.options.chart.type === 'line') {
-                this.chartConfig.options.chart.type = 'bar'
-            } else {
-                this.chartConfig.options.chart.type = 'line'
-                this.chartConfig.options.chart.zoomType = 'x'
-            }
-        }
-
-        $scope.toggleLoading = function () {
-            this.chartConfig.loading = !this.chartConfig.loading
-        }
-
-        $scope.toggleHighCharts = function () {
-            this.chartConfig.useHighStocks = !this.chartConfig.useHighStocks
-        }
-
-        $scope.chartConfig = {
-            options: {
-                chart: {
-                    type: 'bar'
-                }
-            },
-            series: [{
-                data: [10, 15, 12, 8, 7]
-            }],
-            title: {
-                text: 'Hello'
-            },
-
-            loading: false
-        }
-
-    });
-</script>
 
 </body>
 </html>

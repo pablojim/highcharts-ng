@@ -3,6 +3,7 @@
 angular.module('highcharts-ng', [])
   .directive('highchart', function () {
 
+
     function prependMethod(obj, method, func) {
       var original = obj[method];
       obj[method] = function () {
@@ -143,6 +144,8 @@ angular.module('highcharts-ng', [])
       chart.redraw();
       return chart;
     }
+
+
 
 
     return {
