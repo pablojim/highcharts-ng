@@ -19,7 +19,13 @@
                     <highchart id="chart1" config="chartConfig" class="span9" ></highchart>
                 </div>
                 <div class="row-fluid">
-                    <pre>
+                    <label for="prettyJSON"><input id="prettyJSON" type="checkbox" ng-model="prettyJSON"> Pretty JSON</label>
+                </div>
+                <div class="row-fluid">
+                    <pre ng-show="prettyJSON">
+{{ chartConfig | json }}
+                    </pre>
+                    <pre ng-show="!prettyJSON">
 {{ chartConfig }}
                     </pre>
                 </div>
