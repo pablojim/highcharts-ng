@@ -4,7 +4,7 @@ var myapp = angular.module('myapp', ["highcharts-ng"]);
 
 myapp.controller('myctrl', function ($scope) {
 
-    $scope.chartTypes = ['line', 'spline', 'area', 'column', 'bar', 'pie'];
+    $scope.chartTypes = ['line', 'spline', 'area', 'areaspline', 'column', 'bar', 'pie', 'scatter'];
     $scope.selectedChartType = 'line';
 
     $scope.addPoints = function () {
@@ -31,12 +31,6 @@ myapp.controller('myctrl', function ($scope) {
 
     $scope.swapChartType = function () {
         this.chartConfig.options.chart.type = $scope.selectedChartType;
-//        if (this.chartConfig.options.chart.type === 'line') {
-//            this.chartConfig.options.chart.type = 'bar'
-//        } else {
-//            this.chartConfig.options.chart.type = 'line'
-//            this.chartConfig.options.chart.zoomType = 'x'
-//        }
     }
 
     $scope.toggleLoading = function () {
@@ -50,7 +44,7 @@ myapp.controller('myctrl', function ($scope) {
     $scope.chartConfig = {
         options: {
             chart: {
-                type: 'bar'
+                type: $scope.selectedChartType
             }
         },
         series: [{
