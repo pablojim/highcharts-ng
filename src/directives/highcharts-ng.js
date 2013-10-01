@@ -188,19 +188,6 @@ angular.module('highcharts-ng', [])
                     }
                 });
 
-//                scope.$watch("config.stack", function (newStack, oldStack, scope) {
-//                    if (newStack === oldStack) return;
-//                    scope.config.plotOptions.series.stacking = newStack;
-////                    scope.config.plotOptions.bar.stacking = newStack;
-////                    config.plotOptions.area.stacking = newStack;
-////                    config.plotOptions.areaspline.stacking = newStack;
-////                    config.plotOptions.line.stacking = newStack;
-////                    config.plotOptions.spline.stacking = newStack;
-//
-////                    chart.destroy();
-////                    chart = initialiseChart(scope, element, scope.config);
-//                }, true);
-
                 scope.$watch("config.credits.enabled", function (credits) {
                     if (credits) {
                         chart.credits.show();

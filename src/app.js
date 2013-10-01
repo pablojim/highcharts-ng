@@ -79,14 +79,8 @@ myapp.controller('myctrl', function ($scope) {
             }
         },
         plotOptions: {
-            column: {
-                stacking: $scope.chartStack[0]
-            },
-            bar: {
-                stacking: $scope.chartStack[0]
-            },
             series: {
-                stacking: $scope.chartStack[0]
+                stacking: $scope.chartStack[0].id
             }
         },
         series: $scope.chartSeries,
