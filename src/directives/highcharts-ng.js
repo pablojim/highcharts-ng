@@ -3,6 +3,7 @@
 angular.module('highcharts-ng', [])
   .directive('highchart', function () {
 
+
     function prependMethod(obj, method, func) {
       var original = obj[method];
       obj[method] = function () {
@@ -47,7 +48,10 @@ angular.module('highcharts-ng', [])
           events: {}
         },
         title: {},
+        subtitle: {},
         series: [],
+        credits: {},
+        plotOptions: {},
         navigator: {enabled: false}
       }
 
@@ -85,6 +89,12 @@ angular.module('highcharts-ng', [])
       }
       if(config.title) {
         mergedOptions.title = config.title
+      }
+      if (config.subtitle) {
+        mergedOptions.subtitle = config.subtitle
+      }
+      if (config.credits) {
+        mergedOptions.credits = config.credits
       }
       return mergedOptions
     }
@@ -145,6 +155,8 @@ angular.module('highcharts-ng', [])
     }
 
 
+
+
     return {
       restrict: 'EAC',
       replace: true,
@@ -167,11 +179,23 @@ angular.module('highcharts-ng', [])
           chart.setTitle(newTitle, true);
         }, true);
 
+        scope.$watch("config.subtitle", function (newSubitle) {
+          chart.setTitle(true, newSubitle);
+        }, true);
+
         scope.$watch("config.loading", function (loading) {
           if(loading) {
             chart.showLoading()
           } else {
             chart.hideLoading()
+          }
+        });
+
+        scope.$watch("config.credits.enabled", function (credits) {
+          if (credits) {
+            chart.credits.show();
+          } else {
+            chart.credits.hide();
           }
         });
 
