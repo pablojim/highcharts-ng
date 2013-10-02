@@ -1,8 +1,6 @@
 highcharts-ng
 =============
 
-forked from https://github.com/pablojim/highcharts-ng
-
 AngularJS directive for Highcharts
 
 A simple Angularjs directive for Highcharts.
@@ -12,6 +10,7 @@ Current Version
 
 `<highchart id="chart1" config="chartConfig"></highchart>`
 
+New: See extended example in the example directory - thanks @crusat
 Basic example: http://jsfiddle.net/pablojim/Hjdnw/
 Example with dynamic x-axis: http://jsfiddle.net/pablojim/7cAq3/
 
