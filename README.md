@@ -1,6 +1,8 @@
 highcharts-ng
 =============
 
+forked from https://github.com/pablojim/highcharts-ng
+
 AngularJS directive for Highcharts
 
 A simple Angularjs directive for Highcharts.
