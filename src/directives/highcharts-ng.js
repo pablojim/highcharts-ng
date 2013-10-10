@@ -38,10 +38,10 @@ angular.module('highcharts-ng', [])
           s.id = "series-" + seriesId++;
         }
       });
-    }
+    };
 
     var getMergedOptions = function (scope, element, config) {
-      var mergedOptions = {}
+      var mergedOptions = {};
 
       var defaultOptions = {
         chart: {
@@ -53,7 +53,7 @@ angular.module('highcharts-ng', [])
         credits: {},
         plotOptions: {},
         navigator: {enabled: false}
-      }
+      };
 
       if (config.options) {
         mergedOptions = deepExtend(defaultOptions, config.options);
@@ -85,46 +85,46 @@ angular.module('highcharts-ng', [])
       }
 
       if(config.xAxis) {
-        mergedOptions.xAxis = angular.copy(config.xAxis)
-      }
+        mergedOptions.xAxis = angular.copy(config.xAxis);
+      };
       if(config.title) {
-        mergedOptions.title = config.title
-      }
+        mergedOptions.title = config.title;
+      };
       if (config.subtitle) {
-        mergedOptions.subtitle = config.subtitle
-      }
+        mergedOptions.subtitle = config.subtitle;
+      };
       if (config.credits) {
-        mergedOptions.credits = config.credits
+        mergedOptions.credits = config.credits;
       }
-      return mergedOptions
-    }
+      return mergedOptions;
+    };
 
     var updateZoom = function (axis, modelAxis) {
       var extremes = axis.getExtremes();
       if(modelAxis.currentMin !== extremes.dataMin || modelAxis.currentMax !== extremes.dataMax) {
         axis.setExtremes(modelAxis.currentMin, modelAxis.currentMax, false);
       }
-    }
+    };
 
     var processExtremes = function(chart, axis) {
       if(axis.currentMin || axis.currentMax) {
         chart.xAxis[0].setExtremes(axis.currentMin, axis.currentMax, true);
       }
-    }
+    };
 
     var processSeries = function(chart, series) {
-      var ids = []
+      var ids = [];
       if(series) {
         ensureIds(series);
 
         //Find series to add or update
         series.forEach(function (s) {
-          ids.push(s.id)
+          ids.push(s.id);
           var chartSeries = chart.get(s.id);
           if (chartSeries) {
             chartSeries.update(angular.copy(s), false);
           } else {
-            chart.addSeries(angular.copy(s), false)
+            chart.addSeries(angular.copy(s), false);
           }
         });
       }
@@ -137,7 +137,7 @@ angular.module('highcharts-ng', [])
         }
       };
 
-    }
+    };
 
     var initialiseChart = function(scope, element, config) {
       config || (config = {});
@@ -148,11 +148,11 @@ angular.module('highcharts-ng', [])
       }
       processSeries(chart, config.series);
       if(config.loading) {
-        chart.showLoading()
+        chart.showLoading();
       }
       chart.redraw();
       return chart;
-    }
+    };
 
 
 
@@ -185,9 +185,9 @@ angular.module('highcharts-ng', [])
 
         scope.$watch("config.loading", function (loading) {
           if(loading) {
-            chart.showLoading()
+            chart.showLoading();
           } else {
-            chart.hideLoading()
+            chart.hideLoading();
           }
         });
 
@@ -220,5 +220,5 @@ angular.module('highcharts-ng', [])
 
         }, true);
       }
-    }
+    };
   });
