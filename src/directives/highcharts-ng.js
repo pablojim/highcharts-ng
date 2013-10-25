@@ -194,7 +194,7 @@ angular.module('highcharts-ng', [])
         scope.$watch("config.credits.enabled", function (credits) {
           if (credits) {
             chart.credits.show();
-          } else {
+          } else if (chart.credits) {
             chart.credits.hide();
           }
         });
