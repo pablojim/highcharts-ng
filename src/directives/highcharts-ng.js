@@ -179,8 +179,8 @@ angular.module('highcharts-ng', [])
           chart.setTitle(newTitle, true);
         }, true);
 
-        scope.$watch("config.subtitle", function (newSubitle) {
-          chart.setTitle(true, newSubitle);
+        scope.$watch("config.subtitle", function (newSubtitle) {
+          chart.setTitle(true, newSubtitle);
         }, true);
 
         scope.$watch("config.loading", function (loading) {
