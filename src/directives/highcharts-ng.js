@@ -39,6 +39,7 @@ angular.module('highcharts-ng', [])
         }
       });
     };
+    var axisNames = [ "xAxis", "yAxis" ];
 
     var getMergedOptions = function (scope, element, config) {
       var mergedOptions = {};
@@ -61,32 +62,34 @@ angular.module('highcharts-ng', [])
         mergedOptions = defaultOptions;
       }
       mergedOptions.chart.renderTo = element[0];
-      if(config.xAxis) {
-        prependMethod(mergedOptions.chart.events, 'selection', function(e){
-          var thisChart = this;
-          if(e.xAxis) {
-            scope.$apply(function () {
-              scope.config.xAxis.currentMin = e.xAxis[0].min;
-              scope.config.xAxis.currentMax = e.xAxis[0].max;
-            });
-          } else {
-            //handle reset button - zoom out to all
-            scope.$apply(function () {
-              scope.config.xAxis.currentMin = thisChart.xAxis[0].dataMin;
-              scope.config.xAxis.currentMax = thisChart.xAxis[0].dataMax;
-            });
-          }
-        });
+      for (var i = 0; i < axisNames.length; i++) {
+        var axisName = axisNames[i];
+        if (config[axisName]) {
+          prependMethod(mergedOptions.chart.events, 'selection', function(e){
+            var thisChart = this;
+            if (e[axisName]) {
+              scope.$apply(function () {
+                scope.config[axisName].currentMin = e[axisName][0].min;
+                scope.config[axisName].currentMax = e[axisName][0].max;
+              });
+            } else {
+              //handle reset button - zoom out to all
+              scope.$apply(function () {
+                scope.config[axisName].currentMin = thisChart[axisName][0].dataMin;
+                scope.config[axisName].currentMax = thisChart[axisName][0].dataMax;
+              });
+            }
+          });
 
-        prependMethod(mergedOptions.chart.events, 'addSeries', function(e){
-            scope.config.xAxis.currentMin = this.xAxis[0].min || scope.config.xAxis.currentMin;
-            scope.config.xAxis.currentMax = this.xAxis[0].max || scope.config.xAxis.currentMax;
-        });
+          prependMethod(mergedOptions.chart.events, 'addSeries', function(e){
+              scope.config[axisName].currentMin = this[axisName][0].min || scope.config[axisName].currentMin;
+              scope.config[axisName].currentMax = this[axisName][0].max || scope.config[axisName].currentMax;
+          });
+
+          mergedOptions[axisName] = angular.copy(config[axisName]);
+        }
       }
 
-      if(config.xAxis) {
-        mergedOptions.xAxis = angular.copy(config.xAxis);
-      };
       if(config.title) {
         mergedOptions.title = config.title;
       };
@@ -106,9 +109,9 @@ angular.module('highcharts-ng', [])
       }
     };
 
-    var processExtremes = function(chart, axis) {
+    var processExtremes = function(chart, axis, axisName) {
       if(axis.currentMin || axis.currentMax) {
-        chart.xAxis[0].setExtremes(axis.currentMin, axis.currentMax, true);
+        chart[axisName][0].setExtremes(axis.currentMin, axis.currentMax, true);
       }
     };
 
@@ -143,8 +146,10 @@ angular.module('highcharts-ng', [])
       config || (config = {});
       var mergedOptions = getMergedOptions(scope, element, config);
       var chart = config.useHighStocks ? new Highcharts.StockChart(mergedOptions) : new Highcharts.Chart(mergedOptions);
-      if(config.xAxis) {
-        processExtremes(chart, config.xAxis);
+      for (var i = 0; i < axisNames.length; i++) {
+        if (config[axisNames[i]]) {
+          processExtremes(chart, config[axisNames[i]], axisNames[i]);
+        }
       }
       processSeries(chart, config.series);
       if(config.loading) {
@@ -204,14 +209,17 @@ angular.module('highcharts-ng', [])
           chart = initialiseChart(scope, element, scope.config);
         });
 
-        scope.$watch("config.xAxis", function (newAxes, oldAxes) {
-          if (newAxes === oldAxes) return;
-          if(newAxes) {
-            chart.xAxis[0].update(newAxes);
-            updateZoom(chart.xAxis[0], angular.copy(newAxes));
-            chart.redraw();
-          }
-        }, true);
+        for (var i = 0; i < axisNames.length; i++) {
+          var axisName = axisNames[i];
+          scope.$watch("config." + axisNames[i], function (newAxes, oldAxes) {
+            if (newAxes === oldAxes) return;
+            if(newAxes) {
+              chart[axisName][0].update(newAxes);
+              updateZoom(chart[axisName][0], angular.copy(newAxes));
+              chart.redraw();
+            }
+          }, true);
+        }
         scope.$watch("config.options", function (newOptions, oldOptions, scope) {
           //do nothing when called on registration
           if (newOptions === oldOptions) return;
