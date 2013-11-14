@@ -209,7 +209,7 @@ angular.module('highcharts-ng', [])
         });
 
         axisNames.forEach(function(axisName) {
-          scope.$watch("config." + axisNames[i], function (newAxes, oldAxes) {
+          scope.$watch("config." + axisName, function (newAxes, oldAxes) {
             if (newAxes === oldAxes) return;
             if(newAxes) {
               chart[axisName][0].update(newAxes);
