@@ -1,5 +1,17 @@
 'use strict';
 
+if (!('indexOf' in Array.prototype)) {
+    Array.prototype.indexOf= function(find, i /*opt*/) {
+        if (i===undefined) i= 0;
+        if (i<0) i+= this.length;
+        if (i<0) i= 0;
+        for (var n= this.length; i<n; i++)
+            if (i in this && this[i]===find)
+                return i;
+        return -1;
+    };
+}
+
 angular.module('highcharts-ng', [])
   .directive('highchart', function () {
 
@@ -33,7 +45,7 @@ angular.module('highcharts-ng', [])
 
     var seriesId = 0;
     var ensureIds = function (series) {
-      series.forEach(function (s) {
+      angular.forEach(series, function(s) {
         if (!angular.isDefined(s.id)) {
           s.id = "series-" + seriesId++;
         }
@@ -118,7 +130,7 @@ angular.module('highcharts-ng', [])
         ensureIds(series);
 
         //Find series to add or update
-        series.forEach(function (s) {
+        angular.forEach(series, function(s) {
           ids.push(s.id);
           var chartSeries = chart.get(s.id);
           if (chartSeries) {
