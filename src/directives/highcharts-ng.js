@@ -1,20 +1,21 @@
 'use strict';
 
-if (!('indexOf' in Array.prototype)) {
-    Array.prototype.indexOf= function(find, i /*opt*/) {
-        if (i===undefined) i= 0;
-        if (i<0) i+= this.length;
-        if (i<0) i= 0;
-        for (var n= this.length; i<n; i++)
-            if (i in this && this[i]===find)
-                return i;
-        return -1;
-    };
-}
+
 
 angular.module('highcharts-ng', [])
   .directive('highchart', function () {
 
+    //IE8 support
+    var indexOf = function(arr, find, i /*opt*/) {
+        if (i===undefined) i= 0;
+        if (i<0) i+= arr.length;
+        if (i<0) i= 0;
+        for (var n= arr.length; i<n; i++)
+            if (i in arr && arr[i]===find)
+                return i;
+        return -1;
+    };
+    
 
     function prependMethod(obj, method, func) {
       var original = obj[method];
@@ -146,7 +147,7 @@ angular.module('highcharts-ng', [])
       //Now remove any missing series
       for(var i = chart.series.length - 1; i >= 0; i--) {
         var s = chart.series[i];
-        if (ids.indexOf(s.options.id) < 0) {
+        if (indexOf(ids, s.options.id) < 0) {
           s.remove(false);
         }
       };
