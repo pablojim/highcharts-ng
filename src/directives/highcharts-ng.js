@@ -183,7 +183,12 @@ angular.module('highcharts-ng', [])
       },
       link: function (scope, element, attrs) {
 
-        var chart = initialiseChart(scope, element, scope.config);
+        var chart = false;
+        function initChart() {
+          if (chart) chart.destroy();
+          chart = initialiseChart(scope, element, scope.config);
+        }
+        initChart();
 
         scope.$watch("config.series", function (newSeries, oldSeries) {
           //do nothing when called on registration
@@ -208,8 +213,8 @@ angular.module('highcharts-ng', [])
           }
         });
 
-        scope.$watch("config.credits.enabled", function (credits) {
-          if (credits) {
+        scope.$watch("config.credits.enabled", function (enabled) {
+          if (enabled) {
             chart.credits.show();
           } else if (chart.credits) {
             chart.credits.hide();
@@ -217,8 +222,7 @@ angular.module('highcharts-ng', [])
         });
 
         scope.$watch("config.useHighStocks", function (useHighStocks) {
-          chart.destroy();
-          chart = initialiseChart(scope, element, scope.config);
+          initChart();
         });
 
         axisNames.forEach(function(axisName) {
@@ -234,9 +238,7 @@ angular.module('highcharts-ng', [])
         scope.$watch("config.options", function (newOptions, oldOptions, scope) {
           //do nothing when called on registration
           if (newOptions === oldOptions) return;
-          chart.destroy();
-          chart = initialiseChart(scope, element, scope.config);
-
+          initChart();
         }, true);
       }
     };
