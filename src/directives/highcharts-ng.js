@@ -127,6 +127,12 @@ angular.module('highcharts-ng', [])
       }
     };
 
+    var chartOptionsWithoutEasyOptions = function (options) {
+      return angular.extend({}, options, {data: null, visible: null});
+    }
+
+    var prevOptions = {};
+
     var processSeries = function(chart, series) {
       var ids = [];
       if(series) {
@@ -137,10 +143,20 @@ angular.module('highcharts-ng', [])
           ids.push(s.id);
           var chartSeries = chart.get(s.id);
           if (chartSeries) {
-            chartSeries.update(angular.copy(s), false);
+            if (!angular.equals(prevOptions[s.id], chartOptionsWithoutEasyOptions(s))) {
+                chartSeries.update(angular.copy(s), false);
+            } else {
+              if (chartSeries.visible !== s.visible) {
+                chartSeries.setVisible(s.visible, false);
+              }
+              if (chartSeries.options.data !== s.data) {
+                chartSeries.setData(s.data, false);
+              }
+            }
           } else {
             chart.addSeries(angular.copy(s), false);
           }
+          prevOptions[s.id] = chartOptionsWithoutEasyOptions(s);
         });
       }
 
