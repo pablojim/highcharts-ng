@@ -104,3 +104,7 @@ Caveats:
 - If you don't assign ids to your series - incremental ids will be added
 - Needs tests!
 
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/pablojim/highcharts-ng/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
