@@ -146,7 +146,7 @@ angular.module('highcharts-ng', [])
             if (!angular.equals(prevOptions[s.id], chartOptionsWithoutEasyOptions(s))) {
                 chartSeries.update(angular.copy(s), false);
             } else {
-              if (chartSeries.visible !== s.visible) {
+              if (s.visible !== undefined && chartSeries.visible !== s.visible) {
                 chartSeries.setVisible(s.visible, false);
               }
               if (chartSeries.options.data !== s.data) {
