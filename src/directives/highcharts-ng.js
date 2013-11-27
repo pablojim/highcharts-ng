@@ -245,7 +245,7 @@ angular.module('highcharts-ng', [])
           scope.$watch("config." + axisName, function (newAxes, oldAxes) {
             if (newAxes === oldAxes) return;
             if(newAxes) {
-              chart[axisName][0].update(newAxes);
+              chart[axisName][0].update(newAxes, false);
               updateZoom(chart[axisName][0], angular.copy(newAxes));
               chart.redraw();
             }
