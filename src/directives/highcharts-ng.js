@@ -15,7 +15,7 @@ angular.module('highcharts-ng', [])
                 return i;
         return -1;
     };
-    
+
 
     function prependMethod(obj, method, func) {
       var original = obj[method];
@@ -256,6 +256,12 @@ angular.module('highcharts-ng', [])
           if (newOptions === oldOptions) return;
           initChart();
         }, true);
+
+        scope.$on('$destroy', function() {
+          if (chart) chart.destroy();
+          element.remove();
+        });
+
       }
     };
   });
