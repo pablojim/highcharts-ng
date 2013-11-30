@@ -10,7 +10,7 @@ Current Version
 
 `<highchart id="chart1" config="chartConfig"></highchart>`
 
-- See extended example in the example directory - thanks @crusat
+- See http://pablojim.github.io/highcharts-ng/examples/example.html for an extended example. Also Available in the example directory - thanks @crusat
 - Basic example: http://jsfiddle.net/pablojim/Hjdnw/
 - Example with dynamic x-axis: http://jsfiddle.net/pablojim/7cAq3/
 
