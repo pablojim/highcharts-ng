@@ -45,5 +45,8 @@
     "karma-coffee-preprocessor": "~0.1.0",
     "karma-phantomjs-launcher": "~0.1.0",
     "karma": "~0.10.2"
+  },
+  "scripts": {
+    "test": "grunt test"
   }
 }
