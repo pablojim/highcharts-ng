@@ -107,4 +107,5 @@ Caveats:
 
 
 [![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/pablojim/highcharts-ng/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+[![Build Status](https://travis-ci.org/pablojim/highcharts-ng.png)](https://travis-ci.org/pablojim/highcharts-ng)
 
