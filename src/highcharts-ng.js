@@ -7,13 +7,13 @@ angular.module('highcharts-ng', [])
 
     //IE8 support
     var indexOf = function(arr, find, i /*opt*/) {
-        if (i===undefined) i= 0;
-        if (i<0) i+= arr.length;
-        if (i<0) i= 0;
-        for (var n= arr.length; i<n; i++)
-            if (i in arr && arr[i]===find)
-                return i;
-        return -1;
+      if (i===undefined) i= 0;
+      if (i<0) i+= arr.length;
+      if (i<0) i= 0;
+      for (var n= arr.length; i<n; i++)
+        if (i in arr && arr[i]===find)
+          return i;
+      return -1;
     };
 
 
@@ -34,7 +34,7 @@ angular.module('highcharts-ng', [])
     function deepExtend(destination, source) {
       for (var property in source) {
         if (source[property] && source[property].constructor &&
-            source[property].constructor === Object) {
+          source[property].constructor === Object) {
           destination[property] = destination[property] || {};
           deepExtend(destination[property], source[property]);
         } else {
@@ -48,11 +48,11 @@ angular.module('highcharts-ng', [])
     var ensureIds = function (series) {
       angular.forEach(series, function(s) {
         if (!angular.isDefined(s.id)) {
-          s.id = "series-" + seriesId++;
+          s.id = 'series-' + seriesId++;
         }
       });
     };
-    var axisNames = [ "xAxis", "yAxis" ];
+    var axisNames = [ 'xAxis', 'yAxis' ];
 
     var getMergedOptions = function (scope, element, config) {
       var mergedOptions = {};
@@ -94,8 +94,8 @@ angular.module('highcharts-ng', [])
           });
 
           prependMethod(mergedOptions.chart.events, 'addSeries', function(e){
-              scope.config[axisName].currentMin = this[axisName][0].min || scope.config[axisName].currentMin;
-              scope.config[axisName].currentMax = this[axisName][0].max || scope.config[axisName].currentMax;
+            scope.config[axisName].currentMin = this[axisName][0].min || scope.config[axisName].currentMin;
+            scope.config[axisName].currentMax = this[axisName][0].max || scope.config[axisName].currentMax;
           });
 
           mergedOptions[axisName] = angular.copy(config[axisName]);
@@ -104,10 +104,10 @@ angular.module('highcharts-ng', [])
 
       if(config.title) {
         mergedOptions.title = config.title;
-      };
+      }
       if (config.subtitle) {
         mergedOptions.subtitle = config.subtitle;
-      };
+      }
       if (config.credits) {
         mergedOptions.credits = config.credits;
       }
@@ -129,7 +129,7 @@ angular.module('highcharts-ng', [])
 
     var chartOptionsWithoutEasyOptions = function (options) {
       return angular.extend({}, options, {data: null, visible: null});
-    }
+    };
 
     var prevOptions = {};
 
@@ -144,7 +144,7 @@ angular.module('highcharts-ng', [])
           var chartSeries = chart.get(s.id);
           if (chartSeries) {
             if (!angular.equals(prevOptions[s.id], chartOptionsWithoutEasyOptions(s))) {
-                chartSeries.update(angular.copy(s), false);
+              chartSeries.update(angular.copy(s), false);
             } else {
               if (s.visible !== undefined && chartSeries.visible !== s.visible) {
                 chartSeries.setVisible(s.visible, false);
@@ -166,12 +166,12 @@ angular.module('highcharts-ng', [])
         if (indexOf(ids, s.options.id) < 0) {
           s.remove(false);
         }
-      };
+      }
 
     };
 
     var initialiseChart = function(scope, element, config) {
-      config || (config = {});
+      config = config || {};
       var mergedOptions = getMergedOptions(scope, element, config);
       var chart = config.useHighStocks ? new Highcharts.StockChart(mergedOptions) : new Highcharts.Chart(mergedOptions);
       for (var i = 0; i < axisNames.length; i++) {
@@ -206,22 +206,22 @@ angular.module('highcharts-ng', [])
         }
         initChart();
 
-        scope.$watch("config.series", function (newSeries, oldSeries) {
+        scope.$watch('config.series', function (newSeries, oldSeries) {
           //do nothing when called on registration
           if (newSeries === oldSeries) return;
           processSeries(chart, newSeries);
           chart.redraw();
         }, true);
 
-        scope.$watch("config.title", function (newTitle) {
+        scope.$watch('config.title', function (newTitle) {
           chart.setTitle(newTitle, true);
         }, true);
 
-        scope.$watch("config.subtitle", function (newSubtitle) {
+        scope.$watch('config.subtitle', function (newSubtitle) {
           chart.setTitle(true, newSubtitle);
         }, true);
 
-        scope.$watch("config.loading", function (loading) {
+        scope.$watch('config.loading', function (loading) {
           if(loading) {
             chart.showLoading();
           } else {
@@ -229,7 +229,7 @@ angular.module('highcharts-ng', [])
           }
         });
 
-        scope.$watch("config.credits.enabled", function (enabled) {
+        scope.$watch('config.credits.enabled', function (enabled) {
           if (enabled) {
             chart.credits.show();
           } else if (chart.credits) {
@@ -237,12 +237,12 @@ angular.module('highcharts-ng', [])
           }
         });
 
-        scope.$watch("config.useHighStocks", function (useHighStocks) {
+        scope.$watch('config.useHighStocks', function (useHighStocks) {
           initChart();
         });
 
         axisNames.forEach(function(axisName) {
-          scope.$watch("config." + axisName, function (newAxes, oldAxes) {
+          scope.$watch('config.' + axisName, function (newAxes, oldAxes) {
             if (newAxes === oldAxes) return;
             if(newAxes) {
               chart[axisName][0].update(newAxes, false);
@@ -251,7 +251,7 @@ angular.module('highcharts-ng', [])
             }
           }, true);
         });
-        scope.$watch("config.options", function (newOptions, oldOptions, scope) {
+        scope.$watch('config.options', function (newOptions, oldOptions, scope) {
           //do nothing when called on registration
           if (newOptions === oldOptions) return;
           initChart();
