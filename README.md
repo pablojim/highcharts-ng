@@ -5,7 +5,7 @@ AngularJS directive for Highcharts
 
 A simple Angularjs directive for Highcharts.
 
-Current Version
+Current Version (0.0.3)
 ---------------
 
 `<highchart id="chart1" config="chartConfig"></highchart>`
@@ -14,18 +14,29 @@ Current Version
 - Basic example: http://jsfiddle.net/pablojim/Hjdnw/
 - Example with dynamic x-axis: http://jsfiddle.net/pablojim/7cAq3/
 
-The chart config resembles an exploded highcharts options object:
+The highchartsNgConfig resembles an exploded highcharts options object:
 
 
 ```javascript
-chartConfig = {
-             //Main Highcharts options. Any Highchart options are valid here.
-             //will be ovverriden by values specified below.
+highchartsNgConfig = {
+             //This is not a highcharts object. It just looks a little like one!
+
              options: {
+                 //This is the Main Highcharts chart config. Any Highchart options are valid here.
+                 //will be ovverriden by values specified below.
                  chart: {
                      type: 'bar'
-                 }
+                 },
+                 tooltip: {
+                     style: {
+                         padding: 10,
+                         fontWeight: 'bold'
+                     }
+                 },
              },
+
+             //The below properties are watched separately for changes.
+
              //Series object - a list of series using normal highcharts series options.
              series: [{
                  data: [10, 15, 12, 8, 7]
@@ -49,6 +60,9 @@ chartConfig = {
 ```
 
 All properties on the chart configuration are optional. Each property is watched for changes by angularjs.
+NOTE:
+A common error is to put other highcharts options directly into the highchartsNgConfig.
+In general if the highcharts option you want isn't listed above you probably want to put it in highchartsNgConfig.options
 
 Features:
 ---------
@@ -64,7 +78,7 @@ Features:
 Caveats:
 --------
 
-- Due to many equality checks the directive maybe slow with large datasets (this is solvable though...)
+- Due to many equality checks the directive maybe slow with large datasets
 - Whole Chart/Series is often redrawn where a simple update of data would suffice
 - If you don't assign ids to your series - incremental ids will be added
 - The 2 way binding to xAxis properties should be treated as experimental
@@ -74,6 +88,12 @@ Caveats:
 
 Versions
 --------------
+
+Version 0.0.3
+----------------
+- Migrated to grunt, bower and npm
+- Bug fixes
+- Some speedups
 
 Version 0.0.2
 ----------------
