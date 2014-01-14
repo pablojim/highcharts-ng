@@ -5,7 +5,6 @@
   "dependencies": {},
   "devDependencies": {
     "angular": "latest",
-    "angular-mocks": "latest",
-    "jquery": "latest"
+    "angular-mocks": "latest"
   }
 }
