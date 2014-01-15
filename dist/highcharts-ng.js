@@ -64,7 +64,7 @@ angular.module('highcharts-ng', []).directive('highchart', function () {
       mergedOptions = defaultOptions;
     }
     mergedOptions.chart.renderTo = element[0];
-    axisNames.forEach(function (axisName) {
+    angular.forEach(axisNames, function (axisName) {
       if (config[axisName]) {
         prependMethod(mergedOptions.chart.events, 'selection', function (e) {
           var thisChart = this;
@@ -205,7 +205,7 @@ angular.module('highcharts-ng', []).directive('highchart', function () {
       scope.$watch('config.useHighStocks', function (useHighStocks) {
         initChart();
       });
-      axisNames.forEach(function (axisName) {
+      angular.forEach(axisNames, function (axisName) {
         scope.$watch('config.' + axisName, function (newAxes, oldAxes) {
           if (newAxes === oldAxes)
             return;
