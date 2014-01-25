@@ -150,7 +150,7 @@ angular.module('highcharts-ng', [])
                 chartSeries.setVisible(s.visible, false);
               }
               if (chartSeries.options.data !== s.data) {
-                chartSeries.setData(s.data, false);
+                chartSeries.setData(angular.copy(s.data), false);
               }
             }
           } else {
