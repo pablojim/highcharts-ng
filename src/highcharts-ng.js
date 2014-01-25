@@ -128,7 +128,7 @@ angular.module('highcharts-ng', [])
     };
 
     var chartOptionsWithoutEasyOptions = function (options) {
-      return angular.extend({}, options, {data: null, visible: null});
+      return angular.copy(angular.extend({}, options, {data: options.data, visible: null}));
     };
 
     var prevOptions = {};
