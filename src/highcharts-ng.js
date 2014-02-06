@@ -1,6 +1,5 @@
 'use strict';
-
-
+/*global angular: false, Highcharts: false */
 
 angular.module('highcharts-ng', [])
   .directive('highchart', function () {
@@ -44,6 +43,7 @@ angular.module('highcharts-ng', [])
       return destination;
     }
 
+    // acceptable shared state
     var seriesId = 0;
     var ensureIds = function (series) {
       angular.forEach(series, function(s) {
@@ -52,6 +52,8 @@ angular.module('highcharts-ng', [])
         }
       });
     };
+
+    // immutable
     var axisNames = [ 'xAxis', 'yAxis' ];
 
     var getMergedOptions = function (scope, element, config) {
@@ -131,65 +133,6 @@ angular.module('highcharts-ng', [])
       return angular.extend({}, options, {data: null, visible: null});
     };
 
-    var prevOptions = {};
-
-    var processSeries = function(chart, series) {
-      var ids = [];
-      if(series) {
-        ensureIds(series);
-
-        //Find series to add or update
-        angular.forEach(series, function(s) {
-          ids.push(s.id);
-          var chartSeries = chart.get(s.id);
-          if (chartSeries) {
-            if (!angular.equals(prevOptions[s.id], chartOptionsWithoutEasyOptions(s))) {
-              chartSeries.update(angular.copy(s), false);
-            } else {
-              if (s.visible !== undefined && chartSeries.visible !== s.visible) {
-                chartSeries.setVisible(s.visible, false);
-              }
-              if (chartSeries.options.data !== s.data) {
-                chartSeries.setData(angular.copy(s.data), false);
-              }
-            }
-          } else {
-            chart.addSeries(angular.copy(s), false);
-          }
-          prevOptions[s.id] = chartOptionsWithoutEasyOptions(s);
-        });
-      }
-
-      //Now remove any missing series
-      for(var i = chart.series.length - 1; i >= 0; i--) {
-        var s = chart.series[i];
-        if (indexOf(ids, s.options.id) < 0) {
-          s.remove(false);
-        }
-      }
-
-    };
-
-    var initialiseChart = function(scope, element, config) {
-      config = config || {};
-      var mergedOptions = getMergedOptions(scope, element, config);
-      var chart = config.useHighStocks ? new Highcharts.StockChart(mergedOptions) : new Highcharts.Chart(mergedOptions);
-      for (var i = 0; i < axisNames.length; i++) {
-        if (config[axisNames[i]]) {
-          processExtremes(chart, config[axisNames[i]], axisNames[i]);
-        }
-      }
-      processSeries(chart, config.series);
-      if(config.loading) {
-        chart.showLoading();
-      }
-      chart.redraw();
-      return chart;
-    };
-
-
-
-
     return {
       restrict: 'EAC',
       replace: true,
@@ -198,18 +141,72 @@ angular.module('highcharts-ng', [])
         config: '='
       },
       link: function (scope, element, attrs) {
+        // We keep some chart-specific variables here as a closure
+        // instead of storing them on 'scope'.
 
+        // prevSeriesOptions is maintained by processSeries
+        var prevSeriesOptions = {};
+
+        var processSeries = function(series) {
+          var ids = [];
+          if(series) {
+            ensureIds(series);
+
+            //Find series to add or update
+            angular.forEach(series, function(s) {
+              ids.push(s.id);
+              var chartSeries = chart.get(s.id);
+              if (chartSeries) {
+                if (!angular.equals(prevSeriesOptions[s.id], chartOptionsWithoutEasyOptions(s))) {
+                  chartSeries.update(angular.copy(s), false);
+                } else {
+                  if (s.visible !== undefined && chartSeries.visible !== s.visible) {
+                    chartSeries.setVisible(s.visible, false);
+                  }
+                  if (chartSeries.options.data !== s.data) {
+                    chartSeries.setData(angular.copy(s.data), false);
+                  }
+                }
+              } else {
+                chart.addSeries(angular.copy(s), false);
+              }
+              prevSeriesOptions[s.id] = chartOptionsWithoutEasyOptions(s);
+            });
+          }
+
+          //Now remove any missing series
+          for(var i = chart.series.length - 1; i >= 0; i--) {
+            var s = chart.series[i];
+            if (indexOf(ids, s.options.id) < 0) {
+              s.remove(false);
+            }
+          }
+        };
+
+        // chart is maintained by initChart
         var chart = false;
-        function initChart() {
+        var initChart = function() {
           if (chart) chart.destroy();
-          chart = initialiseChart(scope, element, scope.config);
-        }
+          var config = scope.config || {};
+          var mergedOptions = getMergedOptions(scope, element, config);
+          chart = config.useHighStocks ? new Highcharts.StockChart(mergedOptions) : new Highcharts.Chart(mergedOptions);
+          for (var i = 0; i < axisNames.length; i++) {
+            if (config[axisNames[i]]) {
+              processExtremes(chart, config[axisNames[i]], axisNames[i]);
+            }
+          }
+          processSeries(config.series);
+          if(config.loading) {
+            chart.showLoading();
+          }
+          chart.redraw();
+        };
         initChart();
 
         scope.$watch('config.series', function (newSeries, oldSeries) {
           //do nothing when called on registration
           if (newSeries === oldSeries) return;
-          processSeries(chart, newSeries);
+          processSeries(newSeries);
           chart.redraw();
         }, true);
 
