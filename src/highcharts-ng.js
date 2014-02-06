@@ -142,17 +142,13 @@ angular.module('highcharts-ng', [])
         config: '='
       },
       link: function (scope, element, attrs) {
+        // We keep some chart-specific variables here as a closure
+        // instead of storing them on 'scope'.
 
-        var chart = false;
-        function initChart() {
-          if (chart) chart.destroy();
-          chart = initialiseChart(scope, element, scope.config);
-        }
-        initChart();
-
+        // prevSeriesOptions is maintained by processSeries
         var prevSeriesOptions = {};
 
-        var processSeries = function(chart, series) {
+        var processSeries = function(series) {
           var ids = [];
           if(series) {
             ensureIds(series);
@@ -186,30 +182,32 @@ angular.module('highcharts-ng', [])
               s.remove(false);
             }
           }
-
         };
 
-        var initialiseChart = function(scope, element, config) {
-          config = config || {};
+        // chart is maintained by initChart
+        var chart = false;
+        var initChart = function() {
+          if (chart) chart.destroy();
+          var config = scope.config || {};
           var mergedOptions = getMergedOptions(scope, element, config);
-          var chart = config.useHighStocks ? new Highcharts.StockChart(mergedOptions) : new Highcharts.Chart(mergedOptions);
+          chart = config.useHighStocks ? new Highcharts.StockChart(mergedOptions) : new Highcharts.Chart(mergedOptions);
           for (var i = 0; i < axisNames.length; i++) {
             if (config[axisNames[i]]) {
               processExtremes(chart, config[axisNames[i]], axisNames[i]);
             }
           }
-          processSeries(chart, config.series);
+          processSeries(config.series);
           if(config.loading) {
             chart.showLoading();
           }
           chart.redraw();
-          return chart;
         };
+        initChart();
 
         scope.$watch('config.series', function (newSeries, oldSeries) {
           //do nothing when called on registration
           if (newSeries === oldSeries) return;
-          processSeries(chart, newSeries);
+          processSeries(newSeries);
           chart.redraw();
         }, true);
 
