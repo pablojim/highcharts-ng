@@ -115,71 +115,67 @@ angular.module('highcharts-ng', []).directive('highchart', function () {
       visible: null
     });
   };
-  var prevOptions = {};
-  var processSeries = function (chart, series) {
-    var ids = [];
-    if (series) {
-      ensureIds(series);
-      angular.forEach(series, function (s) {
-        ids.push(s.id);
-        var chartSeries = chart.get(s.id);
-        if (chartSeries) {
-          if (!angular.equals(prevOptions[s.id], chartOptionsWithoutEasyOptions(s))) {
-            chartSeries.update(angular.copy(s), false);
-          } else {
-            if (s.visible !== undefined && chartSeries.visible !== s.visible) {
-              chartSeries.setVisible(s.visible, false);
-            }
-            if (chartSeries.options.data !== s.data) {
-              chartSeries.setData(angular.copy(s.data), false);
-            }
-          }
-        } else {
-          chart.addSeries(angular.copy(s), false);
-        }
-        prevOptions[s.id] = chartOptionsWithoutEasyOptions(s);
-      });
-    }
-    for (var i = chart.series.length - 1; i >= 0; i--) {
-      var s = chart.series[i];
-      if (indexOf(ids, s.options.id) < 0) {
-        s.remove(false);
-      }
-    }
-  };
-  var initialiseChart = function (scope, element, config) {
-    config = config || {};
-    var mergedOptions = getMergedOptions(scope, element, config);
-    var chart = config.useHighStocks ? new Highcharts.StockChart(mergedOptions) : new Highcharts.Chart(mergedOptions);
-    for (var i = 0; i < axisNames.length; i++) {
-      if (config[axisNames[i]]) {
-        processExtremes(chart, config[axisNames[i]], axisNames[i]);
-      }
-    }
-    processSeries(chart, config.series);
-    if (config.loading) {
-      chart.showLoading();
-    }
-    chart.redraw();
-    return chart;
-  };
   return {
     restrict: 'EAC',
     replace: true,
     template: '<div></div>',
     scope: { config: '=' },
     link: function (scope, element, attrs) {
+      var prevSeriesOptions = {};
+      var processSeries = function (series) {
+        var ids = [];
+        if (series) {
+          ensureIds(series);
+          angular.forEach(series, function (s) {
+            ids.push(s.id);
+            var chartSeries = chart.get(s.id);
+            if (chartSeries) {
+              if (!angular.equals(prevSeriesOptions[s.id], chartOptionsWithoutEasyOptions(s))) {
+                chartSeries.update(angular.copy(s), false);
+              } else {
+                if (s.visible !== undefined && chartSeries.visible !== s.visible) {
+                  chartSeries.setVisible(s.visible, false);
+                }
+                if (chartSeries.options.data !== s.data) {
+                  chartSeries.setData(angular.copy(s.data), false);
+                }
+              }
+            } else {
+              chart.addSeries(angular.copy(s), false);
+            }
+            prevSeriesOptions[s.id] = chartOptionsWithoutEasyOptions(s);
+          });
+        }
+        for (var i = chart.series.length - 1; i >= 0; i--) {
+          var s = chart.series[i];
+          if (indexOf(ids, s.options.id) < 0) {
+            s.remove(false);
+          }
+        }
+      };
       var chart = false;
-      function initChart() {
+      var initChart = function () {
         if (chart)
           chart.destroy();
-        chart = initialiseChart(scope, element, scope.config);
-      }
+        var config = scope.config || {};
+        var mergedOptions = getMergedOptions(scope, element, config);
+        chart = config.useHighStocks ? new Highcharts.StockChart(mergedOptions) : new Highcharts.Chart(mergedOptions);
+        for (var i = 0; i < axisNames.length; i++) {
+          if (config[axisNames[i]]) {
+            processExtremes(chart, config[axisNames[i]], axisNames[i]);
+          }
+        }
+        processSeries(config.series);
+        if (config.loading) {
+          chart.showLoading();
+        }
+        chart.redraw();
+      };
       initChart();
       scope.$watch('config.series', function (newSeries, oldSeries) {
         if (newSeries === oldSeries)
           return;
-        processSeries(chart, newSeries);
+        processSeries(newSeries);
         chart.redraw();
       }, true);
       scope.$watch('config.title', function (newTitle) {
