@@ -73,6 +73,9 @@ myapp.controller('myctrl', function ($scope) {
         this.chartConfig.useHighStocks = !this.chartConfig.useHighStocks
     }
 
+    $scope.lines = [{id: 1, value: 2, width: 1, color: "#FF0000"
+    }];
+
     $scope.chartConfig = {
         options: {
             chart: {
@@ -83,6 +86,10 @@ myapp.controller('myctrl', function ($scope) {
                     stacking: ''
                 }
             }
+        },
+        xAxis: {
+          plotLines: $scope.lines,
+          allowDecimals: false,
         },
         series: $scope.chartSeries,
         title: {

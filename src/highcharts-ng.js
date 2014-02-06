@@ -131,7 +131,34 @@ angular.module('highcharts-ng', [])
       return angular.extend({}, options, {data: null, visible: null});
     };
 
+    var axisOptionsWithoutEasyOptions = function (options) {
+      return angular.extend({}, options, {plotBands: null, plotLines: null});
+    };
+
     var prevOptions = {};
+
+    var prevAxes = {};
+
+    var processAxis = function(chart, newAxes, axisName) {
+      var redraw = false;
+      var axis = chart[axisName][0];
+      if (!angular.equals(prevOptions[axisName], axisOptionsWithoutEasyOptions(newAxes))) {
+        axis.update(newAxes, false);
+        updateZoom(axis, angular.copy(newAxes));
+        redraw = true;
+      } else {
+        // remove all PlotBandOrLines and add the new ones
+        for (var i = 0; i < axis.plotLinesAndBands.length; i++) {
+          axis.removePlotBandOrLine(axis.plotLinesAndBands[i].id);
+        }
+        angular.forEach(['plotBands', 'plotLines'], function (coll) {
+          for (var i = 0; i < newAxes[coll].length; i++) {
+            axis.addPlotBandOrLine(newAxes[coll][i], coll);
+          }
+        });
+      }
+      return redraw;
+    }
 
     var processSeries = function(chart, series) {
       var ids = [];
@@ -167,7 +194,6 @@ angular.module('highcharts-ng', [])
           s.remove(false);
         }
       }
-
     };
 
     var initialiseChart = function(scope, element, config) {
@@ -245,9 +271,9 @@ angular.module('highcharts-ng', [])
           scope.$watch('config.' + axisName, function (newAxes, oldAxes) {
             if (newAxes === oldAxes) return;
             if(newAxes) {
-              chart[axisName][0].update(newAxes, false);
-              updateZoom(chart[axisName][0], angular.copy(newAxes));
-              chart.redraw();
+              if (processAxis(chart, newAxes, axisName)) {
+                chart.redraw();
+              }
             }
           }, true);
         });
