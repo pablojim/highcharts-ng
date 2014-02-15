@@ -46,11 +46,14 @@ angular.module('highcharts-ng', [])
     // acceptable shared state
     var seriesId = 0;
     var ensureIds = function (series) {
+      var changed = false;
       angular.forEach(series, function(s) {
         if (!angular.isDefined(s.id)) {
           s.id = 'series-' + seriesId++;
+          changed = true;
         }
       });
+      return changed;
     };
 
     // immutable
@@ -150,7 +153,12 @@ angular.module('highcharts-ng', [])
         var processSeries = function(series) {
           var ids = [];
           if(series) {
-            ensureIds(series);
+            var setIds = ensureIds(series);
+            if(setIds) {
+              //If we have set some ids this will trigger another digest cycle.
+              //In this scenario just return early and let the next cycle take care of changes
+              return false;
+            }
 
             //Find series to add or update
             angular.forEach(series, function(s) {
@@ -181,6 +189,7 @@ angular.module('highcharts-ng', [])
               s.remove(false);
             }
           }
+          return true;
         };
 
         // chart is maintained by initChart
@@ -195,19 +204,19 @@ angular.module('highcharts-ng', [])
               processExtremes(chart, config[axisNames[i]], axisNames[i]);
             }
           }
-          processSeries(config.series);
           if(config.loading) {
             chart.showLoading();
           }
-          chart.redraw();
+
         };
         initChart();
 
+
         scope.$watch('config.series', function (newSeries, oldSeries) {
-          //do nothing when called on registration
-          if (newSeries === oldSeries) return;
-          processSeries(newSeries);
-          chart.redraw();
+          var needsRedraw = processSeries(newSeries);
+          if(needsRedraw) {
+            chart.redraw();
+          }
         }, true);
 
         scope.$watch('config.title', function (newTitle) {
@@ -252,6 +261,8 @@ angular.module('highcharts-ng', [])
           //do nothing when called on registration
           if (newOptions === oldOptions) return;
           initChart();
+          processSeries(scope.config.series);
+          chart.redraw();
         }, true);
 
         scope.$on('$destroy', function() {

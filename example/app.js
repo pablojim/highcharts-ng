@@ -73,6 +73,15 @@ myapp.controller('myctrl', function ($scope) {
         this.chartConfig.useHighStocks = !this.chartConfig.useHighStocks
     }
 
+    $scope.replaceAllSeries = function () {
+      var data = [
+        { name: "first", data: [10] },
+        { name: "second", data: [3] },
+        { name: "third", data: [13] }
+      ];
+      $scope.chartConfig.series = data;
+    };
+
     $scope.chartConfig = {
         options: {
             chart: {

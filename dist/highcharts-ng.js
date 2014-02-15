@@ -37,11 +37,14 @@ angular.module('highcharts-ng', []).directive('highchart', function () {
   }
   var seriesId = 0;
   var ensureIds = function (series) {
+    var changed = false;
     angular.forEach(series, function (s) {
       if (!angular.isDefined(s.id)) {
         s.id = 'series-' + seriesId++;
+        changed = true;
       }
     });
+    return changed;
   };
   var axisNames = [
       'xAxis',
@@ -125,7 +128,10 @@ angular.module('highcharts-ng', []).directive('highchart', function () {
       var processSeries = function (series) {
         var ids = [];
         if (series) {
-          ensureIds(series);
+          var setIds = ensureIds(series);
+          if (setIds) {
+            return false;
+          }
           angular.forEach(series, function (s) {
             ids.push(s.id);
             var chartSeries = chart.get(s.id);
@@ -152,6 +158,7 @@ angular.module('highcharts-ng', []).directive('highchart', function () {
             s.remove(false);
           }
         }
+        return true;
       };
       var chart = false;
       var initChart = function () {
@@ -165,18 +172,16 @@ angular.module('highcharts-ng', []).directive('highchart', function () {
             processExtremes(chart, config[axisNames[i]], axisNames[i]);
           }
         }
-        processSeries(config.series);
         if (config.loading) {
           chart.showLoading();
         }
-        chart.redraw();
       };
       initChart();
       scope.$watch('config.series', function (newSeries, oldSeries) {
-        if (newSeries === oldSeries)
-          return;
-        processSeries(newSeries);
-        chart.redraw();
+        var changed = processSeries(newSeries);
+        if (changed) {
+          chart.redraw();
+        }
       }, true);
       scope.$watch('config.title', function (newTitle) {
         chart.setTitle(newTitle, true);
@@ -216,6 +221,8 @@ angular.module('highcharts-ng', []).directive('highchart', function () {
         if (newOptions === oldOptions)
           return;
         initChart();
+        processSeries(scope.config.series);
+        chart.redraw();
       }, true);
       scope.$on('$destroy', function () {
         if (chart)
