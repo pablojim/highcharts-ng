@@ -171,9 +171,7 @@ angular.module('highcharts-ng', [])
                   if (s.visible !== undefined && chartSeries.visible !== s.visible) {
                     chartSeries.setVisible(s.visible, false);
                   }
-                  if (chartSeries.options.data !== s.data) {
-                    chartSeries.setData(angular.copy(s.data), false);
-                  }
+                  chartSeries.setData(angular.copy(s.data), false);
                 }
               } else {
                 chart.addSeries(angular.copy(s), false);
@@ -196,6 +194,7 @@ angular.module('highcharts-ng', [])
         var chart = false;
         var initChart = function() {
           if (chart) chart.destroy();
+          prevSeriesOptions = {};
           var config = scope.config || {};
           var mergedOptions = getMergedOptions(scope, element, config);
           chart = config.useHighStocks ? new Highcharts.StockChart(mergedOptions) : new Highcharts.Chart(mergedOptions);
