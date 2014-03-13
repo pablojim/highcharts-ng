@@ -116,6 +116,14 @@ angular.module('highcharts-ng', [])
       if (config.credits) {
         mergedOptions.credits = config.credits;
       }
+      if(config.size) {
+        if (config.size.width) {
+          mergedOptions.chart.width = config.size.width;
+        }
+        if (config.size.height) {
+          mergedOptions.chart.height = config.size.height;
+        }
+	  }
       return mergedOptions;
     };
 
@@ -262,6 +270,10 @@ angular.module('highcharts-ng', [])
           initChart();
           processSeries(scope.config.series);
           chart.redraw();
+        }, true);
+
+        scope.$watch('config.size', function (newSize, oldSize) {
+            chart.setSize(newSize.width, newSize.height);
         }, true);
 
         scope.$on('$destroy', function() {
