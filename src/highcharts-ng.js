@@ -275,7 +275,7 @@ angular.module('highcharts-ng', [])
         scope.$watch('config.size', function (newSize, oldSize) {
           if(newSize === oldSize) return;
           if(newSize && newSize.width && newSize.height) {
-            chart.setSize(newSize.width, newSize.height);  
+            chart.setSize(newSize.width, newSize.height);
           }
         }, true);
 
