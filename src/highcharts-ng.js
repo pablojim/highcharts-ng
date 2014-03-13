@@ -123,7 +123,7 @@ angular.module('highcharts-ng', [])
         if (config.size.height) {
           mergedOptions.chart.height = config.size.height;
         }
-	  }
+      }
       return mergedOptions;
     };
 
