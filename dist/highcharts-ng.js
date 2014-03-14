@@ -1,5 +1,7 @@
 'use strict';
+/*global angular: false, Highcharts: false */
 angular.module('highcharts-ng', []).directive('highchart', function () {
+  //IE8 support
   var indexOf = function (arr, find, i) {
     if (i === undefined)
       i = 0;
@@ -35,6 +37,7 @@ angular.module('highcharts-ng', []).directive('highchart', function () {
     }
     return destination;
   }
+  // acceptable shared state
   var seriesId = 0;
   var ensureIds = function (series) {
     var changed = false;
@@ -46,6 +49,7 @@ angular.module('highcharts-ng', []).directive('highchart', function () {
     });
     return changed;
   };
+  // immutable
   var axisNames = [
       'xAxis',
       'yAxis'
@@ -68,7 +72,7 @@ angular.module('highcharts-ng', []).directive('highchart', function () {
     }
     mergedOptions.chart.renderTo = element[0];
     angular.forEach(axisNames, function (axisName) {
-      if (config[axisName]) {
+      if (config[axisName] && (config[axisName].currentMin || config[axisName].currentMax)) {
         prependMethod(mergedOptions.chart.events, 'selection', function (e) {
           var thisChart = this;
           if (e[axisName]) {
@@ -77,6 +81,7 @@ angular.module('highcharts-ng', []).directive('highchart', function () {
               scope.config[axisName].currentMax = e[axisName][0].max;
             });
           } else {
+            //handle reset button - zoom out to all
             scope.$apply(function () {
               scope.config[axisName].currentMin = thisChart[axisName][0].dataMin;
               scope.config[axisName].currentMax = thisChart[axisName][0].dataMax;
@@ -124,14 +129,20 @@ angular.module('highcharts-ng', []).directive('highchart', function () {
     template: '<div></div>',
     scope: { config: '=' },
     link: function (scope, element, attrs) {
+      // We keep some chart-specific variables here as a closure
+      // instead of storing them on 'scope'.
+      // prevSeriesOptions is maintained by processSeries
       var prevSeriesOptions = {};
       var processSeries = function (series) {
         var ids = [];
         if (series) {
           var setIds = ensureIds(series);
           if (setIds) {
+            //If we have set some ids this will trigger another digest cycle.
+            //In this scenario just return early and let the next cycle take care of changes
             return false;
           }
+          //Find series to add or update
           angular.forEach(series, function (s) {
             ids.push(s.id);
             var chartSeries = chart.get(s.id);
@@ -142,9 +153,7 @@ angular.module('highcharts-ng', []).directive('highchart', function () {
                 if (s.visible !== undefined && chartSeries.visible !== s.visible) {
                   chartSeries.setVisible(s.visible, false);
                 }
-                if (chartSeries.options.data !== s.data) {
-                  chartSeries.setData(angular.copy(s.data), false);
-                }
+                chartSeries.setData(angular.copy(s.data), false);
               }
             } else {
               chart.addSeries(angular.copy(s), false);
@@ -152,6 +161,7 @@ angular.module('highcharts-ng', []).directive('highchart', function () {
             prevSeriesOptions[s.id] = chartOptionsWithoutEasyOptions(s);
           });
         }
+        //Now remove any missing series
         for (var i = chart.series.length - 1; i >= 0; i--) {
           var s = chart.series[i];
           if (indexOf(ids, s.options.id) < 0) {
@@ -160,10 +170,12 @@ angular.module('highcharts-ng', []).directive('highchart', function () {
         }
         return true;
       };
+      // chart is maintained by initChart
       var chart = false;
       var initChart = function () {
         if (chart)
           chart.destroy();
+        prevSeriesOptions = {};
         var config = scope.config || {};
         var mergedOptions = getMergedOptions(scope, element, config);
         chart = config.useHighStocks ? new Highcharts.StockChart(mergedOptions) : new Highcharts.Chart(mergedOptions);
@@ -178,8 +190,8 @@ angular.module('highcharts-ng', []).directive('highchart', function () {
       };
       initChart();
       scope.$watch('config.series', function (newSeries, oldSeries) {
-        var changed = processSeries(newSeries);
-        if (changed) {
+        var needsRedraw = processSeries(newSeries);
+        if (needsRedraw) {
           chart.redraw();
         }
       }, true);
@@ -218,6 +230,7 @@ angular.module('highcharts-ng', []).directive('highchart', function () {
         }, true);
       });
       scope.$watch('config.options', function (newOptions, oldOptions, scope) {
+        //do nothing when called on registration
         if (newOptions === oldOptions)
           return;
         initChart();

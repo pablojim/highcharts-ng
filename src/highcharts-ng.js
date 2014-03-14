@@ -81,7 +81,11 @@ angular.module('highcharts-ng', [])
       }
       mergedOptions.chart.renderTo = element[0];
       angular.forEach(axisNames, function(axisName) {
-        if (config[axisName]) {
+
+        if(angular.isDefined(config[axisName]) &&
+              (angular.isDefined(config[axisName].currentMin) ||
+              angular.isDefined(config[axisName].currentMax))
+          ) {
           prependMethod(mergedOptions.chart.events, 'selection', function(e){
             var thisChart = this;
             if (e[axisName]) {
