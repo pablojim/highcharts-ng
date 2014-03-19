@@ -80,30 +80,35 @@ angular.module('highcharts-ng', [])
         mergedOptions = defaultOptions;
       }
       mergedOptions.chart.renderTo = element[0];
+
       angular.forEach(axisNames, function(axisName) {
-        if (config[axisName]) {
-          prependMethod(mergedOptions.chart.events, 'selection', function(e){
-            var thisChart = this;
-            if (e[axisName]) {
-              scope.$apply(function () {
-                scope.config[axisName].currentMin = e[axisName][0].min;
-                scope.config[axisName].currentMax = e[axisName][0].max;
-              });
-            } else {
-              //handle reset button - zoom out to all
-              scope.$apply(function () {
-                scope.config[axisName].currentMin = thisChart[axisName][0].dataMin;
-                scope.config[axisName].currentMax = thisChart[axisName][0].dataMax;
-              });
-            }
-          });
-
-          prependMethod(mergedOptions.chart.events, 'addSeries', function(e){
-            scope.config[axisName].currentMin = this[axisName][0].min || scope.config[axisName].currentMin;
-            scope.config[axisName].currentMax = this[axisName][0].max || scope.config[axisName].currentMax;
-          });
-
+        if(angular.isDefined(config[axisName])) {
           mergedOptions[axisName] = angular.copy(config[axisName]);
+
+          if(angular.isDefined(config[axisName].currentMin) ||
+              angular.isDefined(config[axisName].currentMax)) {
+
+            prependMethod(mergedOptions.chart.events, 'selection', function(e){
+              var thisChart = this;
+              if (e[axisName]) {
+                scope.$apply(function () {
+                  scope.config[axisName].currentMin = e[axisName][0].min;
+                  scope.config[axisName].currentMax = e[axisName][0].max;
+                });
+              } else {
+                //handle reset button - zoom out to all
+                scope.$apply(function () {
+                  scope.config[axisName].currentMin = thisChart[axisName][0].dataMin;
+                  scope.config[axisName].currentMax = thisChart[axisName][0].dataMax;
+                });
+              }
+            });
+
+            prependMethod(mergedOptions.chart.events, 'addSeries', function(e){
+              scope.config[axisName].currentMin = this[axisName][0].min || scope.config[axisName].currentMin;
+              scope.config[axisName].currentMax = this[axisName][0].max || scope.config[axisName].currentMax;
+            });
+          }
         }
       });
 
