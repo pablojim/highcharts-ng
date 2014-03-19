@@ -284,6 +284,10 @@ angular.module('highcharts-ng', [])
           }
         }, true);
 
+        scope.$on('highchartsng.reflow', function () {
+          chart.reflow();
+        });
+
         scope.$on('$destroy', function() {
           if (chart) chart.destroy();
           element.remove();

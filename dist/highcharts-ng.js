@@ -240,6 +240,9 @@ angular.module('highcharts-ng', []).directive('highchart', function () {
           chart.setSize(newSize.width, newSize.height);
         }
       }, true);
+      scope.$on('highchartsng.reflow', function () {
+        chart.reflow();
+      });
       scope.$on('$destroy', function () {
         if (chart)
           chart.destroy();
