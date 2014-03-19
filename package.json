@@ -1,12 +1,11 @@
 {
   "name": "highcharts-ng",
-  "version": "0.0.5",
+  "version": "0.0.6-dev",
   "description": "highcharts-ng",
   "keywords": [
     "angular"
   ],
   "homepage": "https://github.com/pablojim/highcharts-ng",
-  "bugs": "https://github.com/pablojim/highcharts-ng/issues",
   "author": {
     "name": "Barry Fitzgerald",
     "email": "",
