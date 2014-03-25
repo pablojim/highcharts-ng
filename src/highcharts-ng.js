@@ -200,6 +200,21 @@ angular.module('highcharts-ng', [])
               s.remove(false);
             }
           }
+
+          //  Shows no data text if all series are empty
+          if (scope.config.noData) {
+            var chartContainsData =
+              chart.series.some(function (series) {
+                return series.options.data && series.options.data.length > 0;
+              });
+
+            if (!chartContainsData) {
+              chart.showLoading(scope.config.noData);
+            } else {
+              chart.hideLoading();
+            }
+          }
+
           return true;
         };
 
