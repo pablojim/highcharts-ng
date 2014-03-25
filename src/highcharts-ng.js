@@ -205,11 +205,13 @@ angular.module('highcharts-ng', [])
 
         // chart is maintained by initChart
         var chart = false;
+        var useHighStocks = false;
         var initChart = function() {
           if (chart) chart.destroy();
           prevSeriesOptions = {};
           var config = scope.config || {};
           var mergedOptions = getMergedOptions(scope, element, config);
+          useHighStocks = !!config.useHighStocks;
           chart = config.useHighStocks ? new Highcharts.StockChart(mergedOptions) : new Highcharts.Chart(mergedOptions);
           for (var i = 0; i < axisNames.length; i++) {
             if (config[axisNames[i]]) {
@@ -255,8 +257,9 @@ angular.module('highcharts-ng', [])
           }
         });
 
-        scope.$watch('config.useHighStocks', function (useHighStocks) {
-          initChart();
+        scope.$watch('config.useHighStocks', function (newUseHighStocks) {
+          if (useHighStocks !== !!newUseHighStocks)
+            initChart();
         });
 
         angular.forEach(axisNames, function(axisName) {
