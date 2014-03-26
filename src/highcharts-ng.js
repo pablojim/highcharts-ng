@@ -164,7 +164,9 @@ angular.module('highcharts-ng', [])
         var prevSeriesOptions = {};
 
         var processSeries = function(series) {
+          var i;
           var ids = [];
+
           if(series) {
             var setIds = ensureIds(series);
             if(setIds) {
@@ -191,15 +193,35 @@ angular.module('highcharts-ng', [])
               }
               prevSeriesOptions[s.id] = chartOptionsWithoutEasyOptions(s);
             });
+
+            //  Shows no data text if all series are empty
+            if(scope.config.noData) {
+              var chartContainsData = false;
+
+              for(i = 0; i < series.length; i++) {
+                if (series[i].data && series[i].data.length > 0) {
+                  chartContainsData = true;
+
+                  break;
+                }
+              }
+
+              if (!chartContainsData) {
+                chart.showLoading(scope.config.noData);
+              } else {
+                chart.hideLoading();
+              }
+            }
           }
 
           //Now remove any missing series
-          for(var i = chart.series.length - 1; i >= 0; i--) {
+          for(i = chart.series.length - 1; i >= 0; i--) {
             var s = chart.series[i];
             if (indexOf(ids, s.options.id) < 0) {
               s.remove(false);
             }
           }
+
           return true;
         };
 
