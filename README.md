@@ -5,7 +5,7 @@ AngularJS directive for Highcharts
 
 A simple Angularjs directive for Highcharts.
 
-Current Version (0.0.4)
+Current Version (0.0.6)
 ---------------
 
 `<highchart id="chart1" config="chartConfig"></highchart>`
@@ -20,7 +20,6 @@ The highchartsNgConfig resembles an exploded highcharts options object:
 ```javascript
 highchartsNgConfig = {
              //This is not a highcharts object. It just looks a little like one!
-
              options: {
                  //This is the Main Highcharts chart config. Any Highchart options are valid here.
                  //will be ovverriden by values specified below.
@@ -37,29 +36,34 @@ highchartsNgConfig = {
 
              //The below properties are watched separately for changes.
 
-             //Series object - a list of series using normal highcharts series options.
+             //Series object (optional) - a list of series using normal highcharts series options.
              series: [{
                  data: [10, 15, 12, 8, 7]
              }],
-             //Title configuration
+             //Title configuration (optional)
              title: {
                  text: 'Hello'
              },
-             //Boolean to control showng loading status on chart
+             //Boolean to control showng loading status on chart (optional)
              loading: false,
-             //Configuration for the xAxis. Currently only one x axis can be dynamically controlled.
+             //Configuration for the xAxis (optional). Currently only one x axis can be dynamically controlled.
              //properties currentMin and currentMax provied 2-way binding to the chart's maximimum and minimum
              xAxis: {
               currentMin: 0,
               currentMax: 20,
               title: {text: 'values'}
              },
-             //Whether to use HighStocks instead of HighCharts. Defaults to false.
+             //Whether to use HighStocks instead of HighCharts (optional). Defaults to false.
              useHighStocks: false
+             },
+             //size (optional) if left out the chart will default to size of the div or something sensible.
+             size: {
+               width: 400,
+               height: 300
              }
 ```
 
-All properties on the chart configuration are optional. Each property is watched for changes by angularjs.
+All properties on the chart configuration are optional. If you don't need a feature best to leave it out completely - Highcharts will usually default to something sensible. Each property is watched for changes by angularjs.
 NOTE:
 A common error is to put other highcharts options directly into the highchartsNgConfig.
 In general if the highcharts option you want isn't listed above you probably want to put it in highchartsNgConfig.options
@@ -88,6 +92,21 @@ Caveats:
 
 Versions
 --------------
+
+
+Version 0.0.6
+----------------
+- Added no data logic - thanks @eranbetzalel
+- Added reflow event thanks @pajooh
+- Added example for size setting
+- Minor bug fixes
+
+
+Version 0.0.5
+----------------
+- Now watches size property
+- More robust checks around axes
+
 
 Version 0.0.4
 ----------------
