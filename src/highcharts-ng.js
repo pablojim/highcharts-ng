@@ -277,7 +277,8 @@ angular.module('highcharts-ng', [])
           }
         });
 
-        scope.$watch('config.useHighStocks', function (useHighStocks) {
+        scope.$watch('config.useHighStocks', function (useHighStocks, oldUseHighStocks) {
+          if(useHighStocks === oldUseHighStocks) return;
           initChart();
         });
 
