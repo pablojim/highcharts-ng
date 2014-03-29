@@ -136,6 +136,7 @@ angular.module('highcharts-ng', []).directive('highchart', function () {
     link: function (scope, element, attrs) {
       var prevSeriesOptions = {};
       var processSeries = function (series) {
+        var i;
         var ids = [];
         if (series) {
           var setIds = ensureIds(series);
@@ -159,8 +160,22 @@ angular.module('highcharts-ng', []).directive('highchart', function () {
             }
             prevSeriesOptions[s.id] = chartOptionsWithoutEasyOptions(s);
           });
+          if (scope.config.noData) {
+            var chartContainsData = false;
+            for (i = 0; i < series.length; i++) {
+              if (series[i].data && series[i].data.length > 0) {
+                chartContainsData = true;
+                break;
+              }
+            }
+            if (!chartContainsData) {
+              chart.showLoading(scope.config.noData);
+            } else {
+              chart.hideLoading();
+            }
+          }
         }
-        for (var i = chart.series.length - 1; i >= 0; i--) {
+        for (i = chart.series.length - 1; i >= 0; i--) {
           var s = chart.series[i];
           if (indexOf(ids, s.options.id) < 0) {
             s.remove(false);
@@ -212,7 +227,9 @@ angular.module('highcharts-ng', []).directive('highchart', function () {
           chart.credits.hide();
         }
       });
-      scope.$watch('config.useHighStocks', function (useHighStocks) {
+      scope.$watch('config.useHighStocks', function (useHighStocks, oldUseHighStocks) {
+        if (useHighStocks === oldUseHighStocks)
+          return;
         initChart();
       });
       angular.forEach(axisNames, function (axisName) {
@@ -236,8 +253,8 @@ angular.module('highcharts-ng', []).directive('highchart', function () {
       scope.$watch('config.size', function (newSize, oldSize) {
         if (newSize === oldSize)
           return;
-        if (newSize && newSize.width && newSize.height) {
-          chart.setSize(newSize.width, newSize.height);
+        if (newSize) {
+          chart.setSize(newSize.width || undefined, newSize.height || undefined);
         }
       }, true);
       scope.$on('highchartsng.reflow', function () {
