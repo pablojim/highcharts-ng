@@ -71,6 +71,7 @@ angular.module('highcharts-ng', [])
         series: [],
         credits: {},
         plotOptions: {},
+		pane:{},
         navigator: {enabled: false}
       };
 
@@ -115,6 +116,9 @@ angular.module('highcharts-ng', [])
       if(config.title) {
         mergedOptions.title = config.title;
       }
+	if(config.pane){
+		mergedOptions.pane=config.pane;
+	}
       if (config.subtitle) {
         mergedOptions.subtitle = config.subtitle;
       }
