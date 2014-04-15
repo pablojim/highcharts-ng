@@ -33,7 +33,8 @@ angular.module('highcharts-ng', [])
     function deepExtend(destination, source) {
       for (var property in source) {
         if (source[property] && source[property].constructor &&
-          source[property].constructor === Object) {
+          source[property].constructor === Object &&
+          !Array.isArray(source[property])) {
           destination[property] = destination[property] || {};
           deepExtend(destination[property], source[property]);
         } else {
