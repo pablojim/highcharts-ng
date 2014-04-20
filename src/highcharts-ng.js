@@ -123,6 +123,9 @@ angular.module('highcharts-ng', [])
       if (config.subtitle) {
         mergedOptions.subtitle = config.subtitle;
       }
+      if (config.tooltip) {
+        mergedOptions.tooltip = config.tooltip;
+      }
       if (config.credits) {
         mergedOptions.credits = config.credits;
       }
