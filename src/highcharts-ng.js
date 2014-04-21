@@ -2,51 +2,56 @@
 /*global angular: false, Highcharts: false */
 
 angular.module('highcharts-ng', [])
-  .directive('highchart', function () {
+  .factory('highchartsNGUtils', function () {
 
-    //IE8 support
-    var indexOf = function(arr, find, i /*opt*/) {
-      if (i===undefined) i= 0;
-      if (i<0) i+= arr.length;
-      if (i<0) i= 0;
-      for (var n= arr.length; i<n; i++)
-        if (i in arr && arr[i]===find)
-          return i;
-      return -1;
+    return {
+
+      //IE8 support
+      indexOf: function (arr, find, i /*opt*/) {
+        if (i === undefined) i = 0;
+        if (i < 0) i += arr.length;
+        if (i < 0) i = 0;
+        for (var n = arr.length; i < n; i++)
+          if (i in arr && arr[i] === find)
+            return i;
+        return -1;
+      },
+
+
+      prependMethod: function (obj, method, func) {
+        var original = obj[method];
+        obj[method] = function () {
+          var args = Array.prototype.slice.call(arguments);
+          func.apply(this, args);
+          if (original) {
+            return original.apply(this, args);
+          } else {
+            return;
+          }
+
+        };
+      },
+
+      deepExtend: function deepExtend(destination, source) {
+        //Slightly strange behaviour in edge cases (e.g. passing in non objects)
+        //But does the job for current use cases.
+        if (angular.isArray(source)) {
+          destination = angular.isArray(destination) ? destination : [];
+          for (var i = 0; i < source.length; i++) {
+            destination[i] = deepExtend(destination[i] || {}, source[i]);
+          }
+        } else if (angular.isObject(source)) {
+          for (var property in source) {
+            destination[property] = deepExtend(destination[property] || {}, source[property]);
+          }
+        } else {
+          destination = source;
+        }
+        return destination;
+      }
     };
 
-
-    function prependMethod(obj, method, func) {
-      var original = obj[method];
-      obj[method] = function () {
-        var args = Array.prototype.slice.call(arguments);
-        func.apply(this, args);
-        if(original) {
-          return original.apply(this, args);
-        }  else {
-          return;
-        }
-
-      };
-    }
-
-    function deepExtend(destination, source) {
-      for (var property in source) {
-        if (Object.prototype.toString.call(source[property]) === '[object Array]') {
-          destination[property] = destination[property] || [];
-          for (var i=0; i<source[property].length; i++) {
-            destination[property][i] = deepExtend(destination[property][i] ? destination[property][i] : {}, source[property][i]);
-          }
-        } else if (source[property] && source[property].constructor &&
-          source[property].constructor === Object) {
-          destination[property] = destination[property] || {};
-          deepExtend(destination[property], source[property]);
-        } else {
-          destination[property] = source[property];
-        }
-      }
-      return destination;
-    }
+  }).directive('highchart', function (highchartsNGUtils) {
 
     // acceptable shared state
     var seriesId = 0;
@@ -80,7 +85,7 @@ angular.module('highcharts-ng', [])
       };
 
       if (config.options) {
-        mergedOptions = deepExtend(defaultOptions, config.options);
+        mergedOptions = highchartsNGUtils.deepExtend(defaultOptions, config.options);
       } else {
         mergedOptions = defaultOptions;
       }
@@ -93,7 +98,7 @@ angular.module('highcharts-ng', [])
           if(angular.isDefined(config[axisName].currentMin) ||
               angular.isDefined(config[axisName].currentMax)) {
 
-            prependMethod(mergedOptions.chart.events, 'selection', function(e){
+            highchartsNGUtils.prependMethod(mergedOptions.chart.events, 'selection', function(e){
               var thisChart = this;
               if (e[axisName]) {
                 scope.$apply(function () {
@@ -109,7 +114,7 @@ angular.module('highcharts-ng', [])
               }
             });
 
-            prependMethod(mergedOptions.chart.events, 'addSeries', function(e){
+            highchartsNGUtils.prependMethod(mergedOptions.chart.events, 'addSeries', function(e){
               scope.config[axisName].currentMin = this[axisName][0].min || scope.config[axisName].currentMin;
               scope.config[axisName].currentMax = this[axisName][0].max || scope.config[axisName].currentMax;
             });
@@ -222,7 +227,7 @@ angular.module('highcharts-ng', [])
           //Now remove any missing series
           for(i = chart.series.length - 1; i >= 0; i--) {
             var s = chart.series[i];
-            if (indexOf(ids, s.options.id) < 0) {
+            if (highchartsNGUtils.indexOf(ids, s.options.id) < 0) {
               s.remove(false);
             }
           }
