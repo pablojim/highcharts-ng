@@ -1,6 +1,9 @@
 # Contributing
 
-## Important notes
+### New Issues/Bugs/Feature Requests etc.
+Please submit any problems you find - that's how things get better! To make life easier though it's best to fork one of the example jsfiddles and edit it so that it shows your problem. It's fine if it doesn't work (that's often the point!)
+
+### Editing files
 Please don't edit files in the `dist` subdirectory as they are generated via Grunt. You'll find source code in the `src` subdirectory!
 
 ### Code style
