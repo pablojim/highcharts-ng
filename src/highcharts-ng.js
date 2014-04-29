@@ -263,6 +263,12 @@ angular.module('highcharts-ng', [])
           }
         }, true);
 
+        scope.$watch('config.options', function (newOptions, oldOptions) {
+          if(!angular.equals(newOptions, oldOptions)){
+            initChart();          
+          }          
+        }, true);
+        
         scope.$watch('config.title', function (newTitle) {
           chart.setTitle(newTitle, true);
         }, true);
