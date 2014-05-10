@@ -51,7 +51,7 @@ angular.module('highcharts-ng', [])
       }
     };
 
-  }).directive('highchart', function (highchartsNGUtils) {
+  }).directive('highchart', function (highchartsNGUtils,$timeout) {
 
     // acceptable shared state
     var seriesId = 0;
@@ -322,8 +322,10 @@ angular.module('highcharts-ng', [])
         });
 
         scope.$on('$destroy', function() {
-          if (chart) chart.destroy();
-          element.remove();
+            $timeout(function() {
+                if (chart) chart.destroy();
+                element.remove();
+            },0);
         });
 
       }
