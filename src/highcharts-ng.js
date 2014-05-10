@@ -79,6 +79,7 @@ angular.module('highcharts-ng', [])
         title: {},
         subtitle: {},
         series: [],
+        tooltip : {},
         credits: {},
         plotOptions: {},
         navigator: {enabled: false}
@@ -130,6 +131,9 @@ angular.module('highcharts-ng', [])
       }
       if (config.credits) {
         mergedOptions.credits = config.credits;
+      }
+      if (config.tooltip) {
+        mergedOptions.tooltip = config.tooltip;
       }
       if(config.size) {
         if (config.size.width) {
