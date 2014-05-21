@@ -60,6 +60,10 @@ highchartsNgConfig = {
              size: {
                width: 400,
                height: 300
+             },
+             //function (optional)
+             func: function (chart) {
+               //setup some logic for the chart
              }
 ```
 
@@ -150,4 +154,3 @@ Caveats:
 
 
 [![Build Status](https://travis-ci.org/pablojim/highcharts-ng.png)](https://travis-ci.org/pablojim/highcharts-ng)
-
