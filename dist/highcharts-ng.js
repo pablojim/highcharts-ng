@@ -149,7 +149,7 @@ angular.module('highcharts-ng', []).factory('highchartsNGUtils', function () {
           var ids = [];
           if (series) {
             var setIds = ensureIds(series);
-            if (setIds) {
+            if (setIds && !disableDataWatch) {
               return false;
             }
             angular.forEach(series, function (s) {
@@ -199,7 +199,8 @@ angular.module('highcharts-ng', []).factory('highchartsNGUtils', function () {
           prevSeriesOptions = {};
           var config = scope.config || {};
           var mergedOptions = getMergedOptions(scope, element, config);
-          chart = config.useHighStocks ? new Highcharts.StockChart(mergedOptions) : new Highcharts.Chart(mergedOptions);
+          var func = config.func || undefined;
+          chart = config.useHighStocks ? new Highcharts.StockChart(mergedOptions, func) : new Highcharts.Chart(mergedOptions, func);
           for (var i = 0; i < axisNames.length; i++) {
             if (config[axisNames[i]]) {
               processExtremes(chart, config[axisNames[i]], axisNames[i]);
@@ -210,12 +211,23 @@ angular.module('highcharts-ng', []).factory('highchartsNGUtils', function () {
           }
         };
         initChart();
-        scope.$watch('config.series', function (newSeries, oldSeries) {
-          var needsRedraw = processSeries(newSeries);
-          if (needsRedraw) {
-            chart.redraw();
-          }
-        }, true);
+        if (scope.disableDataWatch) {
+          scope.$watchCollection('config.series', function (newSeries, oldSeries) {
+            var needsRedraw = processSeries(newSeries);
+            if (needsRedraw) {
+              chart.redraw();
+            }
+          });
+        } else {
+          scope.$watch('config.series', function (newSeries, oldSeries) {
+            alert('Change Detected');
+            var needsRedraw = processSeries(newSeries);
+            if (needsRedraw) {
+              alert('Needs Redraw');
+              chart.redraw();
+            }
+          }, true);
+        }
         scope.$watch('config.title', function (newTitle) {
           chart.setTitle(newTitle, true);
         }, true);
