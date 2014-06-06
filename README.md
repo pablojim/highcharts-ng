@@ -54,7 +54,7 @@ highchartsNgConfig = {
               title: {text: 'values'}
              },
              //Whether to use HighStocks instead of HighCharts (optional). Defaults to false.
-             useHighStocks: false
+             useHighStock: false
              },
              //size (optional) if left out the chart will default to size of the div or something sensible.
              size: {
