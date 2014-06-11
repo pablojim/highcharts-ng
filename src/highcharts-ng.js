@@ -164,7 +164,8 @@ angular.module('highcharts-ng', [])
       replace: true,
       template: '<div></div>',
       scope: {
-        config: '='
+        config: '=',
+        disableDataWatch: '='
       },
       link: function (scope, element, attrs) {
         // We keep some chart-specific variables here as a closure
@@ -179,7 +180,7 @@ angular.module('highcharts-ng', [])
 
           if(series) {
             var setIds = ensureIds(series);
-            if(setIds) {
+            if(setIds && !scope.disableDataWatch) {
               //If we have set some ids this will trigger another digest cycle.
               //In this scenario just return early and let the next cycle take care of changes
               return false;
@@ -259,12 +260,19 @@ angular.module('highcharts-ng', [])
         initChart();
 
 
-        scope.$watch('config.series', function (newSeries, oldSeries) {
-          var needsRedraw = processSeries(newSeries);
-          if(needsRedraw) {
+        if(scope.disableDataWatch){
+          scope.$watchCollection('config.series', function (newSeries, oldSeries) {
+            processSeries(newSeries);
             chart.redraw();
-          }
-        }, true);
+          });
+        } else {
+          scope.$watch('config.series', function (newSeries, oldSeries) {
+            var needsRedraw = processSeries(newSeries);
+            if(needsRedraw) {
+              chart.redraw();
+            }
+          }, true);
+        }
 
         scope.$watch('config.title', function (newTitle) {
           chart.setTitle(newTitle, true);
