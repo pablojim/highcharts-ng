@@ -149,6 +149,32 @@ angular.module('highcharts-ng', [])
       }
     };
 
+    // Update plotlines, work only if plotlines have an id
+    var updatePlotLine = function(axis, newModelAxis, oldModelAxis)
+    {
+      // Remove old plotLines
+      for(var k = 0; k < oldModelAxis.length; k++) {
+        if(angular.isDefined(oldModelAxis[k].plotLines)) {
+          for(var l = 0; l < oldModelAxis[k].plotLines.length; l++) {
+            if(angular.isDefined(oldModelAxis[k].plotLines[l].id)) {
+              axis.removePlotLine(oldModelAxis[k].plotLines[l].id);
+            }
+          }
+        }
+      }
+
+        // Add new plotLines
+      for(var m = 0; m < newModelAxis.length; m++) {
+        if(angular.isDefined(newModelAxis[m].plotLines)) {
+          for(var n = 0; n < newModelAxis[m].plotLines.length; n++) {
+            if(angular.isDefined(newModelAxis[m].plotLines[n].id)) {
+              axis.addPlotLine(newModelAxis[m].plotLines[n]);
+            }
+          }
+        }
+      }
+    };
+
     var processExtremes = function(chart, axis, axisName) {
       if(axis.currentMin || axis.currentMax) {
         chart[axisName][0].setExtremes(axis.currentMin, axis.currentMax, true);
@@ -301,6 +327,7 @@ angular.module('highcharts-ng', [])
             if(newAxes) {
               chart[axisName][0].update(newAxes, false);
               updateZoom(chart[axisName][0], angular.copy(newAxes));
+              updatePlotLine(chart[axisName][0], angular.copy(newAxes), angular.copy(oldAxes));
               chart.redraw();
             }
           }, true);
