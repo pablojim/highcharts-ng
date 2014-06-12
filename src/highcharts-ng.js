@@ -55,11 +55,12 @@ angular.module('highcharts-ng', [])
 
     // acceptable shared state
     var seriesId = 0;
-    var ensureIds = function (series) {
+    var ensureIds = function (series, prefix) {
+      prefix = angular.isDefined(prefix) ? prefix : 'series-';
       var changed = false;
       angular.forEach(series, function(s) {
         if (!angular.isDefined(s.id)) {
-          s.id = 'series-' + seriesId++;
+          s.id = prefix + seriesId++;
           changed = true;
         }
       });
@@ -119,6 +120,12 @@ angular.module('highcharts-ng', [])
               scope.config[axisName].currentMax = this[axisName][0].max || scope.config[axisName].currentMax;
             });
           }
+
+          for(var i = 0; i < mergedOptions[axisName].length; i++) {
+            if(angular.isDefined(mergedOptions[axisName].plotLines)) {
+              ensureIds(mergedOptions[axisName].plotLines,'plotlines-' + i + '-');
+            }
+          }
         }
       });
 
@@ -149,16 +156,14 @@ angular.module('highcharts-ng', [])
       }
     };
 
-    // Update plotlines, work only if plotlines have an id
+    // Update plotlines
     var updatePlotLine = function(axis, newModelAxis, oldModelAxis)
     {
       // Remove old plotLines
       for(var k = 0; k < oldModelAxis.length; k++) {
         if(angular.isDefined(oldModelAxis[k].plotLines)) {
           for(var l = 0; l < oldModelAxis[k].plotLines.length; l++) {
-            if(angular.isDefined(oldModelAxis[k].plotLines[l].id)) {
-              axis.removePlotLine(oldModelAxis[k].plotLines[l].id);
-            }
+            axis.removePlotLine(oldModelAxis[k].plotLines[l].id);
           }
         }
       }
@@ -167,9 +172,7 @@ angular.module('highcharts-ng', [])
       for(var m = 0; m < newModelAxis.length; m++) {
         if(angular.isDefined(newModelAxis[m].plotLines)) {
           for(var n = 0; n < newModelAxis[m].plotLines.length; n++) {
-            if(angular.isDefined(newModelAxis[m].plotLines[n].id)) {
-              axis.addPlotLine(newModelAxis[m].plotLines[n]);
-            }
+            axis.addPlotLine(newModelAxis[m].plotLines[n]);
           }
         }
       }
