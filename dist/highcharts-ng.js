@@ -141,7 +141,10 @@ angular.module('highcharts-ng', []).factory('highchartsNGUtils', function () {
       restrict: 'EAC',
       replace: true,
       template: '<div></div>',
-      scope: { config: '=' },
+      scope: {
+        config: '=',
+        disableDataWatch: '='
+      },
       link: function (scope, element, attrs) {
         var prevSeriesOptions = {};
         var processSeries = function (series) {
@@ -149,7 +152,7 @@ angular.module('highcharts-ng', []).factory('highchartsNGUtils', function () {
           var ids = [];
           if (series) {
             var setIds = ensureIds(series);
-            if (setIds && !disableDataWatch) {
+            if (setIds && !scope.disableDataWatch) {
               return false;
             }
             angular.forEach(series, function (s) {
@@ -213,17 +216,13 @@ angular.module('highcharts-ng', []).factory('highchartsNGUtils', function () {
         initChart();
         if (scope.disableDataWatch) {
           scope.$watchCollection('config.series', function (newSeries, oldSeries) {
-            var needsRedraw = processSeries(newSeries);
-            if (needsRedraw) {
-              chart.redraw();
-            }
+            processSeries(newSeries);
+            chart.redraw();
           });
         } else {
           scope.$watch('config.series', function (newSeries, oldSeries) {
-            alert('Change Detected');
             var needsRedraw = processSeries(newSeries);
             if (needsRedraw) {
-              alert('Needs Redraw');
               chart.redraw();
             }
           }, true);
