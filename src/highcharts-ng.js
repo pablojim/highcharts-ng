@@ -131,6 +131,10 @@ angular.module('highcharts-ng', [])
       if (config.credits) {
         mergedOptions.credits = config.credits;
       }
+      if(config.drilldown) {
+        mergedOptions.drilldown = config.drilldown;
+      }
+
       if(config.size) {
         if (config.size.width) {
           mergedOptions.chart.width = config.size.width;
