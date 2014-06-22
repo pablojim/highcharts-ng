@@ -93,6 +93,16 @@ Caveats:
 - When using with a highstocks navigator errors can occur
 - Needs tests!
 
+FAQ:
+--------
+
+- Why doesn't my plot options/tooltip/drilldown/other feature work?
+
+A common error is to put other highcharts options directly into the highchartsNgConfig.
+In general if the highcharts option you want isn't listed above you probably want to put it in highchartsNgConfig.options. Try this before creating a pull request!
+ 
+
+
 
 Versions
 --------------
