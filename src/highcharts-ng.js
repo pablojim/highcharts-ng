@@ -53,6 +53,10 @@ angular.module('highcharts-ng', [])
 
   }).directive('highchart', function (highchartsNGUtils) {
 
+    //variable to signal zoom initiated by 2-way binding
+    var userZoom = false;
+    //set to true when the chart is being zoomed by the navigator or range selectors
+    var userZoomingMutex = false;
     // acceptable shared state
     var seriesId = 0;
     var ensureIds = function (series) {
@@ -92,35 +96,33 @@ angular.module('highcharts-ng', [])
       mergedOptions.chart.renderTo = element[0];
 
       angular.forEach(axisNames, function(axisName) {
-        if(angular.isDefined(config[axisName])) {
-          mergedOptions[axisName] = angular.copy(config[axisName]);
+          if(angular.isDefined(config[axisName])) {
+            mergedOptions[axisName] = angular.copy(config[axisName]);
 
-          if(angular.isDefined(config[axisName].currentMin) ||
-              angular.isDefined(config[axisName].currentMax)) {
-
-            highchartsNGUtils.prependMethod(mergedOptions.chart.events, 'selection', function(e){
-              var thisChart = this;
-              if (e[axisName]) {
-                scope.$apply(function () {
-                  scope.config[axisName].currentMin = e[axisName][0].min;
-                  scope.config[axisName].currentMax = e[axisName][0].max;
-                });
-              } else {
-                //handle reset button - zoom out to all
-                scope.$apply(function () {
-                  scope.config[axisName].currentMin = thisChart[axisName][0].dataMin;
-                  scope.config[axisName].currentMax = thisChart[axisName][0].dataMax;
-                });
+            if(angular.isDefined(config[axisName].currentMin) || angular.isDefined(config[axisName].currentMax)) {
+              if(!angular.isDefined(mergedOptions[axisName].events)){
+                mergedOptions[axisName].events = [];
               }
-            });
+              highchartsNGUtils.prependMethod(mergedOptions[axisName].events, 'afterSetExtremes', function(e){
+                if((scope.config[axisName].currentMin !== e.min || scope.config[axisName].currentMax !== e.max) && !userZoom) {
+				  userZoomingMutex = true;
+                  scope.$apply(function(){
+                    scope.config[axisName].currentMin = e.min;
+                    scope.config[axisName].currentMax = e.max;
+                  });
+                  userZoomingMutex = false;
+                } else {
+                  userZoom = false;
+                }
+              });
 
-            highchartsNGUtils.prependMethod(mergedOptions.chart.events, 'addSeries', function(e){
-              scope.config[axisName].currentMin = this[axisName][0].min || scope.config[axisName].currentMin;
-              scope.config[axisName].currentMax = this[axisName][0].max || scope.config[axisName].currentMax;
-            });
+              highchartsNGUtils.prependMethod(mergedOptions.chart.events, 'addSeries', function(e){
+                scope.config[axisName].currentMin = this[axisName][0].min || scope.config[axisName].currentMin;
+                scope.config[axisName].currentMax = this[axisName][0].max || scope.config[axisName].currentMax;
+              });
+            }
           }
-        }
-      });
+        });
 
       if(config.title) {
         mergedOptions.title = config.title;
@@ -145,6 +147,8 @@ angular.module('highcharts-ng', [])
     var updateZoom = function (axis, modelAxis) {
       var extremes = axis.getExtremes();
       if(modelAxis.currentMin !== extremes.dataMin || modelAxis.currentMax !== extremes.dataMax) {
+        //this will signal our axis events that this was already processed
+        userZoom = true;
         axis.setExtremes(modelAxis.currentMin, modelAxis.currentMax, false);
       }
     };
@@ -183,6 +187,7 @@ angular.module('highcharts-ng', [])
             if(setIds && !scope.disableDataWatch) {
               //If we have set some ids this will trigger another digest cycle.
               //In this scenario just return early and let the next cycle take care of changes
+              //If data full series data watching is disabled we don't have to worry about this
               return false;
             }
 
@@ -228,7 +233,7 @@ angular.module('highcharts-ng', [])
           //Now remove any missing series
           for(i = chart.series.length - 1; i >= 0; i--) {
             var s = chart.series[i];
-            if (highchartsNGUtils.indexOf(ids, s.options.id) < 0) {
+            if (s.options.id !== 'highcharts-navigator-series' && highchartsNGUtils.indexOf(ids, s.options.id) < 0) {
               s.remove(false);
             }
           }
@@ -305,7 +310,7 @@ angular.module('highcharts-ng', [])
 
         angular.forEach(axisNames, function(axisName) {
           scope.$watch('config.' + axisName, function (newAxes, oldAxes) {
-            if (newAxes === oldAxes) return;
+            if (userZoomingMutex || newAxes === oldAxes) return;
             if(newAxes) {
               chart[axisName][0].update(newAxes, false);
               updateZoom(chart[axisName][0], angular.copy(newAxes));

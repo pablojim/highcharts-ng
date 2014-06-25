@@ -44,7 +44,9 @@ angular.module('highcharts-ng', []).factory('highchartsNGUtils', function () {
 }).directive('highchart', [
   'highchartsNGUtils',
   function (highchartsNGUtils) {
+    var userZoom = false;
     var seriesId = 0;
+    var userZoomingMutex = false;
     var ensureIds = function (series) {
       var changed = false;
       angular.forEach(series, function (s) {
@@ -80,18 +82,19 @@ angular.module('highcharts-ng', []).factory('highchartsNGUtils', function () {
         if (angular.isDefined(config[axisName])) {
           mergedOptions[axisName] = angular.copy(config[axisName]);
           if (angular.isDefined(config[axisName].currentMin) || angular.isDefined(config[axisName].currentMax)) {
-            highchartsNGUtils.prependMethod(mergedOptions.chart.events, 'selection', function (e) {
-              var thisChart = this;
-              if (e[axisName]) {
+            if (!angular.isDefined(mergedOptions[axisName].events)) {
+              mergedOptions[axisName].events = [];
+            }
+            highchartsNGUtils.prependMethod(mergedOptions[axisName].events, 'afterSetExtremes', function (e) {
+              if ((scope.config[axisName].currentMin !== e.min || scope.config[axisName].currentMax !== e.max) && !userZoom) {
+              	userZoomingMutex = true;
                 scope.$apply(function () {
-                  scope.config[axisName].currentMin = e[axisName][0].min;
-                  scope.config[axisName].currentMax = e[axisName][0].max;
+                  scope.config[axisName].currentMin = e.min;
+                  scope.config[axisName].currentMax = e.max;
                 });
+              	userZoomingMutex = false;
               } else {
-                scope.$apply(function () {
-                  scope.config[axisName].currentMin = thisChart[axisName][0].dataMin;
-                  scope.config[axisName].currentMax = thisChart[axisName][0].dataMax;
-                });
+                userZoom = false;
               }
             });
             highchartsNGUtils.prependMethod(mergedOptions.chart.events, 'addSeries', function (e) {
@@ -123,6 +126,7 @@ angular.module('highcharts-ng', []).factory('highchartsNGUtils', function () {
     var updateZoom = function (axis, modelAxis) {
       var extremes = axis.getExtremes();
       if (modelAxis.currentMin !== extremes.dataMin || modelAxis.currentMax !== extremes.dataMax) {
+        userZoom = true;
         axis.setExtremes(modelAxis.currentMin, modelAxis.currentMax, false);
       }
     };
@@ -189,7 +193,7 @@ angular.module('highcharts-ng', []).factory('highchartsNGUtils', function () {
           }
           for (i = chart.series.length - 1; i >= 0; i--) {
             var s = chart.series[i];
-            if (highchartsNGUtils.indexOf(ids, s.options.id) < 0) {
+            if (s.options.id !== 'highcharts-navigator-series' && highchartsNGUtils.indexOf(ids, s.options.id) < 0) {
               s.remove(false);
             }
           }
@@ -254,7 +258,7 @@ angular.module('highcharts-ng', []).factory('highchartsNGUtils', function () {
         });
         angular.forEach(axisNames, function (axisName) {
           scope.$watch('config.' + axisName, function (newAxes, oldAxes) {
-            if (newAxes === oldAxes)
+            if (userZoomingMutex || newAxes === oldAxes)
               return;
             if (newAxes) {
               chart[axisName][0].update(newAxes, false);
