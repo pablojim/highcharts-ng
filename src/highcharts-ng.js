@@ -55,6 +55,8 @@ angular.module('highcharts-ng', [])
 
     //variable to signal zoom initiated by 2-way binding
     var userZoom = false;
+    //set to true when the chart is being zoomed by the navigator or range selectors
+    var userZoomingMutex = false;
     // acceptable shared state
     var seriesId = 0;
     var ensureIds = function (series) {
@@ -103,10 +105,12 @@ angular.module('highcharts-ng', [])
               }
               highchartsNGUtils.prependMethod(mergedOptions[axisName].events, 'afterSetExtremes', function(e){
                 if((scope.config[axisName].currentMin !== e.min || scope.config[axisName].currentMax !== e.max) && !userZoom) {
+				  userZoomingMutex = true;
                   scope.$apply(function(){
                     scope.config[axisName].currentMin = e.min;
                     scope.config[axisName].currentMax = e.max;
                   });
+                  userZoomingMutex = false;
                 } else {
                   userZoom = false;
                 }
@@ -306,7 +310,7 @@ angular.module('highcharts-ng', [])
 
         angular.forEach(axisNames, function(axisName) {
           scope.$watch('config.' + axisName, function (newAxes, oldAxes) {
-            if (newAxes === oldAxes) return;
+            if (userZoomingMutex || newAxes === oldAxes) return;
             if(newAxes) {
               chart[axisName][0].update(newAxes, false);
               updateZoom(chart[axisName][0], angular.copy(newAxes));
