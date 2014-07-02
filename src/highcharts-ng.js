@@ -333,8 +333,12 @@ angular.module('highcharts-ng', [])
         });
 
         scope.$on('$destroy', function() {
-          if (chart) chart.destroy();
-          element.remove();
+          if (chart) {
+            chart.destroy();
+            setTimeout(function(){
+              element.remove();
+            },0); 
+          }
         });
 
       }
