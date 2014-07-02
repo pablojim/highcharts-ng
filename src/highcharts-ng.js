@@ -337,7 +337,7 @@ angular.module('highcharts-ng', [])
             chart.destroy();
             setTimeout(function(){
               element.remove();
-            },0); 
+            }, 0); 
           }
         });
 
