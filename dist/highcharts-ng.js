@@ -189,7 +189,7 @@ angular.module('highcharts-ng', []).factory('highchartsNGUtils', function () {
           }
           for (i = chart.series.length - 1; i >= 0; i--) {
             var s = chart.series[i];
-            if (highchartsNGUtils.indexOf(ids, s.options.id) < 0) {
+            if (s.options.id !== 'highcharts-navigator-series' && highchartsNGUtils.indexOf(ids, s.options.id) < 0) {
               s.remove(false);
             }
           }
