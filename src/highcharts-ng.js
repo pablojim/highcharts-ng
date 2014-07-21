@@ -80,6 +80,7 @@ angular.module('highcharts-ng', [])
         subtitle: {},
         series: [],
         credits: {},
+        exporting: {},
         plotOptions: {},
         navigator: {enabled: false}
       };
@@ -130,6 +131,9 @@ angular.module('highcharts-ng', [])
       }
       if (config.credits) {
         mergedOptions.credits = config.credits;
+      }
+      if (config.exporting) {
+        mergedOptions.exporting = config.exporting;
       }
       if(config.size) {
         if (config.size.width) {
