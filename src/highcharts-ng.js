@@ -122,6 +122,9 @@ angular.module('highcharts-ng', [])
         }
       });
 
+	    if (config.plotOptions) {
+        mergedOptions.plotOptions = config.plotOptions;
+      }
       if(config.title) {
         mergedOptions.title = config.title;
       }
