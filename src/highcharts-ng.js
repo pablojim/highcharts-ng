@@ -305,12 +305,11 @@ angular.module('highcharts-ng', [])
 
         angular.forEach(axisNames, function(axisName) {
           scope.$watch('config.' + axisName, function (newAxes, oldAxes) {
-            if (newAxes === oldAxes) return;
-            if(newAxes) {
-              chart[axisName][0].update(newAxes, false);
-              updateZoom(chart[axisName][0], angular.copy(newAxes));
-              chart.redraw();
-            }
+            if (!newAxes) return;
+            
+            chart[axisName][0].update(newAxes, false);
+            updateZoom(chart[axisName][0], angular.copy(newAxes));
+            chart.redraw();
           }, true);
         });
         scope.$watch('config.options', function (newOptions, oldOptions, scope) {
