@@ -1,3 +1,4 @@
+(function () {
 'use strict';
 /*global angular: false, Highcharts: false */
 
@@ -344,3 +345,4 @@ angular.module('highcharts-ng', [])
       }
     };
   }]);
+}());
