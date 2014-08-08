@@ -4,7 +4,7 @@
 
   angular.module('highcharts-ng', [])
     .factory('highchartsNGUtils', highchartsNGUtils)
-    .directive('highchart', highchart);
+    .directive('highchart', ['highchartsNGUtils', highchart]);
 
   function highchartsNGUtils() {
 
