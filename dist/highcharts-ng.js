@@ -1,7 +1,7 @@
 (function () {
   'use strict';
   /*global angular: false, Highcharts: false */
-  angular.module('highcharts-ng', []).factory('highchartsNGUtils', highchartsNGUtils).directive('highchart', highchart);
+  angular.module('highcharts-ng', []).factory('highchartsNGUtils', highchartsNGUtils).directive('highchart', ['highchartsNGUtils', highchart]);
   function highchartsNGUtils() {
     return {
       indexOf: function (arr, find, i) {
