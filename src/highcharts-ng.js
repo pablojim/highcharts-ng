@@ -1,8 +1,12 @@
-'use strict';
-/*global angular: false, Highcharts: false */
+(function () {
+  'use strict';
+  /*global angular: false, Highcharts: false */
 
-angular.module('highcharts-ng', [])
-  .factory('highchartsNGUtils', function () {
+  angular.module('highcharts-ng', [])
+    .factory('highchartsNGUtils', highchartsNGUtils)
+    .directive('highchart', highchart);
+
+  function highchartsNGUtils() {
 
     return {
 
@@ -16,7 +20,6 @@ angular.module('highcharts-ng', [])
             return i;
         return -1;
       },
-
 
       prependMethod: function (obj, method, func) {
         var original = obj[method];
@@ -50,8 +53,9 @@ angular.module('highcharts-ng', [])
         return destination;
       }
     };
+  }
 
-  }).directive('highchart', ['highchartsNGUtils', function (highchartsNGUtils) {
+  function highchart(highchartsNGUtils) {
 
     // acceptable shared state
     var seriesId = 0;
@@ -343,4 +347,6 @@ angular.module('highcharts-ng', [])
 
       }
     };
-  }]);
+  }
+
+}());

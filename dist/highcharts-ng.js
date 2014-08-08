@@ -1,49 +1,54 @@
-'use strict';
-angular.module('highcharts-ng', []).factory('highchartsNGUtils', function () {
-  return {
-    indexOf: function (arr, find, i) {
-      if (i === undefined)
-        i = 0;
-      if (i < 0)
-        i += arr.length;
-      if (i < 0)
-        i = 0;
-      for (var n = arr.length; i < n; i++)
-        if (i in arr && arr[i] === find)
-          return i;
-      return -1;
-    },
-    prependMethod: function (obj, method, func) {
-      var original = obj[method];
-      obj[method] = function () {
-        var args = Array.prototype.slice.call(arguments);
-        func.apply(this, args);
-        if (original) {
-          return original.apply(this, args);
+(function () {
+  'use strict';
+  /*global angular: false, Highcharts: false */
+  angular.module('highcharts-ng', []).factory('highchartsNGUtils', highchartsNGUtils).directive('highchart', highchart);
+  function highchartsNGUtils() {
+    return {
+      indexOf: function (arr, find, i) {
+        if (i === undefined)
+          i = 0;
+        if (i < 0)
+          i += arr.length;
+        if (i < 0)
+          i = 0;
+        for (var n = arr.length; i < n; i++)
+          if (i in arr && arr[i] === find)
+            return i;
+        return -1;
+      },
+      prependMethod: function (obj, method, func) {
+        var original = obj[method];
+        obj[method] = function () {
+          var args = Array.prototype.slice.call(arguments);
+          func.apply(this, args);
+          if (original) {
+            return original.apply(this, args);
+          } else {
+            return;
+          }
+        };
+      },
+      deepExtend: function deepExtend(destination, source) {
+        //Slightly strange behaviour in edge cases (e.g. passing in non objects)
+        //But does the job for current use cases.
+        if (angular.isArray(source)) {
+          destination = angular.isArray(destination) ? destination : [];
+          for (var i = 0; i < source.length; i++) {
+            destination[i] = deepExtend(destination[i] || {}, source[i]);
+          }
+        } else if (angular.isObject(source)) {
+          for (var property in source) {
+            destination[property] = deepExtend(destination[property] || {}, source[property]);
+          }
         } else {
-          return;
+          destination = source;
         }
-      };
-    },
-    deepExtend: function deepExtend(destination, source) {
-      if (angular.isArray(source)) {
-        destination = angular.isArray(destination) ? destination : [];
-        for (var i = 0; i < source.length; i++) {
-          destination[i] = deepExtend(destination[i] || {}, source[i]);
-        }
-      } else if (angular.isObject(source)) {
-        for (var property in source) {
-          destination[property] = deepExtend(destination[property] || {}, source[property]);
-        }
-      } else {
-        destination = source;
+        return destination;
       }
-      return destination;
-    }
-  };
-}).directive('highchart', [
-  'highchartsNGUtils',
-  function (highchartsNGUtils) {
+    };
+  }
+  function highchart(highchartsNGUtils) {
+    // acceptable shared state
     var seriesId = 0;
     var ensureIds = function (series) {
       var changed = false;
@@ -55,6 +60,7 @@ angular.module('highcharts-ng', []).factory('highchartsNGUtils', function () {
       });
       return changed;
     };
+    // immutable
     var axisNames = [
         'xAxis',
         'yAxis'
@@ -88,6 +94,7 @@ angular.module('highcharts-ng', []).factory('highchartsNGUtils', function () {
                   scope.config[axisName].currentMax = e[axisName][0].max;
                 });
               } else {
+                //handle reset button - zoom out to all
                 scope.$apply(function () {
                   scope.config[axisName].currentMin = thisChart[axisName][0].dataMin;
                   scope.config[axisName].currentMax = thisChart[axisName][0].dataMax;
@@ -146,6 +153,9 @@ angular.module('highcharts-ng', []).factory('highchartsNGUtils', function () {
         disableDataWatch: '='
       },
       link: function (scope, element, attrs) {
+        // We keep some chart-specific variables here as a closure
+        // instead of storing them on 'scope'.
+        // prevSeriesOptions is maintained by processSeries
         var prevSeriesOptions = {};
         var processSeries = function (series) {
           var i;
@@ -153,8 +163,11 @@ angular.module('highcharts-ng', []).factory('highchartsNGUtils', function () {
           if (series) {
             var setIds = ensureIds(series);
             if (setIds && !scope.disableDataWatch) {
+              //If we have set some ids this will trigger another digest cycle.
+              //In this scenario just return early and let the next cycle take care of changes
               return false;
             }
+            //Find series to add or update
             angular.forEach(series, function (s) {
               ids.push(s.id);
               var chartSeries = chart.get(s.id);
@@ -172,6 +185,7 @@ angular.module('highcharts-ng', []).factory('highchartsNGUtils', function () {
               }
               prevSeriesOptions[s.id] = chartOptionsWithoutEasyOptions(s);
             });
+            //  Shows no data text if all series are empty
             if (scope.config.noData) {
               var chartContainsData = false;
               for (i = 0; i < series.length; i++) {
@@ -187,14 +201,16 @@ angular.module('highcharts-ng', []).factory('highchartsNGUtils', function () {
               }
             }
           }
+          //Now remove any missing series
           for (i = chart.series.length - 1; i >= 0; i--) {
             var s = chart.series[i];
-            if (highchartsNGUtils.indexOf(ids, s.options.id) < 0) {
+            if (s.options.id !== 'highcharts-navigator-series' && highchartsNGUtils.indexOf(ids, s.options.id) < 0) {
               s.remove(false);
             }
           }
           return true;
         };
+        // chart is maintained by initChart
         var chart = false;
         var initChart = function () {
           if (chart)
@@ -264,6 +280,7 @@ angular.module('highcharts-ng', []).factory('highchartsNGUtils', function () {
           }, true);
         });
         scope.$watch('config.options', function (newOptions, oldOptions, scope) {
+          //do nothing when called on registration
           if (newOptions === oldOptions)
             return;
           initChart();
@@ -281,11 +298,14 @@ angular.module('highcharts-ng', []).factory('highchartsNGUtils', function () {
           chart.reflow();
         });
         scope.$on('$destroy', function () {
-          if (chart)
+          if (chart) {
             chart.destroy();
-          element.remove();
+            setTimeout(function () {
+              element.remove();
+            }, 0);
+          }
         });
       }
     };
   }
-]);
+}());
