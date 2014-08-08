@@ -290,6 +290,11 @@ angular.module('highcharts-ng', [])
           }
         });
 
+        scope.$watch('config.noData', function (noData) {
+          if(scope.config.loading)
+            chart.showLoading(noData);
+        });
+		
         scope.$watch('config.credits.enabled', function (enabled) {
           if (enabled) {
             chart.credits.show();
