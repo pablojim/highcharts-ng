@@ -18,7 +18,7 @@ The highchartsNgConfig resembles an exploded highcharts options object:
 
 
 ```javascript
-highchartsNgConfig = {
+var highchartsNgConfig = {
              //This is not a highcharts object. It just looks a little like one!
              options: {
                  //This is the Main Highcharts chart config. Any Highchart options are valid here.
@@ -31,7 +31,7 @@ highchartsNgConfig = {
                          padding: 10,
                          fontWeight: 'bold'
                      }
-                 },
+                 }
              },
 
              //The below properties are watched separately for changes.
@@ -54,8 +54,7 @@ highchartsNgConfig = {
               title: {text: 'values'}
              },
              //Whether to use HighStocks instead of HighCharts (optional). Defaults to false.
-             useHighStocks: false
-             },
+             useHighStocks: false,
              //size (optional) if left out the chart will default to size of the div or something sensible.
              size: {
                width: 400,
@@ -65,6 +64,8 @@ highchartsNgConfig = {
              func: function (chart) {
                //setup some logic for the chart
              }
+
+};
 ```
 
 All properties on the chart configuration are optional. If you don't need a feature best to leave it out completely - Highcharts will usually default to something sensible. Each property is watched for changes by angularjs.
