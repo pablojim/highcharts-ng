@@ -335,6 +335,12 @@
         scope.$on('highchartsng.reflow', function () {
           chart.reflow();
         });
+        
+        scope.$on('exportChart', function() {
+          if (chart) {
+            chart.exportChart();
+          }
+        });
 
         scope.$on('$destroy', function() {
           if (chart) {
