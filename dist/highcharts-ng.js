@@ -1,3 +1,7 @@
+if (typeof module !== "undefined" && typeof exports !== "undefined" && module.exports === exports){
+  module.exports = 'highcharts-ng';
+}
+
 (function () {
   'use strict';
   angular.module('highcharts-ng', []).factory('highchartsNGUtils', highchartsNGUtils).directive('highchart', [
