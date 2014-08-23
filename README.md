@@ -146,22 +146,5 @@ Version 0.0.1 (not compatible with current version)
 
 See an example here: [http://jsfiddle.net/pablojim/46rhz/](http://jsfiddle.net/pablojim/46rhz/)
 
-Features:
----------
-
-- Adding and removing series
-- Setting/Updating Chart options
-- Updating the chart title
-
-
-Caveats:
---------
-
-- Due to many equality checks the directive maybe slow with large datasets (this is solvable though...)
-- Whole Chart/Series is often redrawn where a simple update of data would suffice
-- If you don't assign ids to your series - incremental ids will be added
-- Needs tests!
-
-
 
 [![Build Status](https://travis-ci.org/pablojim/highcharts-ng.png)](https://travis-ci.org/pablojim/highcharts-ng)
