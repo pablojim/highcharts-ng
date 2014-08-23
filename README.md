@@ -5,7 +5,7 @@ AngularJS directive for Highcharts
 
 A simple Angularjs directive for Highcharts.
 
-Current Version (0.0.6)
+Current Version (0.0.7)
 ---------------
 
 `<highchart id="chart1" config="chartConfig"></highchart>`
@@ -107,6 +107,11 @@ In general if the highcharts option you want isn't listed above you probably wan
 
 Versions
 --------------
+
+Version 0.0.7
+----------------
+- Better support for large data series - thanks @f1ghtingfalcons
+- Lots of bug fixes - thanks to all contributors
 
 
 Version 0.0.6
