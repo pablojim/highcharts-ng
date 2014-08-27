@@ -1,3 +1,6 @@
+if (typeof module !== "undefined" && typeof exports !== "undefined" && module.exports === exports){
+  module.exports = 'highcharts-ng';
+}
 (function () {
   'use strict';
   /*global angular: false, Highcharts: false */
