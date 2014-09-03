@@ -99,8 +99,32 @@ FAQ:
 
 - Why doesn't my plot options/tooltip/drilldown/other feature work?
 
+*At least half of all issues filed are due to this. Before you file an issue read this!*
 A common error is to put other highcharts options directly into the highchartsNgConfig.
-In general if the highcharts option you want isn't listed above you probably want to put it in highchartsNgConfig.options. Try this before creating a pull request!
+In general if the highcharts option you want isn't listed above you probably want to put it in highchartsNgConfig.options.
+
+- Why don't you just use the standard highcharts format?
+
+Lets consider the below snippet.
+
+```
+$scope.highchartsNGConfig = {
+   options: {...}, //highcharts options - using standard highcharts config
+   //other "dynamic" options
+   title: {...}
+   series [...]
+}
+```
+In highchartsNGConfig the ```options``` property is a standard highcharts options object. e.g. anything you can pass into ````new Highcharts.Chart(options);``` works here.
+
+This options object is watched for changes. When something changes here the whole chart is recreated.
+
+The other dynamic properties are ones that we can change without affecting the whole chart - using the api at http://api.highcharts.com/highcharts#Chart e.g. if you change the title we can call chart.setTitle and not have to recreate the whole chart. Splitting them out from the main options object means we can watch them separately.
+
+So anything that has an api to change is declared outside the main options object.
+
+Hope this makes sense! 
+
  
 
 
