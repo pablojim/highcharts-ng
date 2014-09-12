@@ -5,7 +5,7 @@ AngularJS directive for Highcharts
 
 A simple Angularjs directive for Highcharts.
 
-Current Version (0.0.6)
+Current Version (0.0.7)
 ---------------
 
 `<highchart id="chart1" config="chartConfig"></highchart>`
@@ -18,7 +18,7 @@ The highchartsNgConfig resembles an exploded highcharts options object:
 
 
 ```javascript
-highchartsNgConfig = {
+var highchartsNgConfig = {
              //This is not a highcharts object. It just looks a little like one!
              options: {
                  //This is the Main Highcharts chart config. Any Highchart options are valid here.
@@ -31,7 +31,7 @@ highchartsNgConfig = {
                          padding: 10,
                          fontWeight: 'bold'
                      }
-                 },
+                 }
              },
 
              //The below properties are watched separately for changes.
@@ -54,8 +54,7 @@ highchartsNgConfig = {
               title: {text: 'values'}
              },
              //Whether to use HighStocks instead of HighCharts (optional). Defaults to false.
-             useHighStocks: false
-             },
+             useHighStocks: false,
              //size (optional) if left out the chart will default to size of the div or something sensible.
              size: {
                width: 400,
@@ -65,6 +64,8 @@ highchartsNgConfig = {
              func: function (chart) {
                //setup some logic for the chart
              }
+
+};
 ```
 
 All properties on the chart configuration are optional. If you don't need a feature best to leave it out completely - Highcharts will usually default to something sensible. Each property is watched for changes by angularjs.
@@ -98,14 +99,43 @@ FAQ:
 
 - Why doesn't my plot options/tooltip/drilldown/other feature work?
 
+*At least half of all issues filed are due to this. Before you file an issue read this!*
 A common error is to put other highcharts options directly into the highchartsNgConfig.
-In general if the highcharts option you want isn't listed above you probably want to put it in highchartsNgConfig.options. Try this before creating a pull request!
+In general if the highcharts option you want isn't listed above you probably want to put it in highchartsNgConfig.options.
+
+- Why don't you just use the standard highcharts format?
+
+Lets consider the below snippet.
+
+```
+$scope.highchartsNGConfig = {
+   options: {...}, //highcharts options - using standard highcharts config
+   //other "dynamic" options
+   title: {...}
+   series [...]
+}
+```
+In highchartsNGConfig the ```options``` property is a standard highcharts options object. e.g. anything you can pass into ````new Highcharts.Chart(options);``` works here.
+
+This options object is watched for changes. When something changes here the whole chart is recreated.
+
+The other dynamic properties are ones that we can change without affecting the whole chart - using the api at http://api.highcharts.com/highcharts#Chart e.g. if you change the title we can call chart.setTitle and not have to recreate the whole chart. Splitting them out from the main options object means we can watch them separately.
+
+So anything that has an api to change is declared outside the main options object.
+
+Hope this makes sense! 
+
  
 
 
 
 Versions
 --------------
+
+Version 0.0.7
+----------------
+- Better support for large data series - thanks @f1ghtingfalcons
+- Lots of bug fixes - thanks to all contributors
 
 
 Version 0.0.6
@@ -144,23 +174,6 @@ Version 0.0.1 (not compatible with current version)
 `<highchart id="chart1" series="chart.series" title="chart.title" options="chart.options"></highchart>`
 
 See an example here: [http://jsfiddle.net/pablojim/46rhz/](http://jsfiddle.net/pablojim/46rhz/)
-
-Features:
----------
-
-- Adding and removing series
-- Setting/Updating Chart options
-- Updating the chart title
-
-
-Caveats:
---------
-
-- Due to many equality checks the directive maybe slow with large datasets (this is solvable though...)
-- Whole Chart/Series is often redrawn where a simple update of data would suffice
-- If you don't assign ids to your series - incremental ids will be added
-- Needs tests!
-
 
 
 [![Build Status](https://travis-ci.org/pablojim/highcharts-ng.png)](https://travis-ci.org/pablojim/highcharts-ng)

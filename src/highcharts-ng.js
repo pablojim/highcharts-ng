@@ -1,8 +1,15 @@
-'use strict';
-/*global angular: false, Highcharts: false */
+if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.exports === exports){
+  module.exports = 'highcharts-ng';
+}
+(function () {
+  'use strict';
+  /*global angular: false, Highcharts: false */
 
-angular.module('highcharts-ng', [])
-  .factory('highchartsNGUtils', function () {
+  angular.module('highcharts-ng', [])
+    .factory('highchartsNGUtils', highchartsNGUtils)
+    .directive('highchart', ['highchartsNGUtils', '$timeout', highchart]);
+
+  function highchartsNGUtils() {
 
     return {
 
@@ -16,7 +23,6 @@ angular.module('highcharts-ng', [])
             return i;
         return -1;
       },
-
 
       prependMethod: function (obj, method, func) {
         var original = obj[method];
@@ -50,8 +56,9 @@ angular.module('highcharts-ng', [])
         return destination;
       }
     };
+  }
 
-  }).directive('highchart', ['highchartsNGUtils', function (highchartsNGUtils) {
+  function highchart(highchartsNGUtils, $timeout) {
 
     // acceptable shared state
     var seriesId = 0;
@@ -180,7 +187,7 @@ angular.module('highcharts-ng', [])
 
           if(series) {
             var setIds = ensureIds(series);
-            if(setIds && !scope.disableDataWatch) {
+            if(setIds) {
               //If we have set some ids this will trigger another digest cycle.
               //In this scenario just return early and let the next cycle take care of changes
               return false;
@@ -335,7 +342,7 @@ angular.module('highcharts-ng', [])
         scope.$on('$destroy', function() {
           if (chart) {
             chart.destroy();
-            setTimeout(function(){
+            $timeout(function(){
               element.remove();
             }, 0);
           }
@@ -343,4 +350,6 @@ angular.module('highcharts-ng', [])
 
       }
     };
-  }]);
+  }
+
+}());
