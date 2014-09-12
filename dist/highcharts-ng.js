@@ -1,52 +1,60 @@
-'use strict';
-/*global angular: false, Highcharts: false */
-angular.module('highcharts-ng', []).factory('highchartsNGUtils', function () {
-  return {
-    indexOf: function (arr, find, i) {
-      if (i === undefined)
-        i = 0;
-      if (i < 0)
-        i += arr.length;
-      if (i < 0)
-        i = 0;
-      for (var n = arr.length; i < n; i++)
-        if (i in arr && arr[i] === find)
-          return i;
-      return -1;
-    },
-    prependMethod: function (obj, method, func) {
-      var original = obj[method];
-      obj[method] = function () {
-        var args = Array.prototype.slice.call(arguments);
-        func.apply(this, args);
-        if (original) {
-          return original.apply(this, args);
+if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.exports === exports) {
+  module.exports = 'highcharts-ng';
+}
+(function () {
+  'use strict';
+  /*global angular: false, Highcharts: false */
+  angular.module('highcharts-ng', []).factory('highchartsNGUtils', highchartsNGUtils).directive('highchart', [
+    'highchartsNGUtils',
+    '$timeout',
+    highchart
+  ]);
+  function highchartsNGUtils() {
+    return {
+      indexOf: function (arr, find, i) {
+        if (i === undefined)
+          i = 0;
+        if (i < 0)
+          i += arr.length;
+        if (i < 0)
+          i = 0;
+        for (var n = arr.length; i < n; i++)
+          if (i in arr && arr[i] === find)
+            return i;
+        return -1;
+      },
+      prependMethod: function (obj, method, func) {
+        var original = obj[method];
+        obj[method] = function () {
+          var args = Array.prototype.slice.call(arguments);
+          func.apply(this, args);
+          if (original) {
+            return original.apply(this, args);
+          } else {
+            return;
+          }
+        };
+      },
+      deepExtend: function deepExtend(destination, source) {
+        //Slightly strange behaviour in edge cases (e.g. passing in non objects)
+        //But does the job for current use cases.
+        if (angular.isArray(source)) {
+          destination = angular.isArray(destination) ? destination : [];
+          for (var i = 0; i < source.length; i++) {
+            destination[i] = deepExtend(destination[i] || {}, source[i]);
+          }
+        } else if (angular.isObject(source)) {
+          for (var property in source) {
+            destination[property] = deepExtend(destination[property] || {}, source[property]);
+          }
         } else {
-          return;
+          destination = source;
         }
-      };
-    },
-    deepExtend: function deepExtend(destination, source) {
-      //Slightly strange behaviour in edge cases (e.g. passing in non objects)
-      //But does the job for current use cases.
-      if (angular.isArray(source)) {
-        destination = angular.isArray(destination) ? destination : [];
-        for (var i = 0; i < source.length; i++) {
-          destination[i] = deepExtend(destination[i] || {}, source[i]);
-        }
-      } else if (angular.isObject(source)) {
-        for (var property in source) {
-          destination[property] = deepExtend(destination[property] || {}, source[property]);
-        }
-      } else {
-        destination = source;
+        return destination;
       }
-      return destination;
-    }
-  };
-}).directive('highchart', [
-  'highchartsNGUtils',
-  function (highchartsNGUtils) {
+    };
+  }
+  function highchart(highchartsNGUtils, $timeout) {
     // acceptable shared state
     var seriesId = 0;
     var ensureIds = function (series) {
@@ -161,7 +169,7 @@ angular.module('highcharts-ng', []).factory('highchartsNGUtils', function () {
           var ids = [];
           if (series) {
             var setIds = ensureIds(series);
-            if (setIds && !scope.disableDataWatch) {
+            if (setIds) {
               //If we have set some ids this will trigger another digest cycle.
               //In this scenario just return early and let the next cycle take care of changes
               return false;
@@ -303,7 +311,7 @@ angular.module('highcharts-ng', []).factory('highchartsNGUtils', function () {
         scope.$on('$destroy', function () {
           if (chart) {
             chart.destroy();
-            setTimeout(function () {
+            $timeout(function () {
               element.remove();
             }, 0);
           }
@@ -311,4 +319,4 @@ angular.module('highcharts-ng', []).factory('highchartsNGUtils', function () {
       }
     };
   }
-]);
+}());
