@@ -262,6 +262,9 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
           if(config.loading) {
             chart.showLoading();
           }
+          config.getHighcharts = function() {
+            return chart;
+          };
 
         };
         initChart();
