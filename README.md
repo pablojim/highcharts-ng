@@ -8,7 +8,27 @@ A simple Angularjs directive for Highcharts.
 Current Version (0.0.7)
 ---------------
 
-`<highchart id="chart1" config="chartConfig"></highchart>`
+Setup:
+
+Install with bower/npm:
+
+```bower install highcharts-ng```
+
+Add references to highcharts/highstocks
+
+```<script src="http://code.highcharts.com/stock/highstock.src.js"></script>```
+
+or
+
+```<script src="http://code.highcharts.com/highcharts.src.js"></script>```
+
+Add Highcharts to your angular app config 
+
+```var myapp = angular.module('myapp', ["highcharts-ng"]);```
+
+Make a chart!
+
+```<highchart id="chart1" config="chartConfig"></highchart>```
 
 - See http://pablojim.github.io/highcharts-ng/examples/example.html for an extended example. Also Available in the example directory - thanks @crusat
 - Basic example: http://jsfiddle.net/pablojim/Hjdnw/
