@@ -297,6 +297,11 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
           }
         });
 
+        scope.$watch('config.noData', function (noData) {
+          if(scope.config.loading)
+            chart.showLoading(noData);
+        });
+		
         scope.$watch('config.credits.enabled', function (enabled) {
           if (enabled) {
             chart.credits.show();
