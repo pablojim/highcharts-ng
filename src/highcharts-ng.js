@@ -291,7 +291,7 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
 
         scope.$watch('config.loading', function (loading) {
           if(loading) {
-            chart.showLoading();
+            chart.showLoading(loading === true ? null : loading);
           } else {
             chart.hideLoading();
           }
