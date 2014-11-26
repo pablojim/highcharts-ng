@@ -73,6 +73,8 @@ NOTE:
 A common error is to put other highcharts options directly into the highchartsNgConfig.
 In general if the highcharts option you want isn't listed above you probably want to put it in highchartsNgConfig.options
 
+The Highcharts object can be accessed with ```chartConfig.getHighcharts()```. This is a simple way to access all the Highcharts API that is not currently managed by this directive. See the JSFiddle basic example to see how this is used to call the print function of Highcharts.
+
 Features:
 ---------
 
