@@ -146,6 +146,9 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
           mergedOptions.chart.height = config.size.height;
         }
       }
+      if (config.plotOptions) {
+        mergedOptions.plotOptions = config.plotOptions;
+      }
       return mergedOptions;
     };
 
