@@ -65,6 +65,7 @@ var highchartsNgConfig = {
                  text: 'Hello'
              },
              //Boolean to control showng loading status on chart (optional)
+             //Could be a string if you want to show specific loading text.
              loading: false,
              //Configuration for the xAxis (optional). Currently only one x axis can be dynamically controlled.
              //properties currentMin and currentMax provied 2-way binding to the chart's maximimum and minimum
