@@ -34,64 +34,66 @@ Make a chart!
 - Basic example: http://jsfiddle.net/pablojim/Hjdnw/
 - Example with dynamic x-axis: http://jsfiddle.net/pablojim/7cAq3/
 
-The highchartsNgConfig resembles an exploded highcharts options object:
-
+The `chartConfig` attribute mentioned above resembles an exploded highcharts options object:
 
 ```javascript
-var highchartsNgConfig = {
-             //This is not a highcharts object. It just looks a little like one!
-             options: {
-                 //This is the Main Highcharts chart config. Any Highchart options are valid here.
-                 //will be ovverriden by values specified below.
-                 chart: {
-                     type: 'bar'
-                 },
-                 tooltip: {
-                     style: {
-                         padding: 10,
-                         fontWeight: 'bold'
-                     }
-                 }
-             },
+var chartConfig = {
 
-             //The below properties are watched separately for changes.
+  //This is not a highcharts object. It just looks a little like one!
+  options: {
+      //This is the Main Highcharts chart config. Any Highchart options are valid here.
+      //will be ovverriden by values specified below.
+      chart: {
+          type: 'bar'
+      },
+      tooltip: {
+          style: {
+              padding: 10,
+              fontWeight: 'bold'
+          }
+      }
+  },
 
-             //Series object (optional) - a list of series using normal highcharts series options.
-             series: [{
-                 data: [10, 15, 12, 8, 7]
-             }],
-             //Title configuration (optional)
-             title: {
-                 text: 'Hello'
-             },
-             //Boolean to control showng loading status on chart (optional)
-             loading: false,
-             //Configuration for the xAxis (optional). Currently only one x axis can be dynamically controlled.
-             //properties currentMin and currentMax provied 2-way binding to the chart's maximimum and minimum
-             xAxis: {
-              currentMin: 0,
-              currentMax: 20,
-              title: {text: 'values'}
-             },
-             //Whether to use HighStocks instead of HighCharts (optional). Defaults to false.
-             useHighStocks: false,
-             //size (optional) if left out the chart will default to size of the div or something sensible.
-             size: {
-               width: 400,
-               height: 300
-             },
-             //function (optional)
-             func: function (chart) {
-               //setup some logic for the chart
-             }
+  //The below properties are watched separately for changes.
+
+  //Series object (optional) - a list of series using normal highcharts series options.
+  series: [{
+      data: [10, 15, 12, 8, 7]
+  }],
+  //Title configuration (optional)
+  title: {
+      text: 'Hello'
+  },
+  //Boolean to control showng loading status on chart (optional)
+  loading: false,
+  //Configuration for the xAxis (optional). Currently only one x axis can be dynamically controlled.
+  //properties currentMin and currentMax provied 2-way binding to the chart's maximimum and minimum
+  xAxis: {
+      currentMin: 0,
+      currentMax: 20,
+      title: {
+          text: 'values'
+      }
+  },
+  //Whether to use HighStocks instead of HighCharts (optional). Defaults to false.
+  useHighStocks: false,
+  //size (optional) if left out the chart will default to size of the div or something sensible.
+  size: {
+      width: 400,
+      height: 300
+  },
+  //function (optional)
+  func: function(chart) {
+      //setup some logic for the chart
+  }
 
 };
 ```
 
 All properties on the chart configuration are optional. If you don't need a feature best to leave it out completely - Highcharts will usually default to something sensible. Each property is watched for changes by angularjs.
 NOTE:
-A common error is to put other highcharts options directly into the highchartsNgConfig.
-In general if the highcharts option you want isn't listed above you probably want to put it in highchartsNgConfig.options
+A common error is to put other highcharts options directly into the chartConfig.
+In general if the highcharts option you want isn't listed above you probably want to put it in chartConfig.options
 
 The Highcharts object can be accessed with ```chartConfig.getHighcharts()```. This is a simple way to access all the Highcharts API that is not currently managed by this directive. See the JSFiddle basic example to see how this is used to call the print function of Highcharts.
 
@@ -122,22 +124,22 @@ FAQ:
 - Why doesn't my plot options/tooltip/drilldown/other feature work?
 
 *At least half of all issues filed are due to this. Before you file an issue read this!*
-A common error is to put other highcharts options directly into the highchartsNgConfig.
-In general if the highcharts option you want isn't listed above you probably want to put it in highchartsNgConfig.options.
+A common error is to put other highcharts options directly into the chartConfig.
+In general if the highcharts option you want isn't listed above you probably want to put it in chartConfig.options.
 
 - Why don't you just use the standard highcharts format?
 
 Lets consider the below snippet.
 
 ```
-$scope.highchartsNGConfig = {
+$scope.chartConfig = {
    options: {...}, //highcharts options - using standard highcharts config
    //other "dynamic" options
    title: {...}
    series [...]
 }
 ```
-In highchartsNGConfig the ```options``` property is a standard highcharts options object. e.g. anything you can pass into ````new Highcharts.Chart(options);``` works here.
+In chartConfig the ```options``` property is a standard highcharts options object. e.g. anything you can pass into ````new Highcharts.Chart(options);``` works here.
 
 This options object is watched for changes. When something changes here the whole chart is recreated.
 
