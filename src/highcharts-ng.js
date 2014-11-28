@@ -91,8 +91,8 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
         navigator: {enabled: false}
       };
 
-      if (config.options) {
-        mergedOptions = highchartsNGUtils.deepExtend(defaultOptions, config.options);
+      if (config) {
+        mergedOptions = highchartsNGUtils.deepExtend(defaultOptions, config);
       } else {
         mergedOptions = defaultOptions;
       }
