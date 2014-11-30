@@ -62,11 +62,12 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
 
     // acceptable shared state
     var seriesId = 0;
-    var ensureIds = function (series) {
+    var ensureIds = function (series, prefix) {
+      prefix = angular.isDefined(prefix) ? prefix : 'series-';
       var changed = false;
       angular.forEach(series, function(s) {
         if (!angular.isDefined(s.id)) {
-          s.id = 'series-' + seriesId++;
+          s.id = prefix + seriesId++;
           changed = true;
         }
       });
@@ -126,6 +127,12 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
               scope.config[axisName].currentMax = this[axisName][0].max || scope.config[axisName].currentMax;
             });
           }
+
+          for(var i = 0; i < mergedOptions[axisName].length; i++) {
+            if(angular.isDefined(mergedOptions[axisName].plotLines)) {
+              ensureIds(mergedOptions[axisName].plotLines,'plotlines-' + i + '-');
+            }
+          }
         }
       });
 
@@ -153,6 +160,28 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
       var extremes = axis.getExtremes();
       if(modelAxis.currentMin !== extremes.dataMin || modelAxis.currentMax !== extremes.dataMax) {
         axis.setExtremes(modelAxis.currentMin, modelAxis.currentMax, false);
+      }
+    };
+
+    // Update plotlines
+    var updatePlotLine = function(axis, newModelAxis, oldModelAxis)
+    {
+      // Remove old plotLines
+      for(var k = 0; k < oldModelAxis.length; k++) {
+        if(angular.isDefined(oldModelAxis[k].plotLines)) {
+          for(var l = 0; l < oldModelAxis[k].plotLines.length; l++) {
+            axis.removePlotLine(oldModelAxis[k].plotLines[l].id);
+          }
+        }
+      }
+
+        // Add new plotLines
+      for(var m = 0; m < newModelAxis.length; m++) {
+        if(angular.isDefined(newModelAxis[m].plotLines)) {
+          for(var n = 0; n < newModelAxis[m].plotLines.length; n++) {
+            axis.addPlotLine(newModelAxis[m].plotLines[n]);
+          }
+        }
       }
     };
 
@@ -319,6 +348,7 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
             if(newAxes) {
               chart[axisName][0].update(newAxes, false);
               updateZoom(chart[axisName][0], angular.copy(newAxes));
+              updatePlotLine(chart[axisName][0], angular.copy(newAxes), angular.copy(oldAxes));
               chart.redraw();
             }
           }, true);
