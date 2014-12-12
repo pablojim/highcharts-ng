@@ -340,6 +340,10 @@ angular.module('highcharts-ng', [])
             }, 0);
           }
         });
+        
+        window.setTimeout(function() {
+          chart.reflow();
+        }, 0);
 
       }
     };
