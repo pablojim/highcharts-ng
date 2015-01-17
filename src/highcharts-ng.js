@@ -314,13 +314,30 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
         });
 
         angular.forEach(axisNames, function(axisName) {
-          scope.$watch('config.' + axisName, function (newAxes, oldAxes) {
-            if (newAxes === oldAxes) return;
-            if(newAxes) {
+          scope.$watch('config.' + axisName, function(newAxes, oldAxes) {
+            if (newAxes === oldAxes || !newAxes) {
+              return;
+            }
+
+            if (angular.isArray(newAxes)) {
+
+              for (var axisIndex = 0; axisIndex < newAxes.length; axisIndex++) {
+                var axis = newAxes[axisIndex];
+
+                if (axisIndex < chart[axisName].length) {
+                  chart[axisName][axisIndex].update(axis, false);
+                  updateZoom(chart[axisName][axisIndex], angular.copy(axis));
+                }
+
+              }
+
+            } else {
+              // update single axis
               chart[axisName][0].update(newAxes, false);
               updateZoom(chart[axisName][0], angular.copy(newAxes));
-              chart.redraw();
             }
+
+            chart.redraw();
           }, true);
         });
         scope.$watch('config.options', function (newOptions, oldOptions, scope) {
