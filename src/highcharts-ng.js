@@ -299,6 +299,11 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
             chart.hideLoading();
           }
         });
+        scope.$watch('config.noData', function (noData) {
+          if(scope.config.loading) {
+            chart.showLoading(noData);
+          }
+        }, true);
 
         scope.$watch('config.credits.enabled', function (enabled) {
           if (enabled) {
