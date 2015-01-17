@@ -350,6 +350,10 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
             }, 0);
           }
         });
+        
+        window.setTimeout(function() {
+          chart.reflow();
+        }, 0);
 
       }
     };
