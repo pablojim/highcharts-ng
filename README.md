@@ -130,14 +130,14 @@ In general if the highcharts option you want isn't listed above you probably wan
 Lets consider the below snippet.
 
 ```
-$scope.highchartsNGConfig = {
+$scope.chartConfig = {
    options: {...}, //highcharts options - using standard highcharts config
    //other "dynamic" options
    title: {...}
    series [...]
 }
 ```
-In chartConfig the ```options``` property is a standard highcharts options object. e.g. anything you can pass into ````new Highcharts.Chart(options);``` works here.
+In the ```chartConfig``` object above the ```options``` property is a standard highcharts options object. e.g. anything you can pass into ````new Highcharts.Chart(options);``` works here.
 
 This options object is watched for changes. When something changes here the whole chart is recreated.
 
