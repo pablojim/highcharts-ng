@@ -76,9 +76,9 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
     // immutable
     var axisNames = [ 'xAxis', 'yAxis' ];
     var chartTypeMap = {
-        'stock': 'StockChart',
-        'map':   'Map',
-        'chart': 'Chart'
+      'stock': 'StockChart',
+      'map':   'Map',
+      'chart': 'Chart'
     };
 
     var getMergedOptions = function (scope, element, config) {
