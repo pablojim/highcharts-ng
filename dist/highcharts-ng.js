@@ -3,7 +3,6 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
 }
 (function () {
   'use strict';
-  /*global angular: false, Highcharts: false */
   angular.module('highcharts-ng', []).factory('highchartsNGUtils', highchartsNGUtils).directive('highchart', [
     'highchartsNGUtils',
     '$timeout',
@@ -36,8 +35,6 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
         };
       },
       deepExtend: function deepExtend(destination, source) {
-        //Slightly strange behaviour in edge cases (e.g. passing in non objects)
-        //But does the job for current use cases.
         if (angular.isArray(source)) {
           destination = angular.isArray(destination) ? destination : [];
           for (var i = 0; i < source.length; i++) {
@@ -55,7 +52,6 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
     };
   }
   function highchart(highchartsNGUtils, $timeout) {
-    // acceptable shared state
     var seriesId = 0;
     var ensureIds = function (series) {
       var changed = false;
@@ -67,7 +63,6 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
       });
       return changed;
     };
-    // immutable
     var axisNames = [
         'xAxis',
         'yAxis'
@@ -101,7 +96,6 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
                   scope.config[axisName].currentMax = e[axisName][0].max;
                 });
               } else {
-                //handle reset button - zoom out to all
                 scope.$apply(function () {
                   scope.config[axisName].currentMin = thisChart[axisName][0].dataMin;
                   scope.config[axisName].currentMax = thisChart[axisName][0].dataMax;
@@ -160,9 +154,6 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
         disableDataWatch: '='
       },
       link: function (scope, element, attrs) {
-        // We keep some chart-specific variables here as a closure
-        // instead of storing them on 'scope'.
-        // prevSeriesOptions is maintained by processSeries
         var prevSeriesOptions = {};
         var processSeries = function (series) {
           var i;
@@ -170,11 +161,8 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
           if (series) {
             var setIds = ensureIds(series);
             if (setIds) {
-              //If we have set some ids this will trigger another digest cycle.
-              //In this scenario just return early and let the next cycle take care of changes
               return false;
             }
-            //Find series to add or update
             angular.forEach(series, function (s) {
               ids.push(s.id);
               var chartSeries = chart.get(s.id);
@@ -192,7 +180,6 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
               }
               prevSeriesOptions[s.id] = chartOptionsWithoutEasyOptions(s);
             });
-            //  Shows no data text if all series are empty
             if (scope.config.noData) {
               var chartContainsData = false;
               for (i = 0; i < series.length; i++) {
@@ -208,7 +195,6 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
               }
             }
           }
-          //Now remove any missing series
           for (i = chart.series.length - 1; i >= 0; i--) {
             var s = chart.series[i];
             if (s.options.id !== 'highcharts-navigator-series' && highchartsNGUtils.indexOf(ids, s.options.id) < 0) {
@@ -217,7 +203,6 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
           }
           return true;
         };
-        // chart is maintained by initChart
         var chart = false;
         var initChart = function () {
           if (chart)
@@ -261,11 +246,16 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
         }, true);
         scope.$watch('config.loading', function (loading) {
           if (loading) {
-            chart.showLoading();
+            chart.showLoading(loading === true ? null : loading);
           } else {
             chart.hideLoading();
           }
         });
+        scope.$watch('config.noData', function (noData) {
+          if (scope.config && scope.config.loading) {
+            chart.showLoading(noData);
+          }
+        }, true);
         scope.$watch('config.credits.enabled', function (enabled) {
           if (enabled) {
             chart.credits.show();
@@ -280,17 +270,25 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
         });
         angular.forEach(axisNames, function (axisName) {
           scope.$watch('config.' + axisName, function (newAxes, oldAxes) {
-            if (newAxes === oldAxes)
+            if (newAxes === oldAxes || !newAxes) {
               return;
-            if (newAxes) {
+            }
+            if (angular.isArray(newAxes)) {
+              for (var axisIndex = 0; axisIndex < newAxes.length; axisIndex++) {
+                var axis = newAxes[axisIndex];
+                if (axisIndex < chart[axisName].length) {
+                  chart[axisName][axisIndex].update(axis, false);
+                  updateZoom(chart[axisName][axisIndex], angular.copy(axis));
+                }
+              }
+            } else {
               chart[axisName][0].update(newAxes, false);
               updateZoom(chart[axisName][0], angular.copy(newAxes));
-              chart.redraw();
             }
+            chart.redraw();
           }, true);
         });
         scope.$watch('config.options', function (newOptions, oldOptions, scope) {
-          //do nothing when called on registration
           if (newOptions === oldOptions)
             return;
           initChart();

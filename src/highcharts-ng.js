@@ -300,7 +300,7 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
           }
         });
         scope.$watch('config.noData', function (noData) {
-          if(scope.config.loading) {
+          if(scope.config && scope.config.loading) {
             chart.showLoading(noData);
           }
         }, true);
