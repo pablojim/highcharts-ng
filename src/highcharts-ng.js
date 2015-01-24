@@ -146,6 +146,10 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
           mergedOptions.chart.height = config.size.height;
         }
       }
+      if (config.tooltip) {
+        mergedOptions.tooltip = config.tooltip;
+      }
+
       return mergedOptions;
     };
 
