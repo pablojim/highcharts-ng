@@ -269,21 +269,6 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
         };
         initChart();
 
-
-        if(scope.disableDataWatch){
-          scope.$watchCollection('config.series', function (newSeries, oldSeries) {
-            processSeries(newSeries);
-            chart.redraw();
-          });
-        } else {
-          scope.$watch('config.series', function (newSeries, oldSeries) {
-            var needsRedraw = processSeries(newSeries);
-            if(needsRedraw) {
-              chart.redraw();
-            }
-          }, true);
-        }
-
         scope.$watch('config.title', function (newTitle) {
           chart.setTitle(newTitle, true);
         }, true);
@@ -345,6 +330,21 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
             chart.redraw();
           }, true);
         });
+
+        if (scope.disableDataWatch){
+          scope.$watchCollection('config.series', function (newSeries, oldSeries) {
+            processSeries(newSeries);
+            chart.redraw();
+          });
+        } else {
+          scope.$watch('config.series', function (newSeries, oldSeries) {
+            var needsRedraw = processSeries(newSeries);
+            if (needsRedraw) {
+              chart.redraw();
+            }
+          }, true);
+        }
+
         scope.$watch('config.options', function (newOptions, oldOptions, scope) {
           //do nothing when called on registration
           if (newOptions === oldOptions) return;
