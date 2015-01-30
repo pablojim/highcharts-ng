@@ -366,7 +366,12 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
 
         scope.$on('$destroy', function() {
           if (chart) {
-            chart.destroy();
+            try{
+              chart.destroy();
+            }catch(ex){
+              // fail silently as highcharts will throw exception if element doesn't exist
+            }
+
             $timeout(function(){
               element.remove();
             }, 0);
