@@ -299,7 +299,7 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
           if (newSize === oldSize)
             return;
           if (newSize) {
-            chart.setSize(newSize.width || undefined, newSize.height || undefined);
+            chart.setSize(newSize.width || chart.chartWidth, newSize.height || chart.chartHeight);
           }
         }, true);
         scope.$on('highchartsng.reflow', function () {
