@@ -261,11 +261,16 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
         }, true);
         scope.$watch('config.loading', function (loading) {
           if (loading) {
-            chart.showLoading();
+            chart.showLoading(loading === true ? null : loading);
           } else {
             chart.hideLoading();
           }
         });
+        scope.$watch('config.noData', function (noData) {
+          if (scope.config && scope.config.loading) {
+            chart.showLoading(noData);
+          }
+        }, true);
         scope.$watch('config.credits.enabled', function (enabled) {
           if (enabled) {
             chart.credits.show();
@@ -280,13 +285,23 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
         });
         angular.forEach(axisNames, function (axisName) {
           scope.$watch('config.' + axisName, function (newAxes, oldAxes) {
-            if (newAxes === oldAxes)
+            if (newAxes === oldAxes || !newAxes) {
               return;
-            if (newAxes) {
+            }
+            if (angular.isArray(newAxes)) {
+              for (var axisIndex = 0; axisIndex < newAxes.length; axisIndex++) {
+                var axis = newAxes[axisIndex];
+                if (axisIndex < chart[axisName].length) {
+                  chart[axisName][axisIndex].update(axis, false);
+                  updateZoom(chart[axisName][axisIndex], angular.copy(axis));
+                }
+              }
+            } else {
+              // update single axis
               chart[axisName][0].update(newAxes, false);
               updateZoom(chart[axisName][0], angular.copy(newAxes));
-              chart.redraw();
             }
+            chart.redraw();
           }, true);
         });
         scope.$watch('config.options', function (newOptions, oldOptions, scope) {
@@ -309,7 +324,10 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
         });
         scope.$on('$destroy', function () {
           if (chart) {
-            chart.destroy();
+            try {
+              chart.destroy();
+            } catch (ex) {
+            }
             $timeout(function () {
               element.remove();
             }, 0);

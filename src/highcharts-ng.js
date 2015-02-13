@@ -168,7 +168,7 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
     };
 
     var chartOptionsWithoutEasyOptions = function (options) {
-      return angular.extend({}, options, {data: null, visible: null});
+      return highchartsNGUtils.deepExtend({}, options, {data: null, visible: null});
     };
     
     var getChartType = function(scope) {
@@ -310,6 +310,11 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
             chart.hideLoading();
           }
         });
+        scope.$watch('config.noData', function (noData) {
+          if(scope.config && scope.config.loading) {
+            chart.showLoading(noData);
+          }
+        }, true);
 
         scope.$watch('config.credits.enabled', function (enabled) {
           if (enabled) {
@@ -325,13 +330,30 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
         });
 
         angular.forEach(axisNames, function(axisName) {
-          scope.$watch('config.' + axisName, function (newAxes, oldAxes) {
-            if (newAxes === oldAxes) return;
-            if(newAxes) {
+          scope.$watch('config.' + axisName, function(newAxes, oldAxes) {
+            if (newAxes === oldAxes || !newAxes) {
+              return;
+            }
+
+            if (angular.isArray(newAxes)) {
+
+              for (var axisIndex = 0; axisIndex < newAxes.length; axisIndex++) {
+                var axis = newAxes[axisIndex];
+
+                if (axisIndex < chart[axisName].length) {
+                  chart[axisName][axisIndex].update(axis, false);
+                  updateZoom(chart[axisName][axisIndex], angular.copy(axis));
+                }
+
+              }
+
+            } else {
+              // update single axis
               chart[axisName][0].update(newAxes, false);
               updateZoom(chart[axisName][0], angular.copy(newAxes));
-              chart.redraw();
             }
+
+            chart.redraw();
           }, true);
         });
         scope.$watch('config.options', function (newOptions, oldOptions, scope) {
@@ -355,7 +377,12 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
 
         scope.$on('$destroy', function() {
           if (chart) {
-            chart.destroy();
+            try{
+              chart.destroy();
+            }catch(ex){
+              // fail silently as highcharts will throw exception if element doesn't exist
+            }
+
             $timeout(function(){
               element.remove();
             }, 0);
