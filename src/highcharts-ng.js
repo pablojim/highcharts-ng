@@ -170,8 +170,9 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
     var chartOptionsWithoutEasyOptions = function (options) {
       return highchartsNGUtils.deepExtend({}, options, {data: null, visible: null});
     };
-    
+
     var getChartType = function(scope) {
+      if (scope.config === undefined) return 'Chart';
       return chartTypeMap[('' + scope.config.chartType).toLowerCase()] ||
              scope.config.useHighStocks ? 'StockChart' : 'Chart';
     };
@@ -262,7 +263,7 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
           var mergedOptions = getMergedOptions(scope, element, config);
           var func = config.func || undefined;
           var chartType = getChartType(scope);
-  
+
           chart = new Highcharts[chartType](mergedOptions, func);
 
           for (var i = 0; i < axisNames.length; i++) {
