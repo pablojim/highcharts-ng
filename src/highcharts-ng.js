@@ -172,7 +172,7 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
     };
     
     var getChartType = function(scope) {
-      return chartTypeMap[('' + scope.config.chartType).toLowerCase()] || 
+      return chartTypeMap[('' + scope.config.chartType).toLowerCase()] ||
              scope.config.useHighStocks ? 'StockChart' : 'Chart';
     };
 
