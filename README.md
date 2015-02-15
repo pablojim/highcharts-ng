@@ -8,13 +8,13 @@ A simple Angularjs directive for Highcharts.
 Current Version (0.0.7)
 ---------------
 
-Setup:
+**Setup:**
 
 Install with bower/npm:
 
 ```bower install highcharts-ng```
 
-Add references to highcharts/highstocks
+Add references to Highcharts/Highstocks:
 
 ```<script src="http://code.highcharts.com/stock/highstock.src.js"></script>```
 
@@ -22,7 +22,11 @@ or
 
 ```<script src="http://code.highcharts.com/highcharts.src.js"></script>```
 
-Add Highcharts to your angular app config 
+*(optional)* If you don't include jQuery in your page, you have to use Highcharts' *Standalone Adapter* (else, it will not work):
+
+```<script src="http://code.highcharts.com/adapters/standalone-framework.js"></script>```
+
+Add Highcharts to your Angular app config:
 
 ```var myapp = angular.module('myapp', ["highcharts-ng"]);```
 
