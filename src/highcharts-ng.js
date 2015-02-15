@@ -75,6 +75,11 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
 
     // immutable
     var axisNames = [ 'xAxis', 'yAxis' ];
+    var chartTypeMap = {
+      'stock': 'StockChart',
+      'map':   'Map',
+      'chart': 'Chart'
+    };
 
     var getMergedOptions = function (scope, element, config) {
       var mergedOptions = {};
@@ -166,6 +171,12 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
       return highchartsNGUtils.deepExtend({}, options, {data: null, visible: null});
     };
 
+    var getChartType = function(scope) {
+      if (scope.config === undefined) return 'Chart';
+      return chartTypeMap[('' + scope.config.chartType).toLowerCase()] ||
+             scope.config.useHighStocks ? 'StockChart' : 'Chart';
+    };
+
     return {
       restrict: 'EAC',
       replace: true,
@@ -251,9 +262,10 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
           var config = scope.config || {};
           var mergedOptions = getMergedOptions(scope, element, config);
           var func = config.func || undefined;
-          chart = config.useHighStocks ?
-            new Highcharts.StockChart(mergedOptions, func) :
-            new Highcharts.Chart(mergedOptions, func);
+          var chartType = getChartType(scope);
+
+          chart = new Highcharts[chartType](mergedOptions, func);
+
           for (var i = 0; i < axisNames.length; i++) {
             if (config[axisNames[i]]) {
               processExtremes(chart, config[axisNames[i]], axisNames[i]);
@@ -313,8 +325,8 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
           }
         });
 
-        scope.$watch('config.useHighStocks', function (useHighStocks, oldUseHighStocks) {
-          if(useHighStocks === oldUseHighStocks) return;
+        scope.$watch(getChartType, function (chartType, oldChartType) {
+          if (chartType === oldChartType) return;
           initChart();
         });
 
@@ -381,5 +393,4 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
       }
     };
   }
-
 }());
