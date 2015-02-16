@@ -174,7 +174,7 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
     var getChartType = function(scope) {
       if (scope.config === undefined) return 'Chart';
       return chartTypeMap[('' + scope.config.chartType).toLowerCase()] ||
-             scope.config.useHighStocks ? 'StockChart' : 'Chart';
+             (scope.config.useHighStocks ? 'StockChart' : 'Chart');
     };
 
     return {
