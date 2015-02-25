@@ -368,7 +368,7 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
         scope.$watch('config.size', function (newSize, oldSize) {
           if(newSize === oldSize) return;
           if(newSize) {
-            chart.setSize(newSize.width || undefined, newSize.height || undefined);
+            chart.setSize(newSize.width || chart.chartWidth, newSize.height || chart.chartHeight);
           }
         }, true);
 
