@@ -41,12 +41,12 @@ Make a chart!
 The `chartConfig` attribute mentioned above resembles an exploded highcharts options object:
 
 ```javascript
+//This is not a highcharts object. It just looks a little like one!
 var chartConfig = {
 
-  //This is not a highcharts object. It just looks a little like one!
   options: {
       //This is the Main Highcharts chart config. Any Highchart options are valid here.
-      //will be ovverriden by values specified below.
+      //will be overriden by values specified below.
       chart: {
           type: 'bar'
       },
@@ -58,8 +58,7 @@ var chartConfig = {
       }
   },
   //The below properties are watched separately for changes.
-  
-  
+
   //Series object (optional) - a list of series using normal highcharts series options.
   series: [{
      data: [10, 15, 12, 8, 7]
