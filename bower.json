@@ -1,6 +1,6 @@
 {
   "name": "highcharts-ng",
-  "version": "0.0.8-dev",
+  "version": "0.0.9-dev",
   "main": "dist/highcharts-ng.js",
   "dependencies": {},
   "devDependencies": {

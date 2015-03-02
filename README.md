@@ -5,7 +5,7 @@ AngularJS directive for Highcharts
 
 A simple Angularjs directive for Highcharts.
 
-Current Version (0.0.7)
+Current Version (0.0.8)
 ---------------
 
 **Setup:**
@@ -41,12 +41,12 @@ Make a chart!
 The `chartConfig` attribute mentioned above resembles an exploded highcharts options object:
 
 ```javascript
+//This is not a highcharts object. It just looks a little like one!
 var chartConfig = {
 
-  //This is not a highcharts object. It just looks a little like one!
   options: {
       //This is the Main Highcharts chart config. Any Highchart options are valid here.
-      //will be ovverriden by values specified below.
+      //will be overriden by values specified below.
       chart: {
           type: 'bar'
       },
@@ -58,8 +58,7 @@ var chartConfig = {
       }
   },
   //The below properties are watched separately for changes.
-  
-  
+
   //Series object (optional) - a list of series using normal highcharts series options.
   series: [{
      data: [10, 15, 12, 8, 7]
@@ -123,11 +122,18 @@ Caveats:
 FAQ:
 --------
 
+
 - Why doesn't my plot options/tooltip/drilldown/other feature work?
 
 *At least half of all issues filed are due to this. Before you file an issue read this!*
 A common error is to put other highcharts options directly into the chartConfig.
 In general if the highcharts option you want isn't listed above you probably want to put it in chartConfig.options.
+
+- How do I get access to the chart object?
+
+From version 0.0.8 onwards you can use `config.getHighcharts`. 95% of the time you won't need this and should instead change the chartConfig instead.
+
+Be careful - if you manually change something with the chart object that is also in the chartConfig the chart and the config may end up out of sync.  
 
 - Why don't you just use the standard highcharts format?
 
@@ -157,6 +163,11 @@ Hope this makes sense!
 
 Versions
 --------------
+
+Version 0.0.8
+----------------
+- added config.getHighcharts - thanks @ValentinH 
+- Lots of bug fixes - thanks to all contributors
 
 Version 0.0.7
 ----------------

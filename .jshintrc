@@ -16,7 +16,7 @@
   "undef": true,
   "unused": false,
   "strict": true,
-  "globalstrict": true,
+  "globalstrict": false,
   "trailing": true,
   "smarttabs": true,
   "predef": [

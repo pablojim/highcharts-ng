@@ -15,8 +15,8 @@
   "regexp": true,
   "undef": true,
   "unused": false,
-  "strict": true,
-  "globalstrict": true,
+  "strict": false,
+  "globalstrict": false,
   "trailing": true,
   "smarttabs": true,
   "predef": [
@@ -29,6 +29,7 @@
     "it",
     "expect",
     "HighCharts",
-    "window"
+    "window",
+    "module"
   ]
 }
