@@ -1,0 +1,72 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Highcharts-ng maps example</title>
+
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+        <style>
+            body {
+                padding: 40px;
+            }
+        </style>
+
+        <script src="http://code.highcharts.com/adapters/standalone-framework.js"></script>
+        <script src="http://code.highcharts.com/highcharts.js"></script>
+        <script src="http://code.highcharts.com/maps/modules/map.js"></script>
+        <script src="http://code.highcharts.com/mapdata/custom/world.js"></script>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.28/angular.min.js"></script>
+        <script src="../../dist/highcharts-ng.min.js"></script>
+        <script src="app.js"></script>
+    </head>
+    <body ng-clock ng-app="app">
+        <div class="container-fluid">
+            <div class="row" ng-controller="MapController as Map">
+                <div class="col-md-6">
+                    <highchart config="Map.config"></highchart>
+                </div>
+                <div class="col-md-6">
+                    <form class="form-horizontal">
+                        <div class="form-group">
+                            <label class="col-md-4 control-label">Map title</label>
+                            <div class="col-md-8">
+                                <input ng-model="Map.config.title.text" type="text" class="form-control">
+                            </div>
+                        </div>
+                        <div ng-repeat="(key, series) in Map.config.series" class="form-group">
+                            <label for="title" class="col-md-4 control-label">
+                                {{series.name}}<br>
+                                <button ng-click="Map.removeSeries(key)" class="btn btn-default btn-xs">Remove</button>
+                            </label>
+                            <div class="col-md-8">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label>Name</label>
+                                        <input ng-model="series.name" placeholder="Series name" class="form-control">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Countries list</label>
+                                        <textarea ng-model="series.countries" ng-change="Map.setSeriesData(series, series.countries)" placeholder="Countries list" class="form-control"></textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="checkbox">
+                                            <label>
+                                                <input ng-model="series.dataLabels.enabled" type="checkbox"> Data labels
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-offset-4 col-md-8">
+                                <button ng-click="Map.addSeries()" class="btn btn-primary">Add series</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
