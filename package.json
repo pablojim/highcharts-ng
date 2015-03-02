@@ -47,5 +47,6 @@
   },
   "scripts": {
     "test": "grunt test"
-  }
+  },
+  "browser": "./dist/highcharts-ng.js"
 }
