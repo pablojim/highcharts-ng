@@ -168,6 +168,7 @@ Version 0.0.8
 ----------------
 - added config.getHighcharts - thanks @ValentinH 
 - Lots of bug fixes - thanks to all contributors
+- Now with support for Highmaps - see: http://rawgit.com/pablojim/highcharts-ng/master/example/maps/example.html
 
 Version 0.0.7
 ----------------
