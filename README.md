@@ -38,6 +38,7 @@ Make a chart!
 - Basic example: http://jsfiddle.net/pablojim/Hjdnw/
 - Example with dynamic x-axis: http://jsfiddle.net/pablojim/7cAq3/
 - Basic highstocks example http://jsfiddle.net/pablojim/r88yszk0/
+- Support for Highmaps - see: http://rawgit.com/pablojim/highcharts-ng/master/example/maps/example.html
 
 The `chartConfig` attribute mentioned above resembles an exploded highcharts options object:
 
