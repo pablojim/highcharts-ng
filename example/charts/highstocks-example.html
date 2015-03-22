@@ -1,0 +1,42 @@
+<!doctype html>
+<html>
+<head>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js"></script>
+    <script src="http://code.highcharts.com/stock/highstock.src.js"></script>
+    <script src="../../src/highcharts-ng.js"></script>
+    <script src="highstocks-app.js"></script>
+    <style type="text/css">
+        .chart .highcharts-tooltip > span{ width: 175px;float: left; margin: 0 }
+        .chart .highcharts-tooltip .header{ font-weight: bold; width: 154px!important; height: auto!important; float: left; border-bottom: 1px solid #bebebe;  margin: 1px 0 5px 1px!important; padding: 5px 10px;background-color: rgba(255,255,255,1);
+            -webkit-border-top-left-radius: 5px;
+            -webkit-border-top-right-radius: 5px;
+            -moz-border-radius-topleft: 5px;
+            -moz-border-radius-topright: 5px;
+            border-top-left-radius: 5px;
+            border-top-right-radius: 5px;}
+        .chart .highcharts-tooltip .circle{width: 12px; height: 12px; border-radius: 24px; float: left;  margin: 2px 5px 5px 10px;clear: left}
+        .chart .highcharts-tooltip p.country{float: left; margin-right: 0}
+        .chart .highcharts-tooltip p{float: right; font-size: 12px; margin-right: 10px;}
+    </style>
+</head>
+<body>
+<h2>HighStocks Example</h2>
+
+<div ng-app="myapp">
+    <div ng-controller="myctrl">
+        <div class="row">
+            <div class="span9">
+                <div class="row">
+                    <highchart class="chart" config="chartConfig" class="span9" ></highchart>
+                </div>
+
+            </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
