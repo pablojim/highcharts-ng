@@ -168,11 +168,10 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
     };
 
     var chartOptionsWithoutEasyOptions = function (options) {
-        return
-            angular.extend(
-                highchartsNGUtils.deepExtend({}, options),
-                { data: null, visible: null }
-            );
+        return angular.extend(
+          highchartsNGUtils.deepExtend({}, options),
+          { data: null, visible: null }
+        );
     };
 
     var getChartType = function(scope) {
