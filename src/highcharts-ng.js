@@ -169,8 +169,8 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
 
     var chartOptionsWithoutEasyOptions = function (options) {
       return angular.extend(
-          highchartsNGUtils.deepExtend({}, options),
-          { data: null, visible: null }
+        highchartsNGUtils.deepExtend({}, options),
+        { data: null, visible: null }
       );
     };
 
