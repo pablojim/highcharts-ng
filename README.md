@@ -162,6 +162,28 @@ So anything that has an api to change is declared outside the main options objec
 
 Hope this makes sense! 
 
+
+- The chart does not fit into the parent container? How to fix that?
+ 
+This may happen for example, when you place your chart in a bootstrap col - element. For now, you may apply the following workaround to fit your chart in the container:
+
+```
+        $scope.config = {
+            options: {
+            ...
+            },
+            ...
+            // other configuration here,
+            ...
+            func: function(chart) {
+                $timeout(function() {
+                    chart.reflow();
+                }, 0);
+            }
+        };
+    }
+```
+This forces the chart to reflow after container and chart have finished rendering. Don't forget to include the dependency to $timeout. Full discussion in https://github.com/pablojim/highcharts-ng/issues/300.
  
 
 
