@@ -7,7 +7,7 @@ A simple Angularjs directive for Highcharts.
 
 Google Group: https://groups.google.com/forum/#!forum/highcharts-ng
 
-Current Version (0.0.8)
+Current Version (0.0.9)
 ---------------
 
 **Setup:**
@@ -190,6 +190,10 @@ This forces the chart to reflow after container and chart have finished renderin
 
 Versions
 --------------
+
+Versions 0.0.9
+--------------
+- Make all user defined options can be taken by highcharts-ng
 
 Version 0.0.8
 ----------------
