@@ -134,22 +134,8 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
         }
       });
 
-      if(config.title) {
-        mergedOptions.title = config.title;
-      }
-      if (config.subtitle) {
-        mergedOptions.subtitle = config.subtitle;
-      }
-      if (config.credits) {
-        mergedOptions.credits = config.credits;
-      }
-      if(config.size) {
-        if (config.size.width) {
-          mergedOptions.chart.width = config.size.width;
-        }
-        if (config.size.height) {
-          mergedOptions.chart.height = config.size.height;
-        }
+      for (var propertyName in config) {
+          mergedOptions[propertyName] = config[propertyName];
       }
       return mergedOptions;
     };
