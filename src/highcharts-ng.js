@@ -133,9 +133,14 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
           }
         }
       });
-
       if(config.title) {
         mergedOptions.title = config.title;
+      }
+      if(config.plotOptions) {
+        mergedOptions.plotOptions = config.plotOptions;
+      }
+      if(config.tooltip) {
+        mergedOptions.tooltip = config.tooltip;
       }
       if (config.subtitle) {
         mergedOptions.subtitle = config.subtitle;
