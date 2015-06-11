@@ -198,7 +198,7 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
 
           if(series) {
             var setIds = ensureIds(series);
-            if(setIds) {
+            if(setIds && !scope.disableDataWatch) {
               //If we have set some ids this will trigger another digest cycle.
               //In this scenario just return early and let the next cycle take care of changes
               return false;
