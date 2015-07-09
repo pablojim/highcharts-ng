@@ -36,6 +36,8 @@ Make a chart!
 
 ```<highchart id="chart1" config="chartConfig"></highchart>```
 
+__Warning__: The `chartConfig` object is _slightly different_ than the default highcharts config object. ( _Please see the FAQ below for details_ )
+
 - See http://pablojim.github.io/highcharts-ng/examples/example.html for an extended example. Also Available in the example directory - thanks @crusat
 - Basic example: http://jsfiddle.net/pablojim/Hjdnw/
 - Example with dynamic x-axis: http://jsfiddle.net/pablojim/7cAq3/
