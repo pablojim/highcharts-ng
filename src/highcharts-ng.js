@@ -6,13 +6,77 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
   /*global angular: false, Highcharts: false */
 
   angular.module('highcharts-ng', [])
-    .factory('highchartsNGUtils', highchartsNGUtils)
-    .directive('highchart', ['highchartsNGUtils', '$timeout', highchart]);
-
-  function highchartsNGUtils() {
-
+    .provider('highchartsNG', highchartsNGProvider)
+    .directive('highchart', ['highchartsNG', '$timeout', highchart]);
+  
+  function highchartsNGProvider(){
+    var modules = [];
+    var basePath = false;
+    var lazyLoad = false;
     return {
-
+      HIGHCHART: 'highcharts.js',
+      HIGHSTOCK: 'stock/highstock.js',
+      basePath: function (p) {
+        basePath = p;
+      },
+      lazyLoad: function (list) {
+        if (list === undefined) {
+          modules = [this.HIGHCHART];
+        } else {
+          modules = list;
+        }
+        lazyLoad = true;
+      },
+      $get: ['$window', '$rootScope', function ($window, $rootScope) {
+        if (!basePath) {
+          basePath = (window.location.protocol === 'https:' ? 'https' : 'http') + '://code.highcharts.com/';
+        }
+        return highchartsNG($window, $rootScope, lazyLoad, basePath, modules);
+      }]
+    };
+  }
+  function highchartsNG($window, $rootScope, lazyload, basePath, modules) {
+    var readyQueue = [];
+    var loading = false;
+    return {
+      lazyLoad:lazyload,
+      ready: function (callback, thisArg) {
+        if (typeof $window.Highcharts !== 'undefined' || !lazyload) {
+          callback();
+        } else {
+          readyQueue.push([callback, thisArg]);
+          if (loading) {
+            return;
+          }
+          loading = true;
+          var self = this;
+          if (typeof jQuery === 'undefined') {
+            modules.unshift('adapters/standalone-framework.js');
+          }
+          var doWork = function () {
+            if (modules.length === 0) {
+              loading = false;
+              $rootScope.$apply(function () {
+                angular.forEach(readyQueue, function (e) {
+                  // invoke callback passing 'thisArg'
+                  e[0].apply(e[1], []);
+                });
+              });
+            } else {
+              var s = modules.shift();
+              self.loadScript(s, doWork);
+            }
+          };
+          doWork();
+        }
+      },
+      loadScript: function (path, callback) {
+        var s = document.createElement('script');
+        s.type = 'text/javascript';
+        s.src = basePath + path;
+        s.onload = callback;
+        document.getElementsByTagName('body')[0].appendChild(s);
+      },
       //IE8 support
       indexOf: function (arr, find, i /*opt*/) {
         if (i === undefined) i = 0;
@@ -177,7 +241,7 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
              (scope.config.useHighStocks ? 'StockChart' : 'Chart');
     };
 
-    return {
+    var res = {
       restrict: 'EAC',
       replace: true,
       template: '<div></div>',
@@ -392,5 +456,17 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
 
       }
     };
+    
+    // override link fn if lazy loading is enabled
+    if(highchartsNGUtils.lazyLoad){
+      var oldLink = res.link;
+      res.link = function(){
+        var args = arguments;
+        highchartsNGUtils.ready(function(){
+          oldLink.apply(this, args);
+        }, this);
+      };
+    }
+    return res;
   }
 }());

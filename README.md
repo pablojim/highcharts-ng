@@ -32,6 +32,27 @@ Add Highcharts to your Angular app config:
 
 ```var myapp = angular.module('myapp', ["highcharts-ng"]);```
 
+If you don't want to add additional scripts, you may use lazyload:
+
+```
+app.config(['highchartsNGProvider', function (highchartsNGProvider) {
+    highchartsNGProvider.lazyLoad();// will load hightcharts (and standalone framework if jquery is not present) from code.hightcharts.com
+    
+    highchartsNGProvider.lazyLoad([highchartsNGProvider.HIGHCHART/HIGHSTOCK, "maps/modules/map.js", "mapdata/custom/world.js"]);// you may add any additional modules and they will be loaded in the same sequence
+    
+    highchartsNGProvider.basePath("/js/"); // change base path for scripts, default is http(s)://code.highcharts.com/
+    
+  }]);
+
+app.controller(["highchartsNG", function(highchartsNG){
+// do anything you like
+// ...
+highchartsNG.ready(function(){
+  // init chart config, see lazyload example
+},this);
+});
+```
+
 Make a chart!
 
 ```<highchart id="chart1" config="chartConfig"></highchart>```
