@@ -93,7 +93,10 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
         series: [],
         credits: {},
         plotOptions: {},
-        navigator: {enabled: false}
+        navigator: {enabled: false},
+        xAxis: {
+          events: {}
+        }
       };
 
       if (config.options) {
@@ -105,7 +108,7 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
 
       angular.forEach(axisNames, function(axisName) {
         if(angular.isDefined(config[axisName])) {
-          mergedOptions[axisName] = angular.copy(config[axisName]);
+          mergedOptions[axisName] = highchartsNGUtils.deepExtend(mergedOptions[axisName], config[axisName]);
 
           if(angular.isDefined(config[axisName].currentMin) ||
               angular.isDefined(config[axisName].currentMax)) {
@@ -129,6 +132,16 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
             highchartsNGUtils.prependMethod(mergedOptions.chart.events, 'addSeries', function(e){
               scope.config[axisName].currentMin = this[axisName][0].min || scope.config[axisName].currentMin;
               scope.config[axisName].currentMax = this[axisName][0].max || scope.config[axisName].currentMax;
+            });
+            highchartsNGUtils.prependMethod(mergedOptions[axisName].events, 'setExtremes', function (e) {
+              if (e.trigger && e.trigger !== 'zoom') { // zoom trigger is handled by selection event
+                $timeout(function () {
+                  scope.config[axisName].currentMin = e.min;
+                  scope.config[axisName].currentMax = e.max;
+                  scope.config[axisName].min = e.min; // set min and max to adjust scrollbar/navigator
+                  scope.config[axisName].max = e.max;
+                }, 0);
+              }
             });
           }
         }
@@ -157,7 +170,11 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
     var updateZoom = function (axis, modelAxis) {
       var extremes = axis.getExtremes();
       if(modelAxis.currentMin !== extremes.dataMin || modelAxis.currentMax !== extremes.dataMax) {
-        axis.setExtremes(modelAxis.currentMin, modelAxis.currentMax, false);
+        if (axis.setExtremes) {
+          axis.setExtremes(modelAxis.currentMin, modelAxis.currentMax, false);
+        } else {
+          axis.detachedsetExtremes(modelAxis.currentMin, modelAxis.currentMax, false);
+        }
       }
     };
 

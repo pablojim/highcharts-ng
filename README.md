@@ -123,7 +123,7 @@ Caveats:
 - Whole Chart/Series is often redrawn where a simple update of data would suffice
 - If you don't assign ids to your series - incremental ids will be added
 - The 2 way binding to xAxis properties should be treated as experimental
-- When using with a highstocks navigator errors can occur
+- Navigator/scrollbar cannot run with liveRedraw enabled at this time
 - Needs tests!
 
 FAQ:
