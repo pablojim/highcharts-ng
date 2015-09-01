@@ -111,6 +111,7 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
             destination[i] = deepExtend(destination[i] || {}, source[i]);
           }
         } else if (angular.isObject(source)) {
+          destination = angular.isObject(destination) ? destination : {};
           for (var property in source) {
             destination[property] = deepExtend(destination[property] || {}, source[property]);
           }
