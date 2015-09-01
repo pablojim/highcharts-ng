@@ -172,7 +172,7 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
 
       angular.forEach(axisNames, function(axisName) {
         if(angular.isDefined(config[axisName])) {
-          mergedOptions[axisName] = highchartsNGUtils.deepExtend(mergedOptions[axisName], config[axisName]);
+          mergedOptions[axisName] = highchartsNGUtils.deepExtend(mergedOptions[axisName] || {}, config[axisName]);
 
           if(angular.isDefined(config[axisName].currentMin) ||
               angular.isDefined(config[axisName].currentMax)) {
