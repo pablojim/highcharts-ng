@@ -22,7 +22,7 @@ describe('Module: highchartsNg', function () {
   it('should extend undefined', inject(function (highchartsNG) {
     var noop = function(){};
     var source = {bar: 'abc', arr: [1, 'two', {}], nested: {a: {b: 2}}, fn: noop},
-      dest = undefined;
+      dest;
     highchartsNG.deepExtend(dest, source);
     expect('abc').toEqual(dest.bar);
     expect([1, 'two', {}]).toEqual(dest.arr);
