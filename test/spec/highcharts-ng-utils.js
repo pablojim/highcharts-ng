@@ -18,5 +18,19 @@ describe('Module: highchartsNg', function () {
     expect({c: 5, a: {b : 2}}).toEqual(dest.nested);
     expect(source.nested).not.toBe(dest.nested);
   }));
+  
+  it('should extend undefined', inject(function (highchartsNG) {
+    var noop = function(){};
+    var source = {bar: 'abc', arr: [1, 'two', {}], nested: {a: {b: 2}}, fn: noop},
+      dest;
+    dest = highchartsNG.deepExtend(dest, source);
+    expect('abc').toEqual(dest.bar);
+    expect([1, 'two', {}]).toEqual(dest.arr);
+    expect(noop).toEqual(dest.fn);
+    expect(source.arr).not.toBe(dest.arr);
+    expect(source.arr[2]).not.toBe(dest.arr[2]);
+    expect({a: {b : 2}}).toEqual(dest.nested);
+    expect(source.nested).not.toBe(dest.nested);
+  }));
 
 });
