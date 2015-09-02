@@ -3,6 +3,7 @@
   "description": "An AngularJS directive for Highcharts, Highstocks or Highmaps",
   "keywords": [
     "angularjs",
+    "angular",
     "charts",
     "highcharts",
     "highstocks",
