@@ -9,7 +9,7 @@
     "highstocks",
     "highmaps"
   ],
-  "version": "0.0.10-dev",
+  "version": "0.0.10",
   "main": "dist/highcharts-ng.js",
   "license": "MIT",
   "authors": [
