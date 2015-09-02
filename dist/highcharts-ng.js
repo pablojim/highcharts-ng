@@ -161,6 +161,9 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
         navigator: {enabled: false},
         xAxis: {
           events: {}
+        },
+        yAxis: {
+          events: {}
         }
       };
 
