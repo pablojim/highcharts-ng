@@ -13,7 +13,7 @@
     "test",
     "src",
     "example",
-    ".travis.yml",
+    ".travis.yml"
   ],
   "version": "0.0.11-dev",
   "main": "dist/highcharts-ng.js",
