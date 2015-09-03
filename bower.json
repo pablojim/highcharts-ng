@@ -9,6 +9,12 @@
     "highstocks",
     "highmaps"
   ],
+  "ignore": [
+    "test",
+    "src",
+    "example",
+    ".travis.yml",
+  ],
   "version": "0.0.11-dev",
   "main": "dist/highcharts-ng.js",
   "license": "MIT",
