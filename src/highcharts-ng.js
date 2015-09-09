@@ -1,9 +1,11 @@
 if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.exports === exports){
   module.exports = 'highcharts-ng';
 }
+
 (function () {
   'use strict';
   /*global angular: false, Highcharts: false */
+
 
   angular.module('highcharts-ng', [])
     .provider('highchartsNG', highchartsNGProvider)
@@ -160,6 +162,9 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
         plotOptions: {},
         navigator: {enabled: false},
         xAxis: {
+          events: {}
+        },
+        yAxis: {
           events: {}
         }
       };
