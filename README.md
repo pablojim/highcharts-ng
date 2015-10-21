@@ -99,7 +99,7 @@ var chartConfig = {
   //Could be a string if you want to show specific loading text.
   loading: false,
   //Configuration for the xAxis (optional). Currently only one x axis can be dynamically controlled.
-  //properties currentMin and currentMax provied 2-way binding to the chart's maximimum and minimum
+  //properties currentMin and currentMax provied 2-way binding to the chart's maximum and minimum
   xAxis: {
   currentMin: 0,
   currentMax: 20,
