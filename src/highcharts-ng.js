@@ -434,11 +434,21 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
                 if (axisIndex < chart[axisName].length) {
                   chart[axisName][axisIndex].update(axis, false);
                   updateZoom(chart[axisName][axisIndex], angular.copy(axis));
+                } else {
+                  chart.addAxis(axis, axisName=='xAxis', false);
                 }
 
               }
-
+              // remove in reverse order any after the last new axes
+              for(var idx=chart[axisName].length-1; idx>=yAxis.length; idx--) {
+                chart[axisName][idx].remove();
+              }
             } else {
+              // update single axis
+              // remove in reverse order any but the first
+              for(var idx=chart[axisName].length-1; idx>=1; idx--) {
+                chart[axisName][idx].remove();
+              }
               // update single axis
               chart[axisName][0].update(newAxes, false);
               updateZoom(chart[axisName][0], angular.copy(newAxes));
