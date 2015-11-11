@@ -57,16 +57,16 @@ Make a chart!
 
 ```<highchart id="chart1" config="chartConfig"></highchart>```
 
-__Warning__: The `chartConfig` object is _slightly different_ than the default highcharts config object. ( _Please see the FAQ below for details_ )
+__Warning__: The `chartConfig` object is _slightly different_ than the default Highcharts config object. ( _Please see the FAQ below for details_ )
 
 - See http://pablojim.github.io/highcharts-ng/examples/example.html for an extended example. Also Available in the example directory - thanks @crusat
 - Basic example: http://jsfiddle.net/pablojim/Hjdnw/
 - Example with dynamic x-axis: http://jsfiddle.net/pablojim/7cAq3/
-- Basic highstocks example http://jsfiddle.net/pablojim/r88yszk0/
+- Basic Highstocks example http://jsfiddle.net/pablojim/r88yszk0/
 - Support for Highmaps - see: http://rawgit.com/pablojim/highcharts-ng/master/example/maps/example.html
 - Getting access to the Chart object/Add a print button - http://jsfiddle.net/pablojim/m4pcpv5g/
 
-The `chartConfig` attribute mentioned above resembles an exploded highcharts options object:
+The `chartConfig` attribute mentioned above resembles an exploded Highcharts options object:
 
 ```javascript
 //This is not a highcharts object. It just looks a little like one!
@@ -87,7 +87,7 @@ var chartConfig = {
   },
   //The below properties are watched separately for changes.
 
-  //Series object (optional) - a list of series using normal highcharts series options.
+  //Series object (optional) - a list of series using normal Highcharts series options.
   series: [{
      data: [10, 15, 12, 8, 7]
   }],
@@ -105,7 +105,7 @@ var chartConfig = {
   currentMax: 20,
   title: {text: 'values'}
   },
-  //Whether to use HighStocks instead of HighCharts (optional). Defaults to false.
+  //Whether to use Highstocks instead of Highcharts (optional). Defaults to false.
   useHighStocks: false,
   //size (optional) if left out the chart will default to size of the div or something sensible.
   size: {
@@ -121,8 +121,8 @@ var chartConfig = {
 
 All properties on the chart configuration are optional. If you don't need a feature best to leave it out completely - Highcharts will usually default to something sensible. Each property is watched for changes by angularjs.
 NOTE:
-A common error is to put other highcharts options directly into the chartConfig.
-In general if the highcharts option you want isn't listed above you probably want to put it in chartConfig.options
+A common error is to put other Highcharts options directly into the chartConfig.
+In general if the Highcharts option you want isn't listed above you probably want to put it in chartConfig.options
 
 The Highcharts object can be accessed with ```chartConfig.getHighcharts()```. This is a simple way to access all the Highcharts API that is not currently managed by this directive. See the JSFiddle basic example to see how this is used to call the print function of Highcharts.
 
@@ -154,8 +154,8 @@ FAQ:
 - Why doesn't my plot options/tooltip/drilldown/other feature work?
 
 *At least half of all issues filed are due to this. Before you file an issue read this!*
-A common error is to put other highcharts options directly into the chartConfig.
-In general if the highcharts option you want isn't listed above you probably want to put it in chartConfig.options.
+A common error is to put other Highcharts options directly into the chartConfig.
+In general if the Highcharts option you want isn't listed above you probably want to put it in chartConfig.options.
 
 - How do I get access to the chart object?
 
@@ -163,25 +163,25 @@ From version 0.0.8 onwards you can use `config.getHighcharts`. 95% of the time y
 
 Be careful - if you manually change something with the chart object that is also in the chartConfig the chart and the config may end up out of sync.  
 
-- Why don't you just use the standard highcharts format?
+- Why don't you just use the standard Highcharts format?
 
 Let's consider the below snippet.
 
 ```
 $scope.chartConfig = {
-   options: {...}, //highcharts options - using standard highcharts config
+   options: {...}, //Highcharts options - using standard Highcharts config
    //other "dynamic" options
    title: {...}
    series [...]
 }
 ```
-In the ```chartConfig``` object above the ```options``` property is a standard highcharts options object. e.g. anything you can pass into ````new Highcharts.Chart(options);``` works here.
+In the ```chartConfig``` object above the ```options``` property is a standard Highcharts options object. e.g. anything you can pass into ````new Highcharts.Chart(options);``` works here.
 
 This options object is watched for changes. When something changes here the whole chart is recreated.
 
-The other dynamic properties are ones that we can change without affecting the whole chart - using the api at http://api.highcharts.com/highcharts#Chart e.g. if you change the title we can call chart.setTitle and not have to recreate the whole chart. Splitting them out from the main options object means we can watch them separately.
+The other dynamic properties are ones that we can change without affecting the whole chart - using the API at http://api.highcharts.com/highcharts#Chart e.g. if you change the title we can call chart.setTitle and not have to recreate the whole chart. Splitting them out from the main options object means we can watch them separately.
 
-So anything that has an api to change is declared outside the main options object.
+So anything that has an API to change is declared outside the main options object.
 
 Hope this makes sense! 
 
