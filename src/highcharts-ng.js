@@ -282,7 +282,7 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
         // prevSeriesOptions is maintained by processSeries
         var prevSeriesOptions = {};
 
-        var processSeries = function(series) {
+        var processSeries = function(series, seriesOld) {
           var i;
           var ids = [];
 
@@ -295,7 +295,7 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
             }
 
             //Find series to add or update
-            angular.forEach(series, function(s) {
+            angular.forEach(series, function(s, idx) {
               ids.push(s.id);
               var chartSeries = chart.get(s.id);
               if (chartSeries) {
@@ -305,7 +305,37 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
                   if (s.visible !== undefined && chartSeries.visible !== s.visible) {
                     chartSeries.setVisible(s.visible, false);
                   }
-                  chartSeries.setData(angular.copy(s.data), false);
+                  
+                  // Make sure the current series index can be accessed in seriesOld
+                  if (idx < seriesOld.length) {
+                    var sOld = seriesOld[idx];
+                    var sCopy = angular.copy(sOld);
+                    
+                    // Get the latest data point from the new series
+                    var ptNew = s.data[s.data.length - 1];
+                    
+                    // Check if the new and old series are identical with the latest data point added
+                    // If so, call addPoint without shifting
+                    sCopy.data.push(ptNew);
+                    if (angular.equals(sCopy, s)) {
+                      chartSeries.addPoint(ptNew, false);
+                    }
+                    
+                    // Check if the data change was a push and shift operation
+                    // If so, call addPoint WITH shifting
+                    else {
+                      sCopy.data.shift();
+                      if (angular.equals(sCopy, s)) {
+                        chartSeries.addPoint(ptNew, false, true);
+                      }
+                      else {
+                        chartSeries.setData(angular.copy(s.data), false);
+                      }
+                    }
+                  }
+                  else {
+                    chartSeries.setData(angular.copy(s.data), false);
+                  }
                 }
               } else {
                 chart.addSeries(angular.copy(s), false);
@@ -379,7 +409,7 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
           });
         } else {
           scope.$watch('config.series', function (newSeries, oldSeries) {
-            var needsRedraw = processSeries(newSeries);
+            var needsRedraw = processSeries(newSeries, oldSeries);
             if(needsRedraw) {
               chart.redraw();
             }
