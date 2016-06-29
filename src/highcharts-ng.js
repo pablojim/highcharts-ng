@@ -451,8 +451,8 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
         });
 
         angular.forEach(axisNames, function(axisName) {
-          scope.$watch('config.' + axisName, function(newAxes, oldAxes) {
-            if (newAxes === oldAxes || !newAxes) {
+          scope.$watch('config.' + axisName, function(newAxes) {
+            if (!newAxes) {
               return;
             }
 
