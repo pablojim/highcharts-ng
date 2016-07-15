@@ -63,7 +63,12 @@ module.exports = function(config) {
     coverageReporter: {
       type: 'html',
       dir: 'coverage/'
-    }
+    },
+    plugins: [
+      require('karma-jasmine'),
+      require('karma-coverage'),
+      require('karma-phantomjs-launcher'),
+    ]
 
   });
 };

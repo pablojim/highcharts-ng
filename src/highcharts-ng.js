@@ -278,6 +278,8 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
 
         // prevSeriesOptions is maintained by processSeries
         var prevSeriesOptions = {};
+        // chart is maintained by initChart
+        var chart = false;
 
         var processSeries = function(series, seriesOld) {
           var i;
@@ -371,8 +373,6 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
           return true;
         };
 
-        // chart is maintained by initChart
-        var chart = false;
         var initChart = function() {
           if (chart) chart.destroy();
           prevSeriesOptions = {};
