@@ -29,21 +29,13 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
         }
         lazyLoad = true;
       },
-      $get: ['$window', '$rootScope', function ($window, $rootScope) {
+      $get: ['$q', '$window', function ($q, $window) {
         if (!basePath) {
           basePath = (window.location.protocol === 'https:' ? 'https' : 'http') + '://code.highcharts.com/';
         }
-        return highchartsNG($window, $rootScope, lazyLoad, basePath, modules);
+        return highchartsNG($q, $window, basePath, modules);
       }]
     };
-  }
-
-  function loadScript(path, callback) {
-    var s = document.createElement('script');
-    s.type = 'text/javascript';
-    s.src = path;
-    s.onload = callback;
-    document.getElementsByTagName('body')[0].appendChild(s);
   }
 
   //IE8 support
@@ -90,37 +82,48 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
     return destination;
   }
 
-  function highchartsNG($window, $rootScope, lazyload, basePath, modules) {
-    var readyQueue = [];
-    var loading = false;
+  function highchartsNG($q, $window, basePath, modules) {
+    var highchartsProm;
+
+    function loadScript(path) {
+      return $q(function(resolve){
+        var s = document.createElement('script');
+        s.type = 'text/javascript';
+        s.src = path;
+        s.onload = resolve;
+        document.getElementsByTagName('body')[0].appendChild(s);
+      });
+    }
+
+    function getHighcharts() {
+      if (typeof $window.Highcharts !== 'undefined') {
+        return $q.when($window.Highcharts);
+      }
+      var prom = $q.when();
+      angular.forEach(modules, function(s) {
+        prom = prom.then(function() {
+          return loadScript(basePath + s);
+        });
+      });
+
+      return prom.then(function() {
+        return $window.Highcharts;
+      });
+    }
+
+    function getHighchartsOnce() {
+      if(!highchartsProm) {
+        highchartsProm = getHighcharts();
+      }
+      return highchartsProm;
+    }
+
     return {
-      lazyLoad:lazyload,
-      ready: function (callback, thisArg) {
-        if (typeof $window.Highcharts !== 'undefined' || !lazyload) {
-          callback();
-        } else {
-          readyQueue.push([callback, thisArg]);
-          if (loading) {
-            return;
-          }
-          loading = true;
-          var self = this;
-          var doWork = function () {
-            if (modules.length === 0) {
-              loading = false;
-              $rootScope.$apply(function () {
-                angular.forEach(readyQueue, function (e) {
-                  // invoke callback passing 'thisArg'
-                  e[0].apply(e[1], []);
-                });
-              });
-            } else {
-              var s = modules.shift();
-              loadScript(basePath + s, doWork);
-            }
-          };
-          doWork();
-        }
+      getHighcharts: getHighchartsOnce,
+      ready: function ready(callback, thisArg) {
+        getHighchartsOnce().then(function() {
+          callback.call(thisArg);
+        });
       }
     };
   }
@@ -275,7 +278,7 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
         config: '=',
         disableDataWatch: '='
       },
-      link: function (scope, element, attrs) {
+      link: function (Highcharts, scope, element, attrs) {
         // We keep some chart-specific variables here as a closure
         // instead of storing them on 'scope'.
 
@@ -512,17 +515,15 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
 
       }
     };
-    
-    // override link fn if lazy loading is enabled
-    if(highchartsNGUtils.lazyLoad){
-      var oldLink = res.link;
-      res.link = function(){
-        var args = arguments;
-        highchartsNGUtils.ready(function(){
-          oldLink.apply(this, args);
-        }, this);
-      };
-    }
+
+    var oldLink = res.link;
+    res.link = function(scope, element, attrs){
+      highchartsNGUtils
+        .getHighcharts()
+        .then(function(Highcharts) {
+          oldLink.call(this, Highcharts, scope, element, attrs);
+        });
+    };
     return res;
   }
 }());

@@ -41,11 +41,11 @@ app.config(['highchartsNGProvider', function (highchartsNGProvider) {
   }]);
 
 app.controller(["highchartsNG", function(highchartsNG){
-// do anything you like
-// ...
-highchartsNG.ready(function(){
-  // init chart config, see lazyload example
-},this);
+  // do anything you like
+  // ...
+  highchartsNG.getHighcharts().then(function(Highcharts){
+    // init chart config, see lazyload example
+  });
 });
 ```
 
