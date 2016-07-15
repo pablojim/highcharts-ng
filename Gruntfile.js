@@ -16,8 +16,7 @@ module.exports = function(grunt) {
     return connect.static(require('path').resolve(dir));
   };
 
-  // Load all grunt tasks
-  require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks);
+  require('load-grunt-tasks')(grunt);
 
   // Project configuration
   grunt.initConfig({
@@ -55,14 +54,8 @@ module.exports = function(grunt) {
         files: '<%= jshint.gruntfile.src %>',
         tasks: ['jshint:gruntfile']
       },
-      less: {
-        files: ['<%= yo.src %>/{,*/}*.less'],
-        tasks: ['less:dist']
-      },
       app: {
         files: [
-          '<%= yo.src %>/{,*/}*.html',
-          '{.tmp,<%= yo.src %>}/{,*/}*.css',
           '{.tmp,<%= yo.src %>}/{,*/}*.js'
         ],
         options: {
@@ -88,17 +81,6 @@ module.exports = function(grunt) {
               mountFolder(connect, yoConfig.src)
             ];
           }
-        }
-      }
-    },
-    less: {
-      options: {
-        // dumpLineNumbers: 'all',
-        paths: ['<%= yo.src %>']
-      },
-      dist: {
-        files: {
-          '<%= yo.src %>/<%= yo.name %>.css': '<%= yo.src %>/<%= yo.name %>.less'
         }
       }
     },
@@ -134,17 +116,6 @@ module.exports = function(grunt) {
         autoWatch: true
       }
     },
-    ngAnnotate: {
-      dist: {
-        src: ['<%= yo.src %>/<%= pkg.name %>.js'],
-        dest: '<%= yo.dist %>/<%= pkg.name %>.js'
-      }
-      // dist: {
-      //   files: {
-      //     '/.js': '/.js'
-      //   }
-      // }
-    },
     concat: {
       options: {
         banner: '<%= meta.banner %>',
@@ -174,7 +145,6 @@ module.exports = function(grunt) {
   grunt.registerTask('build', [
     'clean:dist',
     'concat:dist',
-    'ngAnnotate:dist',
     'uglify:dist'
   ]);
 
