@@ -22,9 +22,5 @@
     { "name": "Barry Fitzgerald" }
   ],
   "dependencies": {},
-  "devDependencies": {
-    "angular": "latest",
-    "angular-mocks": "latest",
-    "jquery": "latest"
-  }
+  "devDependencies": {}
 }
