@@ -91,10 +91,10 @@ angular
     };
 
     $scope.chartConfig.series[0].allAreas = true;
-    highchartsNG.ready(function(){
+    highchartsNG.getHighcharts().then(function(Highcharts){
       $scope.chartConfig.options.plotOptions.map = {
         mapData: Highcharts.maps['custom/world'],
         joinBy: ['name']
       };
-    }, this);
+    });
   });
