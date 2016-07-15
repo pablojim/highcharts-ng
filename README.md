@@ -36,7 +36,7 @@ If you don't want to add additional scripts, you may use lazyload:
 
 ```
 app.config(['highchartsNGProvider', function (highchartsNGProvider) {
-    highchartsNGProvider.lazyLoad();// will load hightcharts (and standalone framework if jquery is not present) from code.hightcharts.com
+    highchartsNGProvider.lazyLoad();// will load highcharts (and standalone framework if jquery is not present) from code.highcharts.com
     
     highchartsNGProvider.lazyLoad([highchartsNGProvider.HIGHCHART/HIGHSTOCK, "maps/modules/map.js", "mapdata/custom/world.js"]);// you may add any additional modules and they will be loaded in the same sequence
     
