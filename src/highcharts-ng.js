@@ -37,6 +37,59 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
       }]
     };
   }
+
+  function loadScript(path, callback) {
+    var s = document.createElement('script');
+    s.type = 'text/javascript';
+    s.src = path;
+    s.onload = callback;
+    document.getElementsByTagName('body')[0].appendChild(s);
+  }
+
+  //IE8 support
+  function indexOf(arr, find, i /*opt*/) {
+    if (i === undefined) i = 0;
+    if (i < 0) i += arr.length;
+    if (i < 0) i = 0;
+    for (var n = arr.length; i < n; i++)
+      if (i in arr && arr[i] === find)
+        return i;
+    return -1;
+  }
+
+  function prependMethod(obj, method, func) {
+    var original = obj[method];
+    obj[method] = function () {
+      var args = Array.prototype.slice.call(arguments);
+      func.apply(this, args);
+      if (original) {
+        return original.apply(this, args);
+      } else {
+        return;
+      }
+
+    };
+  }
+
+  function deepExtend(destination, source) {
+    //Slightly strange behaviour in edge cases (e.g. passing in non objects)
+    //But does the job for current use cases.
+    if (angular.isArray(source)) {
+      destination = angular.isArray(destination) ? destination : [];
+      for (var i = 0; i < source.length; i++) {
+        destination[i] = deepExtend(destination[i] || {}, source[i]);
+      }
+    } else if (angular.isObject(source)) {
+      destination = angular.isObject(destination) ? destination : {};
+      for (var property in source) {
+        destination[property] = deepExtend(destination[property] || {}, source[property]);
+      }
+    } else {
+      destination = source;
+    }
+    return destination;
+  }
+
   function highchartsNG($window, $rootScope, lazyload, basePath, modules) {
     var readyQueue = [];
     var loading = false;
@@ -63,61 +116,11 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
               });
             } else {
               var s = modules.shift();
-              self.loadScript(s, doWork);
+              loadScript(basePath + s, doWork);
             }
           };
           doWork();
         }
-      },
-      loadScript: function (path, callback) {
-        var s = document.createElement('script');
-        s.type = 'text/javascript';
-        s.src = basePath + path;
-        s.onload = callback;
-        document.getElementsByTagName('body')[0].appendChild(s);
-      },
-      //IE8 support
-      indexOf: function (arr, find, i /*opt*/) {
-        if (i === undefined) i = 0;
-        if (i < 0) i += arr.length;
-        if (i < 0) i = 0;
-        for (var n = arr.length; i < n; i++)
-          if (i in arr && arr[i] === find)
-            return i;
-        return -1;
-      },
-
-      prependMethod: function (obj, method, func) {
-        var original = obj[method];
-        obj[method] = function () {
-          var args = Array.prototype.slice.call(arguments);
-          func.apply(this, args);
-          if (original) {
-            return original.apply(this, args);
-          } else {
-            return;
-          }
-
-        };
-      },
-
-      deepExtend: function deepExtend(destination, source) {
-        //Slightly strange behaviour in edge cases (e.g. passing in non objects)
-        //But does the job for current use cases.
-        if (angular.isArray(source)) {
-          destination = angular.isArray(destination) ? destination : [];
-          for (var i = 0; i < source.length; i++) {
-            destination[i] = deepExtend(destination[i] || {}, source[i]);
-          }
-        } else if (angular.isObject(source)) {
-          destination = angular.isObject(destination) ? destination : {};
-          for (var property in source) {
-            destination[property] = deepExtend(destination[property] || {}, source[property]);
-          }
-        } else {
-          destination = source;
-        }
-        return destination;
       }
     };
   }
@@ -167,7 +170,7 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
       };
 
       if (config.options) {
-        mergedOptions = highchartsNGUtils.deepExtend(defaultOptions, config.options);
+        mergedOptions = deepExtend(defaultOptions, config.options);
       } else {
         mergedOptions = defaultOptions;
       }
@@ -175,12 +178,12 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
 
       angular.forEach(axisNames, function(axisName) {
         if(angular.isDefined(config[axisName])) {
-          mergedOptions[axisName] = highchartsNGUtils.deepExtend(mergedOptions[axisName] || {}, config[axisName]);
+          mergedOptions[axisName] = deepExtend(mergedOptions[axisName] || {}, config[axisName]);
 
           if(angular.isDefined(config[axisName].currentMin) ||
               angular.isDefined(config[axisName].currentMax)) {
 
-            highchartsNGUtils.prependMethod(mergedOptions.chart.events, 'selection', function(e){
+            prependMethod(mergedOptions.chart.events, 'selection', function(e){
               var thisChart = this;
               if (e[axisName]) {
                 scope.$apply(function () {
@@ -196,11 +199,11 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
               }
             });
 
-            highchartsNGUtils.prependMethod(mergedOptions.chart.events, 'addSeries', function(e){
+            prependMethod(mergedOptions.chart.events, 'addSeries', function(e){
               scope.config[axisName].currentMin = this[axisName][0].min || scope.config[axisName].currentMin;
               scope.config[axisName].currentMax = this[axisName][0].max || scope.config[axisName].currentMax;
             });
-            highchartsNGUtils.prependMethod(mergedOptions[axisName].events, 'setExtremes', function (e) {
+            prependMethod(mergedOptions[axisName].events, 'setExtremes', function (e) {
               if (e.trigger && e.trigger !== 'zoom') { // zoom trigger is handled by selection event
                 $timeout(function () {
                   scope.config[axisName].currentMin = e.min;
@@ -253,7 +256,7 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
 
     var chartOptionsWithoutEasyOptions = function (options) {
       return angular.extend(
-        highchartsNGUtils.deepExtend({}, options),
+        deepExtend({}, options),
         { data: null, visible: null }
       );
     };
@@ -278,6 +281,8 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
 
         // prevSeriesOptions is maintained by processSeries
         var prevSeriesOptions = {};
+        // chart is maintained by initChart
+        var chart = false;
 
         var processSeries = function(series, seriesOld) {
           var i;
@@ -363,7 +368,7 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
           //Now remove any missing series
           for(i = chart.series.length - 1; i >= 0; i--) {
             var s = chart.series[i];
-            if (s.options.id !== 'highcharts-navigator-series' && highchartsNGUtils.indexOf(ids, s.options.id) < 0) {
+            if (s.options.id !== 'highcharts-navigator-series' && indexOf(ids, s.options.id) < 0) {
               s.remove(false);
             }
           }
@@ -371,8 +376,6 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
           return true;
         };
 
-        // chart is maintained by initChart
-        var chart = false;
         var initChart = function() {
           if (chart) chart.destroy();
           prevSeriesOptions = {};
