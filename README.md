@@ -24,10 +24,6 @@ or
 
 ```<script src="http://code.highcharts.com/highcharts.src.js"></script>```
 
-*(optional)* If you don't include jQuery in your page, you have to use Highcharts' *Standalone Adapter* (else, it will not work):
-
-```<script src="http://code.highcharts.com/adapters/standalone-framework.js"></script>```
-
 Add Highcharts to your Angular app config:
 
 ```var myapp = angular.module('myapp', ["highcharts-ng"]);```
@@ -36,7 +32,7 @@ If you don't want to add additional scripts, you may use lazyload:
 
 ```
 app.config(['highchartsNGProvider', function (highchartsNGProvider) {
-    highchartsNGProvider.lazyLoad();// will load highcharts (and standalone framework if jquery is not present) from code.highcharts.com
+    highchartsNGProvider.lazyLoad();// will load hightcharts (and standalone framework if jquery is not present) from code.hightcharts.com
     
     highchartsNGProvider.lazyLoad([highchartsNGProvider.HIGHCHART/HIGHSTOCK, "maps/modules/map.js", "mapdata/custom/world.js"]);// you may add any additional modules and they will be loaded in the same sequence
     
@@ -145,6 +141,7 @@ Caveats:
 - If you don't assign ids to your series - incremental ids will be added
 - The 2 way binding to xAxis properties should be treated as experimental
 - Navigator/scrollbar cannot run with liveRedraw enabled at this time
+- Highcharts <=3 requires jQuery or ```<script src="http://code.highcharts.com/3/adapters/standalone-framework.js"></script>```
 - Needs tests!
 
 FAQ:
