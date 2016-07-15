@@ -52,9 +52,6 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
           }
           loading = true;
           var self = this;
-          if (typeof jQuery === 'undefined') {
-            modules.unshift('adapters/standalone-framework.js');
-          }
           var doWork = function () {
             if (modules.length === 0) {
               loading = false;
