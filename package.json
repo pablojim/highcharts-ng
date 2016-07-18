@@ -15,11 +15,7 @@
     "type": "git",
     "url": "https://github.com/pablojim/highcharts-ng.git"
   },
-  "licenses": [
-    {
-      "type": "MIT"
-    }
-  ],
+  "license": "MIT",
   "devDependencies": {
     "angular": "^1.5.7",
     "angular-mocks": "^1.5.7",
