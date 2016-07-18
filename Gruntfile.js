@@ -116,14 +116,23 @@ module.exports = function(grunt) {
         autoWatch: true
       }
     },
-    concat: {
-      options: {
-        banner: '<%= meta.banner %>',
-        stripBanners: true
-      },
+    copy: {
       dist: {
-        src: ['<%= yo.src %>/<%= pkg.name %>.js'],
-        dest: '<%= yo.dist %>/<%= pkg.name %>.js'
+        expand: true,
+        cwd: '<%= yo.src %>',
+        src: '**',
+        dest: '<%= yo.dist %>'
+      }
+    },
+    usebanner: {
+      dist: {
+        options: {
+          position: 'top',
+          banner: '<%= meta.banner %>'
+        },
+        files: {
+          src: [ '<%= yo.dist %>/*.js' ]
+        }
       }
     },
     uglify: {
@@ -131,8 +140,10 @@ module.exports = function(grunt) {
         banner: '<%= meta.banner %>'
       },
       dist: {
-        src: '<%= concat.dist.dest %>',
-        dest: '<%= yo.dist %>/<%= pkg.name %>.min.js'
+        files: {
+          '<%= copy.dist.dest %>/<%= pkg.name %>.min.js': '<%= copy.dist.dest %>/<%= pkg.name %>.js',
+          '<%= copy.dist.dest %>/lazyload.min.js': '<%= copy.dist.dest %>/lazyload.js'
+        }
       }
     }
   });
@@ -144,7 +155,8 @@ module.exports = function(grunt) {
 
   grunt.registerTask('build', [
     'clean:dist',
-    'concat:dist',
+    'copy:dist',
+    'usebanner:dist',
     'uglify:dist'
   ]);
 
