@@ -2,7 +2,7 @@
  * Simple highcharts-ng maps example.
  */
 angular
-  .module('app', ['highcharts-ng'])
+  .module('app', ['highcharts-ng-lazyload'])
   .config(['highchartsNGProvider', function (highchartsNGProvider) {
     highchartsNGProvider.lazyLoad([highchartsNGProvider.HIGHCHART, "maps/modules/map.js", "mapdata/custom/world.js"]);
   }])

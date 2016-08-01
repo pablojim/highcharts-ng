@@ -28,27 +28,6 @@ Add Highcharts to your Angular app config:
 
 ```var myapp = angular.module('myapp', ["highcharts-ng"]);```
 
-If you don't want to add additional scripts, you may use lazyload:
-
-```
-app.config(['highchartsNGProvider', function (highchartsNGProvider) {
-    highchartsNGProvider.lazyLoad();// will load hightcharts (and standalone framework if jquery is not present) from code.hightcharts.com
-    
-    highchartsNGProvider.lazyLoad([highchartsNGProvider.HIGHCHART/HIGHSTOCK, "maps/modules/map.js", "mapdata/custom/world.js"]);// you may add any additional modules and they will be loaded in the same sequence
-    
-    highchartsNGProvider.basePath("/js/"); // change base path for scripts, default is http(s)://code.highcharts.com/
-    
-  }]);
-
-app.controller(["highchartsNG", function(highchartsNG){
-  // do anything you like
-  // ...
-  highchartsNG.getHighcharts().then(function(Highcharts){
-    // init chart config, see lazyload example
-  });
-});
-```
-
 Make a chart!
 
 ```<highchart id="chart1" config="chartConfig"></highchart>```
@@ -205,6 +184,36 @@ This may happen for example, when you place your chart in a bootstrap col - elem
 ```
 This forces the chart to reflow after container and chart have finished rendering. Don't forget to include the dependency to $timeout. Full discussion in https://github.com/pablojim/highcharts-ng/issues/300.
  
+Lazy loading
+------------
+
+If you used to use the lazyload feature, this has been moved to a separate
+module. It is recommended to use a module loader such as Webpack or browserify
+instead.
+
+```html
+<script src="path/to/highcharts-ng/dist/lazyload.js"></script>
+```
+
+```
+var myapp = angular.module('myapp', ["highcharts-ng-lazyload"]);```
+app.config(['highchartsNGProvider', function (highchartsNGProvider) {
+    highchartsNGProvider.lazyLoad();// will load hightcharts (and standalone framework if jquery is not present) from code.hightcharts.com
+    
+    highchartsNGProvider.lazyLoad([highchartsNGProvider.HIGHCHART/HIGHSTOCK, "maps/modules/map.js", "mapdata/custom/world.js"]);// you may add any additional modules and they will be loaded in the same sequence
+    
+    highchartsNGProvider.basePath("/js/"); // change base path for scripts, default is http(s)://code.highcharts.com/
+    
+  }]);
+
+app.controller(["highchartsNG", function(highchartsNG){
+  // do anything you like
+  // ...
+  highchartsNG.getHighcharts().then(function(Highcharts){
+    // init chart config, see lazyload example
+  });
+});
+```
 
 
 
