@@ -425,8 +425,6 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
           }, true);
         });
         scope.$watch('config.options', function (newOptions, oldOptions, scope) {
-          //do nothing when called on registration
-          if (newOptions === oldOptions) return;
           initChart();
           processSeries(scope.config.series);
           chart.redraw();
