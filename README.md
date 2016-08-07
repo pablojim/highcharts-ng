@@ -7,8 +7,8 @@ A simple Angularjs directive for Highcharts.
 
 Google Group: https://groups.google.com/forum/#!forum/highcharts-ng
 
-Current Version (0.0.11)
----------------
+Current Version (0.0.12)
+------------------------
 
 **Setup:**
 
