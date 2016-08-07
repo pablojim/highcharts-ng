@@ -12,9 +12,9 @@ Current Version (0.0.12)
 
 **Setup:**
 
-Install with bower/npm:
+Install with npm:
 
-```bower install highcharts-ng```
+```npm install highcharts-ng```
 
 Add references to Highcharts/Highstocks:
 
