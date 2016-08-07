@@ -220,6 +220,12 @@ app.controller(["highchartsNG", function(highchartsNG){
 Versions
 --------------
 
+Version 0.0.12
+--------------
+- use addPoint where possible
+- seperate lazyloader - thanks @graingert
+- Lots of updates and fixes - thanks @graingert
+
 Version 0.0.11
 ----------------
 - Bug fix for console error with missing yAxis
