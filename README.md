@@ -14,23 +14,33 @@ Current Version (0.0.12)
 
 Install with npm:
 
-```npm install highcharts-ng```
+```bash
+npm install highcharts-ng
+```
 
 Add references to Highcharts/Highstocks:
 
-```<script src="http://code.highcharts.com/stock/highstock.src.js"></script>```
+```html
+<script src="http://code.highcharts.com/stock/highstock.src.js"></script>
+```
 
 or
 
-```<script src="http://code.highcharts.com/highcharts.src.js"></script>```
+```html
+<script src="http://code.highcharts.com/highcharts.src.js"></script>
+```
 
 Add Highcharts to your Angular app config:
 
-```var myapp = angular.module('myapp', ["highcharts-ng"]);```
+```javascript
+var myapp = angular.module('myapp', ["highcharts-ng"]);
+```
 
 Make a chart!
 
-```<highchart id="chart1" config="chartConfig"></highchart>```
+```html
+<highchart id="chart1" config="chartConfig"></highchart>
+```
 
 __Warning__: The `chartConfig` object is _slightly different_ than the default Highcharts config object. ( _Please see the FAQ below for details_ )
 
@@ -143,7 +153,7 @@ Be careful - if you manually change something with the chart object that is also
 
 Let's consider the below snippet.
 
-```
+```javascript
 $scope.chartConfig = {
    options: {...}, //Highcharts options - using standard Highcharts config
    //other "dynamic" options
@@ -166,7 +176,7 @@ Hope this makes sense!
  
 This may happen for example, when you place your chart in a bootstrap col - element. For now, you may apply the following workaround to fit your chart in the container:
 
-```
+```javascript
         $scope.config = {
             options: {
             ...
@@ -195,24 +205,26 @@ instead.
 <script src="path/to/highcharts-ng/dist/lazyload.js"></script>
 ```
 
-```
-var myapp = angular.module('myapp', ["highcharts-ng-lazyload"]);```
-app.config(['highchartsNGProvider', function (highchartsNGProvider) {
-    highchartsNGProvider.lazyLoad();// will load hightcharts (and standalone framework if jquery is not present) from code.hightcharts.com
-    
-    highchartsNGProvider.lazyLoad([highchartsNGProvider.HIGHCHART/HIGHSTOCK, "maps/modules/map.js", "mapdata/custom/world.js"]);// you may add any additional modules and they will be loaded in the same sequence
-    
+```javascript
+var app = angular.module('myapp', ["highcharts-ng-lazyload"])
+  .config(['highchartsNGProvider', function (highchartsNGProvider) {
+    // will load highcharts (and standalone framework if jquery is not present) from code.highcharts.com
+    highchartsNGProvider.lazyLoad();
+    highchartsNGProvider.lazyLoad([
+      highchartsNGProvider.HIGHCHART, // or HIGHSTOCK,
+      // you may add any additional modules and they will be loaded in the same sequence
+      "maps/modules/map.js",
+      "mapdata/custom/world.js",
+    ]);
     highchartsNGProvider.basePath("/js/"); // change base path for scripts, default is http(s)://code.highcharts.com/
-    
-  }]);
-
-app.controller(["highchartsNG", function(highchartsNG){
-  // do anything you like
-  // ...
-  highchartsNG.getHighcharts().then(function(Highcharts){
-    // init chart config, see lazyload example
+  }])
+ .controller(["highchartsNG", function(highchartsNG){
+    // do anything you like
+    // ...
+    highchartsNG.getHighcharts().then(function(Highcharts){
+      // init chart config, see lazyload example
+    });
   });
-});
 ```
 
 
@@ -285,7 +297,9 @@ Version 0.0.2
 Version 0.0.1 (not compatible with current version)
 ----------------
 
-`<highchart id="chart1" series="chart.series" title="chart.title" options="chart.options"></highchart>`
+```html
+<highchart id="chart1" series="chart.series" title="chart.title" options="chart.options"></highchart>
+```
 
 See an example here: [http://jsfiddle.net/pablojim/46rhz/](http://jsfiddle.net/pablojim/46rhz/)
 
