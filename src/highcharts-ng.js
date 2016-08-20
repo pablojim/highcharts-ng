@@ -451,7 +451,7 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
     }
 
     function link(scope, element, attrs) {
-      function highchartsCb(Highcarts) {
+      function highchartsCb(Highcharts) {
         linkWithHighcharts(Highcharts, scope, element, attrs);
       }
       highchartsNGUtils
