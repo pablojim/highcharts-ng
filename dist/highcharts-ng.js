@@ -1,6 +1,6 @@
 /**
  * highcharts-ng
- * @version v0.0.12 - 2016-08-07
+ * @version v0.0.13 - 2016-10-04
  * @link https://github.com/pablojim/highcharts-ng
  * @author Barry Fitzgerald <>
  * @license MIT License, http://www.opensource.org/licenses/MIT
@@ -459,7 +459,7 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
     }
 
     function link(scope, element, attrs) {
-      function highchartsCb(Highcarts) {
+      function highchartsCb(Highcharts) {
         linkWithHighcharts(Highcharts, scope, element, attrs);
       }
       highchartsNGUtils

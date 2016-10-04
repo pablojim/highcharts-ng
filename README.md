@@ -232,6 +232,11 @@ var app = angular.module('myapp', ["highcharts-ng-lazyload"])
 Versions
 --------------
 
+
+Version 0.0.13
+--------------
+- Minor bugfix
+
 Version 0.0.12
 --------------
 - use addPoint where possible
