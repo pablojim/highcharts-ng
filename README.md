@@ -18,6 +18,13 @@ Install with npm:
 npm install highcharts-ng
 ```
 
+or with bower:
+
+```bash
+bower install highcharts-ng --save
+```
+
+
 Add references to Highcharts/Highstocks:
 
 ```html
