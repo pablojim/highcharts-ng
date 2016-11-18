@@ -7,7 +7,20 @@ A simple Angularjs directive for Highcharts.
 
 Google Group: https://groups.google.com/forum/#!forum/highcharts-ng
 
-Current Version (0.0.12)
+
+
+See The New Beta Branch!
+------------------------
+You are highly recommended to try the new Beta version.
+It needs Highcharts/Highstock >= 5.0.0
+https://github.com/pablojim/highcharts-ng/tree/highcharts-ng2
+
+Any feedback on the BETA branch please comment on:
+
+https://github.com/pablojim/highcharts-ng/pull/529
+
+
+Current Version (0.0.13)
 ------------------------
 
 **Setup:**
