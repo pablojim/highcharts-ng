@@ -8,13 +8,13 @@ A simple Angularjs directive for Highcharts.
 Google Group: https://groups.google.com/forum/#!forum/highcharts-ng
 
 
-Basic jsfiddle: coming soon
+Basic jsfiddle: http://jsfiddle.net/pablojim/LnkgL135/
 See example in ./example/charts/general-example.html 
 
 
 BETA Version (0.1.0)
 --------------------
-**Note Needs Highcharts/Highstock >= 5.0.0 or **
+**Note Needs Highcharts/Highstock >= 5.0.0**
 
 
 **Setup:**
