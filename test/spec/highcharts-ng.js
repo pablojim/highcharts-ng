@@ -68,7 +68,7 @@ describe('Module: highchartsNg', function () {
         'simpleChartConfig': {
             scope: {
                 chartConfig: {
-                    options: {chart: {type: 'bar'}},
+                    chart: {type: 'bar'},
                     series: [{data: [1, 2]}]
                 }
             },
@@ -77,7 +77,7 @@ describe('Module: highchartsNg', function () {
         'stockChartConfig': {
             scope: {
                 chartConfig: {
-                    useHighStocks: true
+                    chartType: 'stock'
                 }
             },
             element: '<highchart config="chartConfig"></highchart>'
@@ -103,10 +103,10 @@ describe('Module: highchartsNg', function () {
         compileDirective('simpleChartConfig');
 
         expect(options.chart.type).toBe('bar');
-        expect(chart.addSeries).toHaveBeenCalled();
+        expect(options.chart.series).toBe(templates.simpleChartConfig.series);
     });
 
-    describe('useHighStocks', function () {
+    describe('Respects chartType', function () {
         beforeEach(function () {
             compileDirective('stockChartConfig');
         });

@@ -30,10 +30,10 @@ myapp.controller('myctrl', function ($scope) {
   ];
 
   $scope.chartSeries = [
-    {"name": "Some data", "data": [1, 2, 4, 7, 3]},
-    {"name": "Some data 3", "data": [3, 1, null, 5, 2], connectNulls: true},
-    {"name": "Some data 2", "data": [5, 2, 2, 3, 5], type: "column"},
-    {"name": "My Super Column", "data": [1, 1, 2, 3, 2], type: "column"}
+    {"name": "Some data", "data": [1, 2, 4, 7, 3], id: 's1'},
+    {"name": "Some data 3", "data": [3, 1, null, 5, 2], connectNulls: true, id: 's2'},
+    {"name": "Some data 2", "data": [5, 2, 2, 3, 5], type: "column", id: 's3'},
+    {"name": "My Super Column", "data": [1, 1, 2, 3, 2], type: "column", id: 's4'}
   ];
 
   $scope.chartStack = [
@@ -48,14 +48,19 @@ myapp.controller('myctrl', function ($scope) {
     seriesArray[rndIdx].data = seriesArray[rndIdx].data.concat([1, 10, 20])
   };
 
+
+  var seriesId = 0;
+
   $scope.addSeries = function () {
     var rnd = []
     for (var i = 0; i < 10; i++) {
       rnd.push(Math.floor(Math.random() * 20) + 1)
     }
+    var sId = '__series' + seriesId++;
     $scope.chartConfig.series.push({
-      data: rnd
-    })
+      data: rnd,
+      id: sId
+    });
   }
 
   $scope.removeRandomSeries = function () {
@@ -75,9 +80,9 @@ myapp.controller('myctrl', function ($scope) {
 
   $scope.replaceAllSeries = function () {
     var data = [
-      { name: "first", data: [10] },
-      { name: "second", data: [3] },
-      { name: "third", data: [13] }
+      { name: "first", data: [10], id: 'a' },
+      { name: "second", data: [3], id: 'b' },
+      { name: "third", data: [13], id: 'c' }
     ];
     $scope.chartConfig.series = data;
   };

@@ -15,7 +15,7 @@
     "example",
     ".travis.yml"
   ],
-  "version": "0.0.13-dev",
+  "version": "0.1.0-dev",
   "main": "dist/highcharts-ng.js",
   "license": "MIT",
   "authors": [
