@@ -101,7 +101,10 @@ var chartConfig = {
   xAxis: {
   currentMin: 0,
   currentMax: 20,
-  title: {text: 'values'}
+  title: {text: 'values'},
+  credits: {
+      enabled: true
+  }
   },
   //Whether to use Highstocks instead of Highcharts (optional). Defaults to false.
   useHighStocks: false,
