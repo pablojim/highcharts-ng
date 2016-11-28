@@ -1,14 +1,6 @@
 /**
  * highcharts-ng
- * @version v0.0.14-dev - 2016-11-18
- * @link https://github.com/pablojim/highcharts-ng
- * @author Barry Fitzgerald <>
- * @license MIT License, http://www.opensource.org/licenses/MIT
- */
-
-/**
- * highcharts-ng
- * @version v0.0.14-dev - 2016-11-18
+ * @version v0.1.0-dev - 2016-11-28
  * @link https://github.com/pablojim/highcharts-ng
  * @author Barry Fitzgerald <>
  * @license MIT License, http://www.opensource.org/licenses/MIT
@@ -24,220 +16,125 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
 
 
   angular.module('highcharts-ng', [])
-    .factory('highchartsNG', ['$q', '$window', highchartsNG])
-    .directive('highchart', ['highchartsNG', '$timeout', highchart]);
+    .component('highchart', {
+        bindings: {
+            config: '<',
+            changeDetection: '<'
+          },
+          controller: HighChartNGController
+    });
 
-  function prependMethod(obj, method, func) {
-    var original = obj[method];
-    obj[method] = function () {
-      var args = Array.prototype.slice.call(arguments);
-      func.apply(this, args);
-      if (original) {
-        return original.apply(this, args);
-      } else {
-        return;
-      }
-
-    };
-  }
-
-  function deepExtend(destination, source) {
-    //Slightly strange behaviour in edge cases (e.g. passing in non objects)
-    //But does the job for current use cases.
-    if (angular.isArray(source)) {
-      destination = angular.isArray(destination) ? destination : [];
-      for (var i = 0; i < source.length; i++) {
-        destination[i] = deepExtend(destination[i] || {}, source[i]);
-      }
-    } else if (angular.isObject(source)) {
-      destination = angular.isObject(destination) ? destination : {};
-      for (var property in source) {
-        destination[property] = deepExtend(destination[property] || {}, source[property]);
-      }
-    } else {
-      destination = source;
-    }
-    return destination;
-  }
-
-  function highchartsNG($q, $window) {
-    var highchartsProm = $q.when($window.Highcharts);
-
-    function getHighchartsOnce() {
-      return highchartsProm;
-    }
-
-    return {
-      getHighcharts: getHighchartsOnce,
-      ready: function ready(callback, thisArg) {
-        getHighchartsOnce().then(function() {
-          callback.call(thisArg);
-        });
-      }
-    };
-  }
-
-  function highchart(highchartsNGUtils, $timeout) {
-
-    // acceptable shared state
+  function HighChartNGController($element, $timeout) {
     var seriesId = 0;
-    var ensureIds = function (series) {
-      var ids = [];
-      angular.forEach(series, function(s) {
-        if (!angular.isDefined(s.id)) {
-          s.id = 'series-' + seriesId++;
-        }
-        ids.push(s.id);
-      });
-      return ids;
-    };
-
-    // immutable
-    var axisNames = [ 'xAxis', 'yAxis' ];
-    var chartTypeMap = {
-      'stock': 'StockChart',
-      'map':   'Map',
-      'chart': 'Chart'
-    };
-
-    var getMergedOptions = function (scope, element, config) {
-      var mergedOptions = {};
-
-      var defaultOptions = {
-        chart: {
-          events: {}
-        },
-        title: {},
-        subtitle: {},
-        series: [],
-        credits: {},
-        plotOptions: {},
-        navigator: {enabled: false},
-        xAxis: {
-          events: {}
-        },
-        yAxis: {
-          events: {}
-        }
+    var ctrl = this;
+    var prevConfig = {};
+    var mergedConfig = {};
+    var detector = ctrl.changeDetection || angular.equals;
+    this.$onInit = function() {
+      ctrl.config.getChartObj = function(){
+        return ctrl.chart;
       };
-
-      if (config) {
-        //check all series and axis ids are set
-        if(config.series) {
-          ensureIds(config.series);
-        }
-
-        mergedOptions = deepExtend(defaultOptions, config);
-      } else {
-        mergedOptions = defaultOptions;
-      }
-      mergedOptions.chart.renderTo = element[0];
-
-      //check chart type is set
-
-
-      return mergedOptions;
+      prevConfig = angular.merge({}, ctrl.config);
+      mergedConfig = getMergedOptions($element, ctrl.config, seriesId);
+      ctrl.chart = new Highcharts[getChartType(mergedConfig)](mergedConfig);
     };
 
-    var getChartType = function(scope) {
-      if (scope.config === undefined || scope.config.chartType === undefined) return 'Chart';
-      return chartTypeMap[('' + scope.config.chartType).toLowerCase()];
-    };
-
-    function linkWithHighcharts(Highcharts, scope, element, attrs) {
-      // We keep some chart-specific variables here as a closure
-      // instead of storing them on 'scope'.
-
-
-      // chart is maintained by initChart
-      var chart = false;
-
-      var initChart = function() {
-        if (chart) chart.destroy();
-        var config = scope.config || {};
-        var mergedOptions = getMergedOptions(scope, element, config);
-        var chartType = getChartType(scope);
-
-        chart = new Highcharts[chartType](mergedOptions);
-
-        config.getChartObject = function() {
-          return chart;
-        };
-
-      };
-      initChart();
-
-      var watcher;
-      if(scope.customWatch) {
-        if(angular.isFunction(scope.customWatch)) {
-          watcher = function() {
-            return scope.customWatch(scope);
-          };
-        } else {
-          watcher = scope.customWatch;
-        }
-      } else {
-        watcher = 'config';
-      }
-
-      scope.$watch(watcher, function (newConfig, oldConfig) {
-        if (newConfig === oldConfig) return;
-        if (newConfig.series) {
-          var ids = ensureIds(newConfig.series);
+    this.$doCheck = function() {
+      if(!detector(ctrl.config, prevConfig)) {
+        prevConfig = angular.merge({}, ctrl.config);
+        mergedConfig = getMergedOptions($element, ctrl.config, seriesId);
+        var ids = ensureIds(mergedConfig.series, seriesId);
+        if (mergedConfig.series) {
           //Remove any missing series
-          for (var i = chart.series.length - 1; i >= 0; i--) {
-            var s = chart.series[i];
+          for (var i = ctrl.chart.series.length - 1; i >= 0; i--) {
+            var s = ctrl.chart.series[i];
             if (s.options.id !== 'highcharts-navigator-series' && ids.indexOf(s.options.id) < 0) {
               s.remove(false);
             }
           }
           // Add any new series
-          angular.forEach(newConfig.series, function(s) {
-            if (!chart.get(s.id)) {
-              chart.addSeries(s);
+          angular.forEach(ctrl.config.series, function(s) {
+            if (!ctrl.chart.get(s.id)) {
+              ctrl.chart.addSeries(s);
             }
           });
         }
-        chart.update(newConfig);
-      }, true);
+        ctrl.chart.update(mergedConfig, true);
+      }
+    };
 
-      scope.$on('highchartsng.reflow', function () {
-        chart.reflow();
-      });
-
-      scope.$on('$destroy', function() {
-        if (chart) {
+    this.$onDestroy = function() {
+        if (ctrl.chart) {
           try{
-            chart.destroy();
+            ctrl.chart.destroy();
           }catch(ex){
             // fail silently as highcharts will throw exception if element doesn't exist
           }
 
           $timeout(function(){
-            element.remove();
+            $element.remove();
           }, 0);
         }
-      });
+      };
     }
 
-    function link(scope, element, attrs) {
-      function highchartsCb(Highcharts) {
-        linkWithHighcharts(Highcharts, scope, element, attrs);
-      }
-      highchartsNGUtils
-        .getHighcharts()
-        .then(highchartsCb);
-    }
+  function getMergedOptions(element, config, seriesId) {
+    var mergedOptions = {};
 
-    return {
-      restrict: 'EAC',
-      replace: true,
-      template: '<div></div>',
-      scope: {
-        config: '=',
-        customWatch: '='
+    var defaultOptions = {
+      chart: {
+        events: {}
       },
-      link: link
+      title: {},
+      subtitle: {},
+      series: [],
+      credits: {},
+      plotOptions: {},
+      navigator: {},
+      xAxis: {
+        events: {}
+      },
+      yAxis: {
+        events: {}
+      }
     };
-  }
+
+    if (config) {
+      //check all series and axis ids are set
+      if(config.series) {
+        ensureIds(config.series, seriesId);
+      }
+
+      mergedOptions = angular.merge(defaultOptions, config);
+    } else {
+      mergedOptions = defaultOptions;
+    }
+    mergedOptions.chart.renderTo = element[0];
+
+    //check chart type is set
+    return mergedOptions;
+  };
+
+  var chartTypeMap = {
+    'stock': 'StockChart',
+    'map':   'Map',
+    'chart': 'Chart'
+  };
+
+  function getChartType(config) {
+    if (config === undefined || config.chartType === undefined) return 'Chart';
+    return chartTypeMap[('' + config.chartType).toLowerCase()];
+  };
+
+  function ensureIds(series, seriesId) {
+    var ids = [];
+    angular.forEach(series, function(s) {
+      if (!angular.isDefined(s.id)) {
+        s.id = 'series-' + seriesId++;
+      }
+      ids.push(s.id);
+    });
+    return ids;
+  };
+
 }());

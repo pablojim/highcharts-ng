@@ -15,6 +15,7 @@ See example in ./example/charts/general-example.html
 BETA Version (0.1.0)
 --------------------
 **Note Needs Highcharts/Highstock >= 5.0.0**
+**Configuration Format is not compatible with highcharts-ng 0.x.0**
 
 
 **Setup:**
@@ -64,19 +65,20 @@ Features:
 - Setting/Updating Chart options
 - Updating the chart title
 - Resizes with screen size changes.
-- Providing a customWatch function or expression - for speed a custom watch function can bbe provided to save dirty checking the full chart config.
+- Providing a custom changeDetection function or expression - for speed a custom changeDetection function can be provided to save dirty checking the full chart config.
 
 Features Not Supported that were previously supported:
 ------------------------------------------------------
 - 2 way binding to chart xAxis. (use chartConfig.getHighcharts() to get axis values)
 - Control of Loading status though the config (use chartConfig.getHighcharts() to get axis values)
 Both of these should be possible to add with the right PR
+- Use of add and remove points on dynamically updated series
 
 
 Caveats:
 --------
 
-- Due to many equality checks the directive maybe slow with large datasets - try using customWatch instead
+- Due to many equality checks the directive maybe slow with large datasets - try using changeDetection instead
 - Whole Chart/Series is often redrawn where a simple update of data would suffice
 - If you don't assign ids to your series - incremental ids will be added. This may mean extra redraws. 
 - Needs more tests!
@@ -92,46 +94,13 @@ e.g. 2-way binding to axes and loading functionality
 
 - How do I get access to the chart object?
 
-You can use `config.getHighcharts`. 95% of the time you won't need this and should instead change the chartConfig instead.
+You can use `config.getChartObj`. 95% of the time you should not need this and should instead change the chartConfig instead.
 
 Be careful - if you manually change something with the chart object that is also in the chartConfig the chart and the config may end up out of sync.  
 
 - Why don't you just use the standard Highcharts format?
 
-Now we do!
-
-Lazy loading
-------------
-
-If you used to use the lazyload feature, this has been moved to a separate
-module. It is recommended to use a module loader such as Webpack or browserify
-instead.
-
-```html
-<script src="path/to/highcharts-ng/dist/lazyload.js"></script>
-```
-
-```javascript
-var app = angular.module('myapp', ["highcharts-ng-lazyload"])
-  .config(['highchartsNGProvider', function (highchartsNGProvider) {
-    // will load highcharts (and standalone framework if jquery is not present) from code.highcharts.com
-    highchartsNGProvider.lazyLoad();
-    highchartsNGProvider.lazyLoad([
-      highchartsNGProvider.HIGHCHART, // or HIGHSTOCK,
-      // you may add any additional modules and they will be loaded in the same sequence
-      "maps/modules/map.js",
-      "mapdata/custom/world.js",
-    ]);
-    highchartsNGProvider.basePath("/js/"); // change base path for scripts, default is http(s)://code.highcharts.com/
-  }])
- .controller(["highchartsNG", function(highchartsNG){
-    // do anything you like
-    // ...
-    highchartsNG.getHighcharts().then(function(Highcharts){
-      // init chart config, see lazyload example
-    });
-  });
-```
+Since 0.1.0, vanilla Highcharts objects are supported!
 
 
 
@@ -141,10 +110,14 @@ Versions
 Version 0.1.0 (Beta)
 --------------------
 - only support Highchart/Highstock >= 5.0.0
-- now supports vanilla highcharts config
+- only support AngularJS >= 1.5 (see https://github.com/toddmotto/angular-component for lower versions)
+- Move to AngularJS Component
+- Now supports vanilla Highcharts config
+- Supports custom change detection functions
 - Should be much more stable and less bugs
 - 2 way axes binding no longer supported
 - loading property no longer supported
+
 
 
 Version 0.0.13

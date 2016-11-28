@@ -142,7 +142,6 @@ module.exports = function(grunt) {
       dist: {
         files: {
           '<%= copy.dist.dest %>/<%= pkg.name %>.min.js': '<%= copy.dist.dest %>/<%= pkg.name %>.js',
-          '<%= copy.dist.dest %>/lazyload.min.js': '<%= copy.dist.dest %>/lazyload.js'
         }
       }
     }

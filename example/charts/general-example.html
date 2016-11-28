@@ -2,9 +2,9 @@
 <html>
 <head>
     <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" rel="stylesheet">
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js"></script>
-    <script src="http://code.highcharts.com/stock/highstock.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
+    <script src="http://code.highcharts.com/stock/highstock.src.js"></script>
     <script src="../../src/highcharts-ng.js"></script>
     <script src="app.js"></script>
 </head>
@@ -29,15 +29,15 @@
 {{ chartConfig }}
                     </pre>
                 </div>
+                 <div class="row-fluid">{{chartConfig.getChartObj().chartHeight}}</div>
             </div>
             <div class="span4">
                 <div class="row-fluid">Title <input ng-model="chartConfig.title.text"></div>
                 <div class="row-fluid">Subtitle <input ng-model="chartConfig.subtitle.text"></div>
-                <div class="row-fluid">Width <input ng-model="chartConfig.size.width"></div>
-                <div class="row-fluid">Height <input ng-model="chartConfig.size.height"></div>
-                <div class="row-fluid"><button ng-click="reflow()">reflow</button></div>
-                <div class="row-fluid">Default Type <select ng-model="chartConfig.options.chart.type" ng-options="t.id as t.title for t in chartTypes"></select></div>
-                <div class="row-fluid">Stack <select ng-model="chartConfig.options.plotOptions.series.stacking" ng-options="t.id as t.title for t in chartStack"></select></div>
+                <div class="row-fluid">Width <input type="number" ng-model="chartConfig.chart.width"></div>
+                <div class="row-fluid">Height <input  type="number" ng-model="chartConfig.chart.height"></div>
+                <div class="row-fluid">Default Type <select ng-model="chartConfig.chart.type" ng-options="t.id as t.title for t in chartTypes"></select></div>
+                <div class="row-fluid">Stack <select ng-model="chartConfig.plotOptions.series.stacking" ng-options="t.id as t.title for t in chartStack"></select></div>
                 <div class="row-fluid"><label><input type="checkbox" ng-model="chartConfig.loading"> is loading</label></div>
                 <div class="row-fluid"><label><input type="checkbox" ng-model="chartConfig.credits.enabled"> credits</label></div>
                 <h4>Series</h4>

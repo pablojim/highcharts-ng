@@ -66,16 +66,16 @@ myapp.controller('myctrl', function ($scope) {
   $scope.removeRandomSeries = function () {
     var seriesArray = $scope.chartConfig.series;
     var rndIdx = Math.floor(Math.random() * seriesArray.length);
-    seriesArray.splice(rndIdx, 1)
+    seriesArray.splice(rndIdx, 1);
   }
 
   $scope.removeSeries = function (id) {
     var seriesArray = $scope.chartConfig.series;
-    seriesArray.splice(id, 1)
+    seriesArray.splice(id, 1);
   }
 
   $scope.toggleHighCharts = function () {
-    this.chartConfig.useHighStocks = !this.chartConfig.useHighStocks
+    this.chartConfig.useHighStocks = !this.chartConfig.useHighStocks;
   }
 
   $scope.replaceAllSeries = function () {
@@ -88,25 +88,19 @@ myapp.controller('myctrl', function ($scope) {
   };
 
   $scope.chartConfig = {
-    options: {
-      chart: {
-        type: 'areaspline'
-      },
-      plotOptions: {
-        series: {
-          stacking: ''
-        }
+
+    chart: {
+      type: 'line'
+    },
+    plotOptions: {
+      series: {
+        stacking: ''
       }
     },
     series: $scope.chartSeries,
     title: {
       text: 'Hello'
-    },
-    credits: {
-      enabled: true
-    },
-    loading: false,
-    size: {}
+    }
   }
 
   $scope.reflow = function () {
