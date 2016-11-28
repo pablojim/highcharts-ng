@@ -106,6 +106,7 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
         subtitle: {},
         series: [],
         credits: {},
+        exporting: {},
         plotOptions: {},
         navigator: {enabled: false},
         xAxis: {
@@ -172,6 +173,9 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
       }
       if (config.credits) {
         mergedOptions.credits = config.credits;
+      }
+      if (config.exporting) {
+        mergedOptions.exporting = config.exporting;
       }
       if(config.size) {
         if (config.size.width) {
