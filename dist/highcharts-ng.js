@@ -24,6 +24,8 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
           controller: HighChartNGController
     });
 
+  HighChartNGController.$inject = ['$element', '$timeout'];
+
   function HighChartNGController($element, $timeout) {
     var seriesId = 0;
     var ctrl = this;
