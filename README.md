@@ -76,7 +76,6 @@ The `chartConfig` attribute mentioned above resembles an exploded Highcharts opt
 ```javascript
 //This is not a highcharts object. It just looks a little like one!
 var chartConfig = {
-
   options: {
       //This is the Main Highcharts chart config. Any Highchart options are valid here.
       //will be overriden by values specified below.
@@ -94,11 +93,11 @@ var chartConfig = {
 
   //Series object (optional) - a list of series using normal Highcharts series options.
   series: [{
-     data: [10, 15, 12, 8, 7]
+      data: [10, 15, 12, 8, 7]
   }],
   //Title configuration (optional)
   title: {
-     text: 'Hello'
+      text: 'Hello'
   },
   //Boolean to control showing loading status on chart (optional)
   //Could be a string if you want to show specific loading text.
@@ -106,23 +105,23 @@ var chartConfig = {
   //Configuration for the xAxis (optional). Currently only one x axis can be dynamically controlled.
   //properties currentMin and currentMax provided 2-way binding to the chart's maximum and minimum
   xAxis: {
-  currentMin: 0,
-  currentMax: 20,
-  title: {text: 'values'},
-  credits: {
-      enabled: true
-  }
+      currentMin: 0,
+      currentMax: 20,
+      title: {text: 'values'},
+      credits: {
+          enabled: true
+      }
   },
   //Whether to use Highstocks instead of Highcharts (optional). Defaults to false.
   useHighStocks: false,
   //size (optional) if left out the chart will default to size of the div or something sensible.
   size: {
-   width: 400,
-   height: 300
+      width: 400,
+      height: 300
   },
   //function (optional)
   func: function (chart) {
-   //setup some logic for the chart
+      //setup some logic for the chart
   }
 };
 ```
@@ -156,9 +155,9 @@ Caveats:
 - Highcharts <=3 requires jQuery or ```<script src="http://code.highcharts.com/3/adapters/standalone-framework.js"></script>```
 - Needs tests!
 
+
 FAQ:
 --------
-
 
 - Why doesn't my plot options/tooltip/drilldown/other feature work?
 
@@ -178,10 +177,10 @@ Let's consider the below snippet.
 
 ```javascript
 $scope.chartConfig = {
-   options: {...}, //Highcharts options - using standard Highcharts config
-   //other "dynamic" options
-   title: {...}
-   series [...]
+    options: {...}, //Highcharts options - using standard Highcharts config
+    //other "dynamic" options
+    title: {...}
+    series [...]
 }
 ```
 In the ```chartConfig``` object above the ```options``` property is a standard Highcharts options object. e.g. anything you can pass into ````new Highcharts.Chart(options);``` works here.
@@ -200,20 +199,17 @@ Hope this makes sense!
 This may happen for example, when you place your chart in a bootstrap col - element. For now, you may apply the following workaround to fit your chart in the container:
 
 ```javascript
-        $scope.config = {
-            options: {
-            ...
-            },
-            ...
-            // other configuration here,
-            ...
-            func: function(chart) {
-                $timeout(function() {
-                    chart.reflow();
-                }, 0);
-            }
-        };
+$scope.config = {
+    options: {
+        ...
+    },
+    ... //other configuration here,
+    func: function(chart) {
+        $timeout(function() {
+            chart.reflow();
+        }, 0);
     }
+};
 ```
 This forces the chart to reflow after container and chart have finished rendering. Don't forget to include the dependency to $timeout. Full discussion in https://github.com/pablojim/highcharts-ng/issues/300.
  
