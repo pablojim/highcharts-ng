@@ -164,6 +164,9 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
         }
       });
 
+      if (config.plotOptions) {
+        mergedOptions.plotOptions = config.plotOptions;
+      }
       if(config.title) {
         mergedOptions.title = config.title;
       }
