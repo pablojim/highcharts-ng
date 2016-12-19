@@ -432,7 +432,11 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
       }, true);
 
       scope.$on('highchartsng.reflow', function () {
-        chart.reflow();
+        //Solves race conditions between destroyed chart and reflow event
+        if (!!chart && !!chart.options) {
+          chart.reflow();
+        }
+        
       });
 
       scope.$on('$destroy', function() {
