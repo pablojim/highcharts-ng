@@ -25,7 +25,8 @@ describe('Module: highchartsNg', function () {
             'hideLoading',
             'destroy',
             'get',
-            'addSeries']);
+            'addSeries',
+            'update']);
         chart.series = [];
 
         window.Highcharts = {
@@ -62,8 +63,8 @@ describe('Module: highchartsNg', function () {
 
     var templates = {
         'default': {
-            scope: {},
-            element: '<highchart></highchart>'
+            scope: {chartConfig: {}},
+            element: '<highchart config="chartConfig"></highchart>'
         },
         'simpleChartConfig': {
             scope: {
