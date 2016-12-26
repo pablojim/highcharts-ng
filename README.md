@@ -7,14 +7,13 @@ A simple Angularjs directive for Highcharts.
 
 Google Group: https://groups.google.com/forum/#!forum/highcharts-ng
 
-
 Basic jsfiddle: http://jsfiddle.net/pablojim/LnkgL135/
-See example in ./example/charts/general-example.html 
+See example in ./example/charts/general-example.html (Also served here: https://rawgit.com/pablojim/highcharts-ng/master/example/charts/general-example.html)
 
-
-BETA Version (0.1.0)
---------------------
+Current Version (0.1.0)
+-----------------------
 **Note Needs Highcharts/Highstock >= 5.0.0**
+**Only supports AngularJS >= 1.5**
 **Configuration Format is not compatible with highcharts-ng 0.x.0**
 
 
@@ -125,8 +124,6 @@ Version 0.1.0
 - 2 way axes binding no longer supported
 - loading property no longer supported
 
-
-
 Version 0.0.13
 --------------
 - Minor bugfix
@@ -162,7 +159,6 @@ Version 0.0.7
 - Better support for large data series - thanks @f1ghtingfalcons
 - Lots of bug fixes - thanks to all contributors
 
-
 Version 0.0.6
 ----------------
 - Added no data logic - thanks @eranbetzalel
@@ -170,12 +166,10 @@ Version 0.0.6
 - Added example for size setting
 - Minor bug fixes
 
-
 Version 0.0.5
 ----------------
 - Now watches size property
 - More robust checks around axes
-
 
 Version 0.0.4
 ----------------
@@ -191,7 +185,6 @@ Version 0.0.2
 ----------------
 - Removed JQuery dependency
 - Allowed for null config option
-
 
 Version 0.0.1 (not compatible with current version)
 ----------------
