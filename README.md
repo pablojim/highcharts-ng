@@ -26,6 +26,13 @@ Install with npm:
 npm install highcharts-ng
 ```
 
+or with bower:
+
+```bash
+bower install highcharts-ng --save
+```
+
+
 Add references to Highcharts/Highstocks:
 
 ```html
@@ -107,8 +114,8 @@ Since 0.1.0, vanilla Highcharts objects are supported!
 Versions
 --------------
 
-Version 0.1.0 (Beta)
---------------------
+Version 0.1.0
+-------------
 - only support Highchart/Highstock >= 5.0.0
 - only support AngularJS >= 1.5 (see https://github.com/toddmotto/angular-component for lower versions)
 - Move to AngularJS Component
