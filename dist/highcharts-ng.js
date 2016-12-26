@@ -1,6 +1,6 @@
 /**
  * highcharts-ng
- * @version v0.1.0-dev - 2016-11-28
+ * @version v0.1.0-dev - 2016-12-26
  * @link https://github.com/pablojim/highcharts-ng
  * @author Barry Fitzgerald <>
  * @license MIT License, http://www.opensource.org/licenses/MIT
@@ -115,7 +115,7 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
 
     //check chart type is set
     return mergedOptions;
-  };
+  }
 
   var chartTypeMap = {
     'stock': 'StockChart',
@@ -126,7 +126,7 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
   function getChartType(config) {
     if (config === undefined || config.chartType === undefined) return 'Chart';
     return chartTypeMap[('' + config.chartType).toLowerCase()];
-  };
+  }
 
   function ensureIds(series, seriesId) {
     var ids = [];
@@ -137,6 +137,6 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
       ids.push(s.id);
     });
     return ids;
-  };
+  }
 
 }());

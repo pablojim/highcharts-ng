@@ -107,7 +107,7 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
 
     //check chart type is set
     return mergedOptions;
-  };
+  }
 
   var chartTypeMap = {
     'stock': 'StockChart',
@@ -118,7 +118,7 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
   function getChartType(config) {
     if (config === undefined || config.chartType === undefined) return 'Chart';
     return chartTypeMap[('' + config.chartType).toLowerCase()];
-  };
+  }
 
   function ensureIds(series, seriesId) {
     var ids = [];
@@ -129,6 +129,6 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
       ids.push(s.id);
     });
     return ids;
-  };
+  }
 
 }());
