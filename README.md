@@ -10,8 +10,8 @@ Google Group: https://groups.google.com/forum/#!forum/highcharts-ng
 Basic jsfiddle: http://jsfiddle.net/pablojim/LnkgL135/
 See example in ./example/charts/general-example.html (Also served here: https://rawgit.com/pablojim/highcharts-ng/master/example/charts/general-example.html)
 
-Current Version (0.1.0)
------------------------
+Current Version (1.0.0) Release Candidate
+-----------------------------------------
 **Note Needs Highcharts/Highstock >= 5.0.0**
 **Only supports AngularJS >= 1.5**
 **Configuration Format is not compatible with highcharts-ng 0.x.0**
@@ -62,7 +62,7 @@ It is **Highly Recommended** to give all Series and Axes a distinct ID.
 
 All properties on the chart configuration are optional. If you don't need a feature best to leave it out completely - Highcharts will usually default to something sensible. Each property is watched for changes by angularjs.
 
-After construction the Highcharts Chart object can be accessed with ```chartConfig.getHighcharts()```. This is a simple way to access all the Highcharts API that is not currently managed by this directive. See the JSFiddle basic example to see how this is used to call the print function of Highcharts.
+After construction the Highcharts Chart object can be accessed with ```chartConfig.getChartObj()```. This is a simple way to access all the Highcharts API that is not currently managed by this directive. See the JSFiddle basic example to see how this is used to call the print function of Highcharts.
 
 Features:
 ---------
@@ -113,7 +113,7 @@ Since 0.1.0, vanilla Highcharts objects are supported!
 Versions
 --------------
 
-Version 0.1.0
+Version 1.0.0
 -------------
 - only support Highchart/Highstock >= 5.0.0
 - only support AngularJS >= 1.5 (see https://github.com/toddmotto/angular-component for lower versions)
