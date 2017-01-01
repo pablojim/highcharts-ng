@@ -75,8 +75,8 @@ Features:
 
 Features Not Supported that were previously supported:
 ------------------------------------------------------
-- 2 way binding to chart xAxis. (use chartConfig.getHighcharts() to get axis values)
-- Control of Loading status though the config (use chartConfig.getHighcharts() to get axis values)
+- 2 way binding to chart xAxis. (use chartConfig.getChartObj() to get axis values)
+- Control of Loading status though the config (use chartConfig.getChartObj() to get axis values)
 Both of these should be possible to add with the right PR
 - Use of add and remove points on dynamically updated series
 
