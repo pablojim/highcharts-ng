@@ -10,8 +10,8 @@ Google Group: https://groups.google.com/forum/#!forum/highcharts-ng
 Basic jsfiddle: http://jsfiddle.net/pablojim/LnkgL135/
 See example in ./example/charts/general-example.html (Also served here: https://rawgit.com/pablojim/highcharts-ng/master/example/charts/general-example.html)
 
-Current Version (1.0.0) Release Candidate
------------------------------------------
+Current Version (1.0.0)
+-----------------------
 **Note Needs Highcharts/Highstock >= 5.0.0**
 **Only supports AngularJS >= 1.5**
 **Configuration Format is not compatible with highcharts-ng 0.x.0**
