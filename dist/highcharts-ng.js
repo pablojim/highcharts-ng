@@ -1,6 +1,6 @@
 /**
  * highcharts-ng
- * @version v1.0.0 - 2017-01-14
+ * @version v1.0.1-dev - 2017-01-14
  * @link https://github.com/pablojim/highcharts-ng
  * @author Barry Fitzgerald <>
  * @license MIT License, http://www.opensource.org/licenses/MIT
