@@ -2,9 +2,4 @@
 name: Highcharts-ng Polar
 description: A Highcharts-ng polar example.
 resources:
-  - https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.js
-  - https://rawgithub.com/pablojim/highcharts-ng/master/src/highcharts-ng.js
-  - https://code.highcharts.com/stock/highstock.src.js
-  - https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css
-  - https://code.highcharts.com/highcharts-more.js
 ...
