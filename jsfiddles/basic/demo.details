@@ -1,0 +1,12 @@
+---
+ name: Basic Highcharts-ng demo
+ description: Basic Highcharts-ng demo, see: https://github.com/pablojim/highcharts-ng
+ authors:
+   - pablojim
+ resources:
+   - https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.js
+   - http://twitter.github.com/bootstrap/assets/css/bootstrap.css
+   - https://rawgithub.com/pablojim/highcharts-ng/master/src/highcharts-ng.js
+   - https://code.highcharts.com/stock/highstock.src.js
+ normalize_css: no
+ ...
