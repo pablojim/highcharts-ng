@@ -7,7 +7,10 @@ A simple Angularjs directive for Highcharts.
 
 Google Group: https://groups.google.com/forum/#!forum/highcharts-ng
 
-Basic jsfiddle: http://jsfiddle.net/gh/get/library/pure/pablojim/highcharts-ng/tree/master/jsfiddles/basic/
+Basic jsfiddle: http://jsfiddle.net/gh/get/jquery/3.1.1/pablojim/highcharts-ng/tree/master/jsfiddles/basic/
+Polar jsfiddle: http://jsfiddle.net/gh/get/jquery/3.1.1/pablojim/highcharts-ng/tree/master/jsfiddles/polar/
+
+
 See example in ./example/charts/general-example.html (Also served here: https://rawgit.com/pablojim/highcharts-ng/master/example/charts/general-example.html)
 
 Current Version (1.0.0)
