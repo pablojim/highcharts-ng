@@ -5,11 +5,13 @@ AngularJS directive for Highcharts
 
 A simple Angularjs directive for Highcharts.
 
-Google Group: https://groups.google.com/forum/#!forum/highcharts-ng
 
-Basic jsfiddle: http://jsfiddle.net/gh/get/jquery/3.1.1/pablojim/highcharts-ng/tree/master/jsfiddles/basic/
+Examples:
+---------
 
-Polar jsfiddle: http://jsfiddle.net/gh/get/jquery/3.1.1/pablojim/highcharts-ng/tree/master/jsfiddles/polar/
+- Basic: http://jsfiddle.net/gh/get/jquery/3.1.1/pablojim/highcharts-ng/tree/master/jsfiddles/basic/
+- Polar Chart: http://jsfiddle.net/gh/get/jquery/3.1.1/pablojim/highcharts-ng/tree/master/jsfiddles/polar/
+- Multi Axis: http://jsfiddle.net/gh/get/jquery/3.1.1/pablojim/highcharts-ng/tree/master/jsfiddles/multi_axis/
 
 
 See example in ./example/charts/general-example.html (Also served here: https://rawgit.com/pablojim/highcharts-ng/master/example/charts/general-example.html)

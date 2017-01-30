@@ -85,12 +85,6 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
       credits: {},
       plotOptions: {},
       navigator: {},
-      xAxis: {
-        events: {}
-      },
-      yAxis: {
-        events: {}
-      }
     };
 
     if (config) {

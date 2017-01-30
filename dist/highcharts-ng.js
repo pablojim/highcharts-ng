@@ -1,6 +1,6 @@
 /**
  * highcharts-ng
- * @version v1.0.1-dev - 2017-01-14
+ * @version v1.0.1-dev - 2017-01-30
  * @link https://github.com/pablojim/highcharts-ng
  * @author Barry Fitzgerald <>
  * @license MIT License, http://www.opensource.org/licenses/MIT
@@ -93,12 +93,6 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
       credits: {},
       plotOptions: {},
       navigator: {},
-      xAxis: {
-        events: {}
-      },
-      yAxis: {
-        events: {}
-      }
     };
 
     if (config) {
