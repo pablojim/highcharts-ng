@@ -9,12 +9,14 @@ A simple Angularjs directive for Highcharts.
 Examples:
 ---------
 
+See example in ./example/charts/general-example.html (https://rawgit.com/pablojim/highcharts-ng/master/example/charts/general-example.html)
+
+Also:
+
 - Basic: http://jsfiddle.net/gh/get/jquery/3.1.1/pablojim/highcharts-ng/tree/master/jsfiddles/basic/
 - Polar Chart: http://jsfiddle.net/gh/get/jquery/3.1.1/pablojim/highcharts-ng/tree/master/jsfiddles/polar/
 - Multi Axis: http://jsfiddle.net/gh/get/jquery/3.1.1/pablojim/highcharts-ng/tree/master/jsfiddles/multi_axis/
 
-
-See example in ./example/charts/general-example.html (Also served here: https://rawgit.com/pablojim/highcharts-ng/master/example/charts/general-example.html)
 
 Current Version (1.0.0)
 -----------------------

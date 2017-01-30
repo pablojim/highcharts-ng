@@ -29,18 +29,9 @@ $(function () {
       seriesArray.splice(rndIdx, 1);
     }
 
-    $scope.swapChartType = function () {
-      if (this.chartConfig.chart.type === 'line') {
-        this.chartConfig.chart.type = 'bar';
-      } else {
-        this.chartConfig.chart.type = 'line';
-        this.chartConfig.chart.zoomType = 'x';
-      }
-    }
-
     $scope.chartConfig = {
       chart: {
-        type: 'bar'
+        type: 'line'
       },
       series: [{
         data: [10, 15, 12, 8, 7],

@@ -1,6 +1,6 @@
 ---
  name: Basic Highcharts-ng demo
- description: Mulit axis Highcharts-ng demo
+ description: Multi axis Highcharts-ng demo
  authors:
    - pablojim
  normalize_css: no
