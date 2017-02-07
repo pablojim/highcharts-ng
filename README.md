@@ -21,7 +21,7 @@ Also:
 Current Version (1.0.0)
 -----------------------
 **Note Needs Highcharts/Highstock >= 5.0.0**
-**Only supports AngularJS >= 1.5**
+**Only supports AngularJS >= 1.5.8
 **Configuration Format is not compatible with highcharts-ng 0.x.0**
 
 
@@ -79,7 +79,7 @@ Features:
 - Setting/Updating Chart options
 - Updating the chart title
 - Resizes with screen size changes.
-- Providing a custom changeDetection function or expression - for speed a custom changeDetection function can be provided to save dirty checking the full chart config (requires >= Angular 1.5.8).
+- Providing a custom changeDetection function or expression - for speed a custom changeDetection function can be provided to save dirty checking the full chart config.
 
 Features Not Supported that were previously supported:
 ------------------------------------------------------
@@ -92,7 +92,7 @@ Both of these should be possible to add with the right PR
 Caveats:
 --------
 
-- Due to many equality checks the directive maybe slow with large datasets - try using changeDetection instead (requires Angular >= 1.5.8)
+- Due to many equality checks the directive maybe slow with large datasets - try using changeDetection instead
 - Whole Chart/Series is often redrawn where a simple update of data would suffice
 - If you don't assign ids to your series - incremental ids will be added. This may mean extra redraws. 
 - Needs more tests!
@@ -124,10 +124,10 @@ Versions
 Version 1.0.0
 -------------
 - only support Highchart/Highstock >= 5.0.0
-- only support AngularJS >= 1.5 (see https://github.com/toddmotto/angular-component for lower versions)
+- only support AngularJS >= 1.5.8 (see https://github.com/toddmotto/angular-component for lower versions)
 - Move to AngularJS Component
 - Now supports vanilla Highcharts config
-- Supports custom change detection functions (requires >= 1.5.8)
+- Supports custom change detection functions
 - Should be much more stable and less bugs
 - 2 way axes binding no longer supported
 - loading property no longer supported
