@@ -79,7 +79,7 @@ Features:
 - Setting/Updating Chart options
 - Updating the chart title
 - Resizes with screen size changes.
-- Providing a custom changeDetection function or expression - for speed a custom changeDetection function can be provided to save dirty checking the full chart config.
+- Providing a custom changeDetection function or expression - for speed a custom changeDetection function can be provided to save dirty checking the full chart config (requires >= Angular 1.5.8).
 
 Features Not Supported that were previously supported:
 ------------------------------------------------------
@@ -92,7 +92,7 @@ Both of these should be possible to add with the right PR
 Caveats:
 --------
 
-- Due to many equality checks the directive maybe slow with large datasets - try using changeDetection instead
+- Due to many equality checks the directive maybe slow with large datasets - try using changeDetection instead (requires Angular >= 1.5.8)
 - Whole Chart/Series is often redrawn where a simple update of data would suffice
 - If you don't assign ids to your series - incremental ids will be added. This may mean extra redraws. 
 - Needs more tests!
@@ -127,7 +127,7 @@ Version 1.0.0
 - only support AngularJS >= 1.5 (see https://github.com/toddmotto/angular-component for lower versions)
 - Move to AngularJS Component
 - Now supports vanilla Highcharts config
-- Supports custom change detection functions
+- Supports custom change detection functions (requires >= 1.5.8)
 - Should be much more stable and less bugs
 - 2 way axes binding no longer supported
 - loading property no longer supported
