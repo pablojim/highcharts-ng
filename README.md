@@ -21,7 +21,7 @@ Also:
 Current Version (1.0.0)
 -----------------------
 **Note Needs Highcharts/Highstock >= 5.0.0**
-**Only supports AngularJS >= 1.5**
+**Only supports AngularJS >= 1.5.8
 **Configuration Format is not compatible with highcharts-ng 0.x.0**
 
 
@@ -124,7 +124,7 @@ Versions
 Version 1.0.0
 -------------
 - only support Highchart/Highstock >= 5.0.0
-- only support AngularJS >= 1.5 (see https://github.com/toddmotto/angular-component for lower versions)
+- only support AngularJS >= 1.5.8 (see https://github.com/toddmotto/angular-component for lower versions)
 - Move to AngularJS Component
 - Now supports vanilla Highcharts config
 - Supports custom change detection functions
