@@ -114,7 +114,7 @@ Be careful - if you manually change something with the chart object that is also
 
 - Why don't you just use the standard Highcharts format?
 
-Since 0.1.0, vanilla Highcharts objects are supported!
+Since 1.0.0, vanilla Highcharts objects are supported!
 
 
 
