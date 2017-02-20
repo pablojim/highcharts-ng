@@ -18,8 +18,8 @@ Also:
 - Multi Axis: http://jsfiddle.net/gh/get/jquery/3.1.1/pablojim/highcharts-ng/tree/master/jsfiddles/multi_axis/
 
 
-Current Version (1.0.0)
------------------------
+Current Version
+---------------
 **Note Needs Highcharts/Highstock >= 5.0.0**
 **Only supports AngularJS >= 1.5.8
 **Configuration Format is not compatible with highcharts-ng 0.x.0**
