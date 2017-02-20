@@ -119,7 +119,11 @@ Since 1.0.0, vanilla Highcharts objects are supported!
 
 
 Versions
---------------
+--------
+
+Version 1.0.1
+-------------
+- Fix for for multiple yAxes https://github.com/pablojim/highcharts-ng/issues/201
 
 Version 1.0.0
 -------------
