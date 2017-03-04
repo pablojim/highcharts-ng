@@ -30,7 +30,9 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
       };
       prevConfig = angular.merge({}, ctrl.config);
       mergedConfig = getMergedOptions($element, ctrl.config, seriesId);
-      ctrl.chart = new Highcharts[getChartType(mergedConfig)](mergedConfig);
+      setTimeout(function(){ 
+		    ctrl.chart = new Highcharts[getChartType(mergedConfig)](mergedConfig);
+	    });
     };
 
     this.$doCheck = function() {
