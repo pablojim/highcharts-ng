@@ -16,7 +16,7 @@ Also:
 - Basic: http://jsfiddle.net/gh/get/jquery/3.1.1/pablojim/highcharts-ng/tree/master/jsfiddles/basic/
 - Polar Chart: http://jsfiddle.net/gh/get/jquery/3.1.1/pablojim/highcharts-ng/tree/master/jsfiddles/polar/
 - Multi Axis: http://jsfiddle.net/gh/get/jquery/3.1.1/pablojim/highcharts-ng/tree/master/jsfiddles/multi_axis/
-
+- Resizing to screen size: http://jsfiddle.net/gh/get/jquery/3.1.1/houssemba/highcharts-ng/tree/fix-resize-bug/jsfiddles/resizing/
 
 Current Version
 ---------------
@@ -58,6 +58,12 @@ Add Highcharts to your Angular app config:
 var myapp = angular.module('myapp', ["highcharts-ng"]);
 ```
 
+(optional) if you have some problems with resizing the chart to screen size, include the highcharts-ng css file
+
+```html
+<link href="dist/highcharts-ng.css" rel="stylesheet">
+```
+
 Make a chart!
 
 ```html
@@ -94,7 +100,7 @@ Caveats:
 
 - Due to many equality checks the directive maybe slow with large datasets - try using changeDetection instead
 - Whole Chart/Series is often redrawn where a simple update of data would suffice
-- If you don't assign ids to your series - incremental ids will be added. This may mean extra redraws. 
+- If you don't assign ids to your series - incremental ids will be added. This may mean extra redraws.
 - Needs more tests!
 
 FAQ:
@@ -103,7 +109,7 @@ FAQ:
 
 - Whats different to previous 0.0.X versions?
 
-This version is much much simpler and should be more stable. Some features however are still to be implemented 
+This version is much much simpler and should be more stable. Some features however are still to be implemented
 e.g. 2-way binding to axes and loading functionality
 
 - How do I get access to the chart object?
@@ -162,7 +168,7 @@ Version 0.0.9
 
 Version 0.0.8
 ----------------
-- added config.getHighcharts - thanks @ValentinH 
+- added config.getHighcharts - thanks @ValentinH
 - Lots of bug fixes - thanks to all contributors
 - Now with support for Highmaps - see: http://rawgit.com/pablojim/highcharts-ng/master/example/maps/example.html
 

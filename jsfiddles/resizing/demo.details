@@ -1,0 +1,8 @@
+---
+ name: Resizing demo
+ description: Resizing the chart to scren size
+ authors:
+   - pablojim
+   - houssemba
+ normalize_css: no
+ ...
