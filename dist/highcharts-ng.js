@@ -1,6 +1,6 @@
 /**
  * highcharts-ng
- * @version v1.0.2-dev - 2017-02-20
+ * @version v1.0.2-dev - 2017-03-02
  * @link https://github.com/pablojim/highcharts-ng
  * @author Barry Fitzgerald <>
  * @license MIT License, http://www.opensource.org/licenses/MIT
@@ -39,6 +39,16 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
       prevConfig = angular.merge({}, ctrl.config);
       mergedConfig = getMergedOptions($element, ctrl.config, seriesId);
       ctrl.chart = new Highcharts[getChartType(mergedConfig)](mergedConfig);
+
+      // Fix resizing bug
+      // https://github.com/pablojim/highcharts-ng/issues/550
+      var originalWidth = $element[0].clientWidth;
+      var originalHeight = $element[0].clientHeight;
+      $timeout(function() {
+        if ($element[0].clientWidth !== originalWidth || $element[0].clientHeight !== originalHeight) {
+          ctrl.chart.reflow();
+        }
+      }, 0, false);
     };
 
     this.$doCheck = function() {
