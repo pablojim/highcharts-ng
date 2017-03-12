@@ -6,6 +6,11 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
   'use strict';
   /*global angular: false, Highcharts: false */
 
+    var Highcharts = null;
+    if (window && window.Highcharts) Highcharts = window.Highcharts;
+    if (module && module.exports == 'highcharts-ng') {
+        Highcharts = require('highcharts');
+    }
 
   angular.module('highcharts-ng', [])
     .component('highchart', {
