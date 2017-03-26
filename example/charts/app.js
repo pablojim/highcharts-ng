@@ -90,6 +90,8 @@ myapp.controller('myctrl', function ($scope) {
   $scope.chartConfig = {
 
     chart: {
+      height: 500,
+      width: 500,
       type: 'line'
     },
     plotOptions: {

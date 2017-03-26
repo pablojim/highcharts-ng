@@ -10,6 +10,8 @@ myapp.controller('myctrl', function ($scope) {
       text: 'Click and drag to zoom in.'
     },
     chart: {
+      height: 500,
+      width: 500,
       backgroundColor: 'transparent',
       zoomType: 'xy',
       resetZoomButton: {
