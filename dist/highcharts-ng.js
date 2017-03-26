@@ -1,6 +1,6 @@
 /**
  * highcharts-ng
- * @version v1.0.2-dev - 2017-03-02
+ * @version v1.0.2-dev - 2017-03-12
  * @link https://github.com/pablojim/highcharts-ng
  * @author Barry Fitzgerald <>
  * @license MIT License, http://www.opensource.org/licenses/MIT
@@ -14,6 +14,11 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
   'use strict';
   /*global angular: false, Highcharts: false */
 
+    var Highcharts = null;
+    if (window && window.Highcharts) Highcharts = window.Highcharts;
+    if (module && module.exports === 'highcharts-ng') {
+        Highcharts = require('highcharts');
+    }
 
   angular.module('highcharts-ng', [])
     .component('highchart', {
