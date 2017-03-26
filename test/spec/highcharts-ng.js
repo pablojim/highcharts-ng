@@ -11,45 +11,18 @@ describe('Module: highchartsNg', function () {
         usedChartConstructor,
         chart;
 
+
     // load the controller's module
     beforeEach(module('highcharts-ng'));
 
     beforeEach(inject(function ($injector, $rootScope, _$compile_, _$timeout_) {
         title = {};
         destroyed = false;
-        usedChartConstructor = '';
-
-        chart = jasmine.createSpyObj('chart', [
-            'redraw',
-            'setTitle',
-            'hideLoading',
-            'destroy',
-            'get',
-            'addSeries',
-            'update']);
-        chart.series = [];
-
-        window.Highcharts = {
-            Chart: function (opt) {
-                options = opt;
-                usedChartConstructor = 'Chart';
-
-                return chart;
-            },
-            StockChart: function (opt) {
-                options = opt;
-                usedChartConstructor = 'StockChart';
-
-                return chart;
-            },
-            Map: function (opt) {
-                options = opt;
-                usedChartConstructor = 'Map';
-
-                return chart;
-            }
-        };
         scope = $rootScope;
+
+        window.Highcharts.reset();
+        chart = window.Highcharts.chart;
+
         $compile = _$compile_;
         $timeout = _$timeout_;
 
@@ -102,7 +75,7 @@ describe('Module: highchartsNg', function () {
 
     it('passes options to highcharts', function () {
         compileDirective('simpleChartConfig');
-
+        options = window.Highcharts.options;
         expect(options.chart.type).toBe('bar');
         expect(options.chart.series).toBe(templates.simpleChartConfig.series);
     });
@@ -113,6 +86,7 @@ describe('Module: highchartsNg', function () {
         });
 
         it('uses highstocks', function () {
+            usedChartConstructor = window.Highcharts.usedChartConstructor;
             expect(usedChartConstructor).toBe('StockChart');
         });
     });

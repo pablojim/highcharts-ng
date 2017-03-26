@@ -4,7 +4,15 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
 
 (function () {
   'use strict';
-  /*global angular: false, Highcharts: false */
+  /*global angular: false*/
+  var Highcharts = null;
+
+  if (window && window.Highcharts) {
+    Highcharts = window.Highcharts;
+  }
+  if (module && module.exports === 'highcharts-ng') {
+        Highcharts = require('highcharts');
+  }
 
 
   angular.module('highcharts-ng', [])
