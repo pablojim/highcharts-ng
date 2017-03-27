@@ -133,9 +133,7 @@ Now has explicit dependency on highcharts.js.
 
 - Fix for resizing https://github.com/pablojim/highcharts-ng/issues/550
 - Added module loader support https://github.com/pablojim/highcharts-ng/commit/508df111886c4be8b26e82cb6d3e2303f17efed8
-
-
-
+Thanks to @houssemba and others for the contributions.
 
 Version 1.0.1
 -------------
