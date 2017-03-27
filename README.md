@@ -127,6 +127,16 @@ Since 1.0.0, vanilla Highcharts objects are supported!
 Versions
 --------
 
+Version 1.1.0
+-------------
+Now has explicit dependency on highcharts.js.
+
+- Fix for resizing https://github.com/pablojim/highcharts-ng/issues/550
+- Added module loader support https://github.com/pablojim/highcharts-ng/commit/508df111886c4be8b26e82cb6d3e2303f17efed8
+
+
+
+
 Version 1.0.1
 -------------
 - Fix for for multiple yAxes https://github.com/pablojim/highcharts-ng/issues/201
