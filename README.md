@@ -70,7 +70,7 @@ Make a chart!
 <highchart id="chart1" config="chartConfig"></highchart>
 ```
 
-The `chartConfig` object should be the same as a normal highcharts configuration. Any options that work in highcharts should work here also.
+The `chartConfig` object should be the same as a normal highcharts configuration. Any options that work in highcharts should work here also. To use highstock charts, you just need to add `chartType: 'stock'` to your `chartConfig`.
 
 It is **Highly Recommended** to give all Series and Axes a distinct ID.
 
