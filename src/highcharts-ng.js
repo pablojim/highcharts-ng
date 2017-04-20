@@ -131,15 +131,21 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
     return chartTypeMap[('' + config.chartType).toLowerCase()];
   }
 
-  function ensureIds(series, seriesId) {
-    var ids = [];
-    angular.forEach(series, function(s) {
-      if (!angular.isDefined(s.id)) {
-        s.id = 'series-' + seriesId++;
-      }
-      ids.push(s.id);
-    });
-    return ids;
+  function ensureIds(chartCollection, collectionId) {
+      /*
+          Ensures each item in the iteratble chartCollection has an id,
+          and if not auto-generates one incrementing collectionId
+      */
+      var ids = [];
+      angular.forEach(chartCollection, function(s) {
+          if (!angular.isDefined(s.id)) {
+              collectionId += 1
+              s.id = 'cc-' + collectionId;
+          }
+          ids.push(s.id);
+      });
+
+      return ids;
   }
 
 }());
