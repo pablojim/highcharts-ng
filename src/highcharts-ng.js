@@ -64,7 +64,7 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
                 var yAxisIds = ensureIds(mergedConfig.yAxis, yAxisId);
                 for (var i = ctrl.chart.yAxis.length - 1; i >= 0; i -= 1) {
                     var a = ctrl.chart.yAxis[i];
-                    if (yAxisIds.indexOf(a.options.id) < 0) {
+                    if (a.options.id !== 'navigator-y-axis' && yAxisIds.indexOf(a.options.id) < 0) {
                         //if we don't set redraw to true, it can create
                         //glitches in the chart's rendering where the series
                         //doesn't completely re-render
