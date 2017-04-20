@@ -76,8 +76,8 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
             //Next remove the series
             if (mergedConfig.series && Array.isArray(mergedConfig.series)) {
                 var seriesIds = ensureIds(mergedConfig.series, seriesId);
-                for (var i = ctrl.chart.series.length - 1; i >= 0; i -= 1) {
-                    var s = ctrl.chart.series[i];
+                for (var j = ctrl.chart.series.length - 1; j >= 0; j -= 1) {
+                    var s = ctrl.chart.series[j];
                     if (s.options.id !== 'highcharts-navigator-series' && seriesIds.indexOf(s.options.id) < 0) {
                         //if we don't set redraw to true, it can create
                         //glitches in the chart's rendering where the series
@@ -87,7 +87,7 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
                 }
             }
 
-        }
+        };
 
     this.$doCheck = function() {
       if(!detector(ctrl.config, prevConfig)) {
@@ -188,7 +188,7 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
         var ids = [];
         angular.forEach(chartCollection, function(s) {
             if (!angular.isDefined(s.id)) {
-                collectionId += 1
+                collectionId += 1;
                 s.id = 'cc-' + collectionId;
             }
             ids.push(s.id);
