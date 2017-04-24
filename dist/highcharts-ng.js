@@ -1,6 +1,6 @@
 /**
  * highcharts-ng
- * @version v1.1.1-dev - 2017-03-27
+ * @version v1.1.1-dev - 2017-04-24
  * @link https://github.com/pablojim/highcharts-ng
  * @author Barry Fitzgerald <>
  * @license MIT License, http://www.opensource.org/licenses/MIT
@@ -18,7 +18,7 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
   if (window && window.Highcharts) {
     Highcharts = window.Highcharts;
   } else if (module && module.exports === 'highcharts-ng') {
-        Highcharts = require('highcharts');
+        Highcharts = require('highcharts/highstock');
   }
 
 

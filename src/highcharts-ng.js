@@ -10,7 +10,7 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
   if (window && window.Highcharts) {
     Highcharts = window.Highcharts;
   } else if (module && module.exports === 'highcharts-ng') {
-        Highcharts = require('highcharts');
+        Highcharts = require('highcharts/highstock');
   }
 
 
