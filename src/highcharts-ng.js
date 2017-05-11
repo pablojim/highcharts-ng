@@ -29,6 +29,7 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
 
   function HighChartNGController($element, $timeout) {
     var seriesId = 0;
+    var yAxisId = 0;
     var ctrl = this;
     var prevConfig = {};
     var mergedConfig = {};
@@ -52,19 +53,66 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
       }, 0, false);
     };
 
+        this.removeUnlinkedObjects = function(mergedConfig) {
+            /*
+                Removes unlinked objects, items that have been removed in the config,
+                but not yet removed from the HighChart object
+            */
+
+            //First check to see if there are any yAxis that need to be removed
+            //If a series is linked to the yAxis, it will be removed by HighCharts
+
+            if (mergedConfig.yAxis && Array.isArray(mergedConfig.yAxis)) {
+                var yAxisIds = ensureIds(mergedConfig.yAxis, yAxisId);
+                for (var i = ctrl.chart.yAxis.length - 1; i >= 0; i -= 1) {
+                    var a = ctrl.chart.yAxis[i];
+                    if (a.options.id !== 'navigator-y-axis' && yAxisIds.indexOf(a.options.id) < 0) {
+                        //if we don't set redraw to true, it can create
+                        //glitches in the chart's rendering where the series
+                        //doesn't completely re-render
+                        a.remove(true);
+                    }
+                }
+            }
+
+            //Next remove the series
+            if (mergedConfig.series && Array.isArray(mergedConfig.series)) {
+                var seriesIds = ensureIds(mergedConfig.series, seriesId);
+                for (var j = ctrl.chart.series.length - 1; j >= 0; j -= 1) {
+                    var s = ctrl.chart.series[j];
+                    if (s.options.id !== 'highcharts-navigator-series' && seriesIds.indexOf(s.options.id) < 0) {
+                        //if we don't set redraw to true, it can create
+                        //glitches in the chart's rendering where the series
+                        //doesn't completely re-render
+                        s.remove(true);
+                    }
+                }
+            }
+
+        };
+
     this.$doCheck = function() {
       if(!detector(ctrl.config, prevConfig)) {
         prevConfig = angular.merge({}, ctrl.config);
         mergedConfig = getMergedOptions($element, ctrl.config, seriesId);
-        var ids = ensureIds(mergedConfig.series, seriesId);
-        if (mergedConfig.series) {
-          //Remove any missing series
-          for (var i = ctrl.chart.series.length - 1; i >= 0; i--) {
-            var s = ctrl.chart.series[i];
-            if (s.options.id !== 'highcharts-navigator-series' && ids.indexOf(s.options.id) < 0) {
-              s.remove(false);
+
+        //Remove any unlinked objects before adding
+        this.removeUnlinkedObjects(mergedConfig);
+
+        //Allows dynamic adding of yAxis
+        if (mergedConfig.yAxis && Array.isArray(mergedConfig.yAxis)) {
+            //moving isX here for code readability. addAxis requires a bool "isX"
+            var isX = false;
+          // Add any new yAxis
+          angular.forEach(ctrl.config.yAxis, function(s) {
+            if (!ctrl.chart.get(s.id)) {
+              ctrl.chart.addAxis(s, isX); //isX = false
             }
-          }
+          });
+        }
+
+        //Allows dynamic adding of series
+        if (mergedConfig.series) {
           // Add any new series
           angular.forEach(ctrl.config.series, function(s) {
             if (!ctrl.chart.get(s.id)) {
@@ -72,6 +120,7 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
             }
           });
         }
+
         ctrl.chart.update(mergedConfig, true);
       }
     };
@@ -130,18 +179,25 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
 
   function getChartType(config) {
     if (config === undefined || config.chartType === undefined) return 'Chart';
-    return chartTypeMap[('' + config.chartType).toLowerCase()];
-  }
+        return chartTypeMap[('' + config.chartType).toLowerCase()];
+    }
 
-  function ensureIds(series, seriesId) {
-    var ids = [];
-    angular.forEach(series, function(s) {
-      if (!angular.isDefined(s.id)) {
-        s.id = 'series-' + seriesId++;
-      }
-      ids.push(s.id);
-    });
-    return ids;
-  }
+    function ensureIds(chartCollection, collectionId) {
+        /*
+            Ensures each item in the iteratble chartCollection has an id,
+            and if not auto-generates one incrementing collectionId
+        */
+        var ids = [];
+        angular.forEach(chartCollection, function(s) {
+            if (!angular.isDefined(s.id)) {
+                collectionId += 1;
+                s.id = 'cc-' + collectionId;
+            }
+            ids.push(s.id);
+        });
+
+        return ids;
+    }
+
 
 }());
