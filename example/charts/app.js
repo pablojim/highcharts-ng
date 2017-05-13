@@ -45,11 +45,47 @@ myapp.controller('myctrl', function ($scope) {
   $scope.addPoints = function () {
     var seriesArray = $scope.chartConfig.series;
     var rndIdx = Math.floor(Math.random() * seriesArray.length);
-    seriesArray[rndIdx].data = seriesArray[rndIdx].data.concat([1, 10, 20])
+    seriesArray[rndIdx].data = seriesArray[rndIdx].data.concat([1, 10, 20]);
   };
 
-
   var seriesId = 0;
+  var yAxisId = 0;
+  var xAxisId = 0;
+
+$scope.addAxis = function(xy) {
+  /*
+      Adds a Y Axis
+  */
+  var id;
+  var axis;
+  if (xy==='Y') {
+    yAxisId += 1;
+    id = yAxisId;
+    axis = 'yAxis';
+  } else {
+    xAxisId += 1;
+    id = xAxisId;
+    axis = 'xAxis';
+  }
+
+
+  var rnd = [];
+  for (var i = 0; i < 10; i++) {
+      rnd.push(Math.floor(Math.random() * 20) + 1);
+  }
+  if (!$scope.chartConfig[axis]) {
+    $scope.chartConfig[axis] = [];
+  }
+  $scope.chartConfig[axis].push({
+      min: Math.min.apply(null, rnd),
+      max: Math.max.apply(null, rnd),
+      title: {
+          text: xy + "-Axis" + id.toString()
+      },
+      id: xy + 'Axis_' + id
+  });
+};
+
 
   $scope.addSeries = function () {
     var rnd = []
@@ -61,22 +97,22 @@ myapp.controller('myctrl', function ($scope) {
       data: rnd,
       id: sId
     });
-  }
+  };
 
   $scope.removeRandomSeries = function () {
     var seriesArray = $scope.chartConfig.series;
     var rndIdx = Math.floor(Math.random() * seriesArray.length);
     seriesArray.splice(rndIdx, 1);
-  }
+  };
 
   $scope.removeSeries = function (id) {
     var seriesArray = $scope.chartConfig.series;
     seriesArray.splice(id, 1);
-  }
+  };
 
   $scope.toggleHighCharts = function () {
     this.chartConfig.useHighStocks = !this.chartConfig.useHighStocks;
-  }
+  };
 
   $scope.replaceAllSeries = function () {
     var data = [
