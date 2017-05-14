@@ -1,0 +1,7 @@
+---
+ name: Basic Highcharts-ng demo
+ description: Dynamic axis Highcharts-ng demo
+ authors:
+   - yoshi9143
+ normalize_css: no
+ ...
