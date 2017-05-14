@@ -4,6 +4,7 @@
 <!--- Fork this http://jsfiddle.net/gh/get/jquery/3.1.1/pablojim/highcharts-ng/tree/master/jsfiddles/basic/ ? -->
 
 ## Expected Behaviour
+<!--- Have you made a jsfiddle? -->
 <!--- If you're describing a bug, tell us what should happen -->
 <!--- If you're suggesting a change/improvement, tell us how it should work -->
 
@@ -17,3 +18,5 @@
 * Browser Name and version:
 * Operating System and version (desktop or mobile):
 * Link to your project:
+
+<!--- Once more - Have you made a jsfiddle? Without it your issue is unlikely to be fixed. -->
