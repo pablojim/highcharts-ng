@@ -19,8 +19,12 @@
   "main": "dist/highcharts-ng.js",
   "license": "MIT",
   "authors": [
-    { "name": "Barry Fitzgerald" }
+    {
+      "name": "Barry Fitzgerald"
+    }
   ],
-  "dependencies": {},
+  "dependencies": {
+    "highcharts": "~5.0.4"
+  },
   "devDependencies": {}
 }
