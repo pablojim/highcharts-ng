@@ -49,7 +49,9 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
       var originalHeight = $element[0].clientHeight;
       $timeout(function () {
         if ($element[0].clientWidth !== originalWidth || $element[0].clientHeight !== originalHeight) {
-          ctrl.chart.reflow();
+          if (ctrl.chart) {
+            ctrl.chart.reflow();
+          }
         }
       }, 0, false);
     };
