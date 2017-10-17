@@ -58,7 +58,7 @@ $scope.addAxis = function(xy) {
   */
   var id;
   var axis;
-  if (xy==='Y') {
+  if (xy==='y') {
     yAxisId += 1;
     id = yAxisId;
     axis = 'yAxis';
