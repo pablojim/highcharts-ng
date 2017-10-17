@@ -72,17 +72,16 @@ angular
         };
 
         this.config = {
-            options: {
-                legend: {
-                    enabled: false
-                },
-                plotOptions: {
-                    map: {
-                        mapData: Highcharts.maps['custom/world'],
-                        joinBy: ['name']
-                    }
-                },
+            legend: {
+                enabled: false
             },
+            plotOptions: {
+                map: {
+                    mapData: Highcharts.maps['custom/world'],
+                    joinBy: ['name']
+                }
+            },
+            animation: true,
             chartType: 'map',
             title: {
                 text: 'Highcharts-ng map example'
