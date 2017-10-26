@@ -20,7 +20,8 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
     .component('highchart', {
       bindings: {
         config: '<',
-        changeDetection: '<'
+        changeDetection: '<',
+        disableChangeDetection: '<'
       },
       controller: HighChartNGController
     });
@@ -28,6 +29,7 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
   HighChartNGController.$inject = ['$element', '$timeout'];
 
   function HighChartNGController($element, $timeout) {
+    var initialized = false;
     var seriesId = 0;
     var yAxisId = 0;
     var xAxisId = 0;
@@ -35,23 +37,19 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
     var prevConfig = {};
     var mergedConfig = {};
     var detector = ctrl.changeDetection || angular.equals;
-    this.$onInit = function () {
-      ctrl.config.getChartObj = function () {
-        return ctrl.chart;
-      };
-      prevConfig = angular.merge({}, ctrl.config);
-      mergedConfig = getMergedOptions($element, ctrl.config, seriesId);
-      ctrl.chart = new Highcharts[getChartType(mergedConfig)](mergedConfig);
 
-      // Fix resizing bug
-      // https://github.com/pablojim/highcharts-ng/issues/550
-      var originalWidth = $element[0].clientWidth;
-      var originalHeight = $element[0].clientHeight;
-      $timeout(function () {
-        if ($element[0].clientWidth !== originalWidth || $element[0].clientHeight !== originalHeight) {
-          ctrl.chart.reflow();
+    this.$onInit = function () {
+      initChart();
+      initialized = true;
+    };
+
+    this.$onChanges = function(changesObject) {
+      if (changesObject.config && changesObject.config.currentValue !== undefined) {
+        if (!initialized) {
+          return;
         }
-      }, 0, false);
+        initChart();
+      }
     };
 
     this.removeItems = function (newItems, chartItems, id, toIgnore) {
@@ -95,6 +93,9 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
     };
 
     this.$doCheck = function () {
+      if (ctrl.disableChangeDetection === true) {
+        return;
+      }
       if (!detector(ctrl.config, prevConfig)) {
         prevConfig = angular.merge({}, ctrl.config);
         mergedConfig = getMergedOptions($element, ctrl.config, seriesId);
@@ -133,7 +134,27 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
         }, 0);
       }
     };
+
+    function initChart() {
+      prevConfig = angular.merge({}, ctrl.config);
+      mergedConfig = getMergedOptions($element, ctrl.config, seriesId);
+      ctrl.chart = new Highcharts[getChartType(mergedConfig)](mergedConfig);
+      ctrl.config.getChartObj = function () {
+        return ctrl.chart;
+      };
+
+      // Fix resizing bug
+      // https://github.com/pablojim/highcharts-ng/issues/550
+      var originalWidth = $element[0].clientWidth;
+      var originalHeight = $element[0].clientHeight;
+      $timeout(function () {
+        if ($element[0].clientWidth !== originalWidth || $element[0].clientHeight !== originalHeight) {
+          ctrl.chart.reflow();
+        }
+      }, 0, false);
+    }
   }
+
 
   function getMergedOptions(element, config, seriesId) {
     var mergedOptions = {};
