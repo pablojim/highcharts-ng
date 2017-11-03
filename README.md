@@ -17,6 +17,8 @@ Also:
 - Polar Chart: http://jsfiddle.net/gh/get/jquery/3.1.1/pablojim/highcharts-ng/tree/master/jsfiddles/polar/
 - Multi Axis: http://jsfiddle.net/gh/get/jquery/3.1.1/pablojim/highcharts-ng/tree/master/jsfiddles/multi_axis/
 - Resizing to screen size: http://jsfiddle.net/gh/get/jquery/3.1.1/pablojim/highcharts-ng/tree/master/jsfiddles/resizing/
+- Disabled change detection http://jsfiddle.net/gh/get/jquery/3.1.1/pablojim/highcharts-ng/tree/master/jsfiddles/disabled_change_detection/
+- Recreating chart http://jsfiddle.net/gh/get/jquery/3.1.1/pablojim/highcharts-ng/tree/master/jsfiddles/recreating/
 
 Current Version
 ---------------
@@ -78,9 +80,9 @@ All properties on the chart configuration are optional. If you don't need a feat
 
 After construction the Highcharts Chart object can be accessed with ```chartConfig.getChartObj()```. This is a simple way to access all the Highcharts API that is not currently managed by this directive. See the JSFiddle basic example to see how this is used to call the print function of Highcharts.
 
-Sometimes it could make sense to create an entire new Highcharts Chart instead of updating the previous one. For this to happen, you need to pass an entire new chart configuration object to the component instead of updating the previous configuration object.
+Sometimes it could make sense to create an entire new Highcharts Chart instead of updating the previous one. For this to happen, you need to pass an entire new chart configuration object to the component instead of updating the previous configuration object. (See example section above)
 
-If you know the chart data is not going to change, you can disabled the changeDetection to improve performance. This can be done with the attribute ```disable-change-detection="true"```. However this really only affects charts with huge data sets.
+If you know the chart data is not going to change, you can disabled the changeDetection to improve performance. This can be done with the attribute ```disable-change-detection="true"```. However this really only affects charts with huge data sets. (See example section above)
 
 Features:
 ---------

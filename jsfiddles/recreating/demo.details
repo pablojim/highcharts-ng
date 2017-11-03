@@ -1,0 +1,7 @@
+---
+ name: Recreating chart demo
+ description: Recreating chart demo
+ authors:
+   - ngehlert
+ normalize_css: no
+ ...
