@@ -1,0 +1,7 @@
+---
+ name: Disabled change detection demo
+ description: Disabled change detection Highcharts-ng demo
+ authors:
+   - ngehlert
+ normalize_css: no
+ ...

@@ -17,6 +17,7 @@ Also:
 - Polar Chart: http://jsfiddle.net/gh/get/jquery/3.1.1/pablojim/highcharts-ng/tree/master/jsfiddles/polar/
 - Multi Axis: http://jsfiddle.net/gh/get/jquery/3.1.1/pablojim/highcharts-ng/tree/master/jsfiddles/multi_axis/
 - Resizing to screen size: http://jsfiddle.net/gh/get/jquery/3.1.1/pablojim/highcharts-ng/tree/master/jsfiddles/resizing/
+- Disabled change detection http://jsfiddle.net/gh/get/jquery/3.1.1/ngehlert/highcharts-ng/tree/master/jsfiddles/resizing/
 
 Current Version
 ---------------
