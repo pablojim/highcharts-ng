@@ -49,6 +49,16 @@ or with bower:
 bower install highcharts-ng --save
 ```
 
+Add highcharts as project dependency with npm
+```bash
+npm install highcharts
+```
+
+or with bower:
+
+```bash
+bower install highcharts --save
+```
 
 Add references to Highcharts/Highstocks:
 
