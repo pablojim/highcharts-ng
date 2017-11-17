@@ -6,8 +6,8 @@ AngularJS directive for Highcharts
 A simple Angularjs directive for Highcharts.
 
 
-Examples:
----------
+Examples
+--------
 
 See example in ./example/charts/general-example.html (https://rawgit.com/pablojim/highcharts-ng/master/example/charts/general-example.html)
 
@@ -20,10 +20,18 @@ Also:
 - Disabled change detection http://jsfiddle.net/gh/get/jquery/3.1.1/pablojim/highcharts-ng/tree/master/jsfiddles/disabled_change_detection/
 - Recreating chart http://jsfiddle.net/gh/get/jquery/3.1.1/pablojim/highcharts-ng/tree/master/jsfiddles/recreating/
 
+License
+-------
+This library is available under the MIT license. However it and is a wrapper for Highcharts. Highcharts itself has an own license. So make sure to follow their license as well (https://github.com/highcharts/highcharts/blob/master/license.txt)
+
+Note: You need to include the Highcharts library your self. It is not included in this repository.
+
 Current Version
 ---------------
-**Note Needs Highcharts/Highstock >= 5.0.0**
-**Only supports AngularJS >= 1.5.8
+**Needs Highcharts/Highstock >= 5.0.0**
+
+**Only supports AngularJS >= 1.5.8**
+
 **Configuration Format is not compatible with highcharts-ng 0.x.0**
 
 
@@ -41,6 +49,16 @@ or with bower:
 bower install highcharts-ng --save
 ```
 
+Add highcharts as project dependency with npm
+```bash
+npm install highcharts
+```
+
+or with bower:
+
+```bash
+bower install highcharts --save
+```
 
 Add references to Highcharts/Highstocks:
 
