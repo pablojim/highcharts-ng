@@ -21,6 +21,8 @@
   "authors": [
     { "name": "Barry Fitzgerald" }
   ],
-  "dependencies": {},
+  "dependencies": {
+    "highcharts": "^5.0.9"
+  },
   "devDependencies": {}
 }
