@@ -148,7 +148,7 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
       var originalWidth = $element[0].clientWidth;
       var originalHeight = $element[0].clientHeight;
       $timeout(function () {
-        if ($element[0].clientWidth !== originalWidth || $element[0].clientHeight !== originalHeight) {
+        if ($element[0].clientWidth !== 0 && $element[0].clientHeight !== 0 && ($element[0].clientWidth !== originalWidth || $element[0].clientHeight !== originalHeight)) {
           ctrl.chart.reflow();
         }
       }, 0, false);
