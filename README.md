@@ -151,6 +151,14 @@ Since 1.0.0, vanilla Highcharts objects are supported!
 Versions
 --------
 
+Version 1.2.0
+-------------
+Remove explicit dependency on Highcharts due to licensing concerns and also allows user to choose between Highcharts and Highstocks.
+
+- added support for $onChanges, added new binding to disable change detection https://github.com/pablojim/highcharts-ng/pull/622
+
+Thanks to @ngehlert and others for their contributions.
+
 Version 1.1.0
 -------------
 Now has explicit dependency on highcharts.js.
