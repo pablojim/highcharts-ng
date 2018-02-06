@@ -44,6 +44,7 @@
     "phantomjs-prebuilt": "^2.1.7"
   },
   "scripts": {
+    "build": "grunt",
     "test": "grunt test"
   },
   "main": "./dist/highcharts-ng",
