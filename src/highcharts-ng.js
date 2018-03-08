@@ -255,6 +255,7 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
                   // Get the latest data point from the new series
                   var ptNew = s.data[s.data.length - 1];
                   
+                  if (sCopy.data === undefined) sCopy.data = []
                   // Check if the new and old series are identical with the latest data point added
                   // If so, call addPoint without shifting
                   sCopy.data.push(ptNew);
