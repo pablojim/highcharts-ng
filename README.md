@@ -151,6 +151,11 @@ Since 1.0.0, vanilla Highcharts objects are supported!
 Versions
 --------
 
+Version 1.2.1
+-------------
+Fixes https://github.com/pablojim/highcharts-ng/issues/592
+
+
 Version 1.2.0
 -------------
 Remove explicit dependency on Highcharts due to licensing concerns and also allows user to choose between Highcharts and Highstocks.
