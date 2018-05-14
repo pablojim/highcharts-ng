@@ -1,6 +1,6 @@
 /**
  * highcharts-ng
- * @version v1.2.1-dev - 2017-12-02
+ * @version v1.2.1 - 2018-05-14
  * @link https://github.com/pablojim/highcharts-ng
  * @author Barry Fitzgerald <>
  * @license MIT License, http://www.opensource.org/licenses/MIT
@@ -18,7 +18,7 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
   if (window && window.Highcharts) {
     Highcharts = window.Highcharts;
   } else if (typeof module !== 'undefined' && typeof exports !== 'undefined' &&
-    module.exports === exports && module.exports === 'highcharts-ng'
+    module.exports === 'highcharts-ng'
   ) {
         Highcharts = require('highcharts');
   }
@@ -156,7 +156,7 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
       var originalWidth = $element[0].clientWidth;
       var originalHeight = $element[0].clientHeight;
       $timeout(function () {
-        if ($element[0].clientWidth !== originalWidth || $element[0].clientHeight !== originalHeight) {
+        if ($element[0].clientWidth !== 0 && $element[0].clientHeight !== 0 && ($element[0].clientWidth !== originalWidth || $element[0].clientHeight !== originalHeight)) {
           ctrl.chart.reflow();
         }
       }, 0, false);
